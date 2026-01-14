@@ -312,8 +312,8 @@ if (backupServerTrigger) {
       },
       app
     )
-    .listen(8080);
+    .listen(8088);
 } else {
   console.log("Running Locally");
-  app.listen(8080);
+  app.listen(8088);
 }
