@@ -303,20 +303,7 @@ app.get("/api/waybill/debug", (req, res) => {
   }
 });
 
-if (backupServerTrigger) {
-  console.log("Running Server");
-  https
-    .createServer(
-      {
-        key: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.key"),
-        cert: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.crt"),
-        ca: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.ca-bundle"),
-        //passphrase: 'asdf'
-      },
-      app
-    )
-    .listen(8088);
-} else {
-  console.log("Running Locally");
-  app.listen(8088);
-}
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Document Service listening on port ${PORT}`);
+});
