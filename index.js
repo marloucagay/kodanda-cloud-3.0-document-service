@@ -269,40 +269,6 @@ app.post("/api/waybill/pdf", (req, res) => {
   }
 });
 
-/**
- * GET /api/waybill/debug?widthCm=28&heightCm=20
- * Returns PDF with CROSSHAIRS + FIELD NAMES at each (x_cm, y_cm).
- */
-app.get("/api/waybill/debug", (req, res) => {
-  try {
-    const widthCm = Number(req.query.widthCm);
-    const heightCm = Number(req.query.heightCm);
-
-    if (!widthCm || !heightCm) {
-      return res
-        .status(400)
-        .json({ error: "Provide widthCm and heightCm query params." });
-    }
-
-    const { doc, pageHeightPt } = createDoc({
-      pageWidthCm: widthCm,
-      pageHeightCm: heightCm,
-    });
-    renderDebugMarkers(doc, pageHeightPt);
-
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader(
-      "Content-Disposition",
-      'inline; filename="waybill-debug.pdf"'
-    );
-    doc.pipe(res);
-    doc.end();
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Failed to generate debug PDF." });
-  }
-});
-
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);
