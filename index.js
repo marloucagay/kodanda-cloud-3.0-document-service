@@ -1,8 +1,11 @@
 const express = require("express");
 const PDFDocument = require("pdfkit");
 const cors = require("cors");
+const https = require("https");
+const bodyParser = require("body-parser");
 const app = express();
 app.use(express.json({ limit: "2mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 // ---- Helpers ----
 const CM_TO_PT = 28.346456692913385;

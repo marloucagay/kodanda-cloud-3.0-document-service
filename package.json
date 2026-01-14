@@ -11,8 +11,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "body-parser": "^2.2.2",
     "cors": "^2.8.5",
     "express": "^5.2.1",
+    "https": "^1.0.0",
     "nodemon": "^3.1.11",
     "pdfkit": "^0.17.2"
   }
