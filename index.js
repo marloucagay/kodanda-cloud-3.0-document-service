@@ -236,6 +236,8 @@ function generateWaybillOverlayPDF({ pageWidthCm, pageHeightCm, fields }) {
  *   }
  * }
  */
+const backupServerTrigger = true;
+
 app.post("/api/waybill/pdf", (req, res) => {
   try {
     const { pageWidthCm, pageHeightCm, fields } = req.body || {};
@@ -298,6 +300,20 @@ app.get("/api/waybill/debug", (req, res) => {
   }
 });
 
-app.listen(8088, () => {
-  console.log("Waybill PDF API running on http://localhost:8088");
-});
+if (backupServerTrigger) {
+  console.log("Running Server");
+  https
+    .createServer(
+      {
+        key: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.key"),
+        cert: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.crt"),
+        ca: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.ca-bundle"),
+        //passphrase: 'asdf'
+      },
+      app
+    )
+    .listen(8080);
+} else {
+  console.log("Running Locally");
+  app.listen(8080);
+}
