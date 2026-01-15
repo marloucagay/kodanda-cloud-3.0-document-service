@@ -201,7 +201,7 @@ app.post("/api/waybill/pdf", (req, res) => {
   }
 });
 
-app.use("/api", invoiceRoutes);
+app.use("/api/invoices", invoiceRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);
