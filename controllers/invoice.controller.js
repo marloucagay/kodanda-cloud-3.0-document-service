@@ -101,6 +101,7 @@ async function generateInvoicePdf(req, res) {
 
     const vm = buildViewModel(invoice);
     vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
+    vm.isDraft = String(vm.status || "").toLowerCase() === "draft";
 
     const pdfBuffer = await generateInvoicePdfBuffer(vm);
 

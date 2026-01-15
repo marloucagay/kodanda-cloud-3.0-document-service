@@ -1,0 +1,306 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    @page { size: A4; margin: 0; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      color: #111;
+      line-height: 1.25;
+      padding: 12mm 14mm 10mm 14mm; /* controlled content padding */
+    }
+
+    .company {
+      font-size: 10px;
+      line-height: 1.25;
+      margin-bottom: 6px;
+      color: #111; 
+      display:flex;
+      justify-content:center;
+      align-items: start;
+    }
+    .company .info { text-align: center; }
+    .company .info .name { font-weight: 700; font-size: 14px;}
+    .top-right {
+      float: right;
+      font-size: 10px;
+    }
+
+    .title {
+      clear: both;
+      text-align: center;
+      font-weight: 700;
+      font-size: 18px;
+      margin: 4px 0 4px;
+    }
+    .drno {
+      text-align: end;
+      font-weight: 700;
+      font-size: 12px;
+      color: #f56487;
+      margin-bottom: 8px;
+    }
+
+    .rule { border-top: 1px solid #111; margin: 3px 0; }
+
+    table { width: 100%; border-collapse: collapse; }
+    .info td { padding: 2px 4px; vertical-align: top; }
+    .k { font-weight: 700; color: #333; width: 130px; white-space: nowrap; }
+    .v { color: #111; }
+
+    .twocol td { width: 50%; vertical-align: top; }
+
+    .block-title {
+      font-weight: 700;
+      margin: 8px 0 4px;
+    }
+
+    .pv td { padding: 6px; vertical-align: top; }
+    .pv .k { width: 120px; }
+
+    .items th, .items td { border: 1px solid #111; padding: 6px; vertical-align: top; }
+    .items th { text-align: left; font-weight: 700; }
+    .items .qty { width: 60px; text-align: left; }
+    .items .unit { width: 60px; text-align: left; }
+    .items .particulars { width: auto; }
+
+    .part {
+      line-height: 1.35;
+    }
+
+    .received {
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: end;
+    }
+    .sigrow {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: end;
+    }
+    .line {
+      border-top: 1px solid #111;
+      height: 18px;
+    }
+    .small-note {
+      margin-top: 10px;
+      font-size: 9px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+    .rule { border-top: 1px solid #111; margin: 6px 0 14px; }
+    /* generic key-value row */
+    .kv-inline {
+    display: inline-flex;
+    gap: 6px;
+    align-items: baseline;
+    white-space: nowrap;
+    }
+
+    .row-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 16px;
+    margin: 4px 0;
+    }
+
+    /* shipment info grid (2 columns, label can wrap) */
+    .shipment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 18px;
+    row-gap: 4px;
+    margin-top: 6px;
+    }
+
+    .shipment-kv {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    column-gap: 8px;
+    align-items: start;
+    }
+
+    .shipment-kv .k {
+    white-space: normal; /* allows Shipment / Reference wrapping */
+    line-height: 1.15;
+    }
+
+    /* pickup / delivery block */
+    .pd-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 18px;
+    margin-top: 10px;
+    }
+
+    .pd-block {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    column-gap: 8px;
+    row-gap: 4px;
+    }
+
+    .pd-block .v {
+    word-break: break-word;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="company">
+    <div>
+      {{#logoSrc}}
+        <img src="{{logoSrc}}" style="height:55px" />
+      {{/logoSrc}}
+    </div>
+    <div class="info">    
+        <div class="name">MONARCH DIVERSIFIED LOGISTICS, INC.</div>
+        <div>Lot 1 Ninoy Aquino Ave. cor. Old Kabihasnan St. San Dionisio,</div>
+        <div>City of Parañaque, NCR, Fourth District, Philippines 1700</div>
+        <div>VAT Reg. TIN:009-586-612-00000</div>
+        <div>Tel. No.: (02) 4523644 / 8691-0165</div>
+    </div>
+  </div>
+  <div class="rule"></div>
+    <div class="title">{{documentTitle}}</div>
+  <div class="rule"></div>
+  <div class="drno">{{drNumber}}</div>
+
+  <div class="row-grid">
+  <div class="kv-inline">
+        <span class="k">Client:</span>
+        <span class="v">{{client}}</span>
+    </div>
+
+    <div class="kv-inline">
+        <span class="k">Requesting Unit:</span>
+        <span class="v">{{requestingUnit}}</span>
+    </div>
+
+    <div class="kv-inline">
+        <span class="k">Date:</span>
+        <span class="v">{{date}}</span>
+    </div>
+
+    <div class="kv-inline">
+         <span class="k">Shipment<br>Reference:</span>
+    <span class="v">{{shipmentReference}}</span>
+    </div>
+
+    <div class="kv-inline">
+       <span class="k">Declared Value:</span>
+        <span class="v">{{declaredValue}}</span>
+    </div>
+
+    <div class="kv-inline">
+       <span class="k">File #:</span>
+       <span class="v">{{transactionFile}}</span>
+    </div>
+    </div>
+        </div>
+
+<div class="shipment-grid">
+
+  <div class="shipment-kv">
+    <div class="k">Type of Cargo:</div>
+    <div class="v">{{typeOfCargo}}</div>
+  </div>
+
+  <div class="shipment-kv">
+    <div class="k">Picking List No:</div>
+    <div class="v">{{pickingListNo}}</div>
+  </div>
+
+  <div class="shipment-kv">
+    <div class="k">Special<br>Instructions:</div>
+    <div class="v">{{specialInstructions}}</div>
+  </div>
+
+  <div class="shipment-kv">
+    <div class="k">DRSF No.:</div>
+    <div class="v">{{drsfNo}}</div>
+  </div>
+
+  <div class="shipment-kv">
+    <div class="k">Number Of Boxes:</div>
+    <div class="v">{{numberOfBoxes}}</div>
+  </div>
+    </div>
+
+  <div class="block-title"></div>
+
+<div class="pd-grid">
+  <!-- Pickup -->
+  <div class="pd-block">
+    <div class="k">Pickup Site:</div><div class="v">{{pickupSite}}</div>
+    <div class="k">Pickup Address:</div><div class="v">{{pickupAddress}}</div>
+    <div class="k">Contact Person:</div><div class="v">{{pickupContactPerson}}</div>
+    <div class="k">Contact No.:</div><div class="v">{{pickupContactNumber}}</div>
+  </div>
+
+  <!-- Delivery -->
+  <div class="pd-block">
+    <div class="k">Delivery Site:</div><div class="v">{{deliverySite}}</div>
+    <div class="k">Delivery Address:</div><div class="v">{{deliveryAddress}}</div>
+    <div class="k">Contact Person:</div><div class="v">{{deliveryContactPerson}}</div>
+    <div class="k">Contact No.:</div><div class="v">{{deliveryContactNumber}}</div>
+  </div>
+</div>
+
+  <table class="items" style="margin-top:10px;">
+    <thead>
+      <tr>
+        <th class="qty">QTY</th>
+        <th class="unit">UNIT</th>
+        <th class="particulars">PARTICULARS</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#items}}
+      <tr>
+        <td class="qty">{{qty}}</td>
+        <td class="unit">{{unit}}</td>
+        <td class="particulars">
+          <div class="part">
+            <div><b>Description:</b> {{description}}</div>
+            <div><b>Lot/Batch No.:</b> {{lot}}</div>
+            <div><b>Expiry Date:</b> {{expiryDate}}</div>
+            <div><b>Serial No.:</b> {{serialNo}}</div>
+          </div>
+        </td>
+      </tr>
+      {{/items}}
+    </tbody>
+  </table>
+
+  <div class="received">
+    Received the above items in good order and condition.
+  </div>
+
+  <div class="sigrow">
+    <div>
+      <div><b>Received by:</b></div>
+      <div class="line"></div>
+      <div style="font-size:9px;">Printed Name and Signature</div>
+    </div>
+    <div>
+      <div><b>Date:</b> {{receivedDate}}</div>
+    </div>
+  </div>
+
+  <div class="small-note">
+    <div><b>THIS DOCUMENT IS NOT VALID FOR CLAIMING INPUT TAX</b></div>
+    <div style="text-align:right;">-</div>
+  </div>
+
+</body>
+</html>
