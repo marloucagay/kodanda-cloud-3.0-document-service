@@ -77,6 +77,14 @@ async function generateInvoicePdfBuffer(viewModel) {
     });
 
     return pdfBuffer;
+  } catch (err) {
+    console.error("INVOICE PDF ERROR:", err?.stack || err);
+
+    // send a short message back (don’t leak internals in prod if you don’t want to)
+    return res.status(500).json({
+      message: "Failed to generate invoice PDF",
+      error: String(err?.message || err),
+    });
   } finally {
     await browser.close();
   }
