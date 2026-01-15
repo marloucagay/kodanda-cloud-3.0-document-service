@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "postinstall": "npx puppeteer browsers install chrome"
+    "postinstall": "node -e \"process.env.PUPPETEER_CACHE_DIR='/workspace/.cache/puppeteer';\" && npx puppeteer browsers install chrome"
   },
   "keywords": [],
   "author": "",
