@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    @page { size: A4; margin: 2mm 10mm; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #111; font-size: 12px; }
+    .header { display:flex; align-items:flex-start; justify-content:space-between; }
+    .title { text-align:center; font-size: 20px; font-weight: 700; margin: 12px 0 8px; }
+    .rule { border-top: 1px solid #111; margin: 6px 0 14px; }
+
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; }
+    .kv { display:grid; grid-template-columns: 130px 1fr; row-gap: 2px; font-size:11px }
+    .kv .k { color:#111; }
+
+    h3 { font-size: 12px; margin: 12px 0 8px; }
+
+    table { width:100%; border-collapse:collapse; margin-top: 8px; }
+    th, td { border: 1px solid #111; padding: 8px; }
+    th { text-align:left; font-size:11px }
+    td { font-size:10px}
+    td.amount, th.amount { text-align:right; }
+
+    .totals-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 10px;
+    }
+
+    .totals-table td {
+      border: 1px solid #111;
+      padding: 6px 8px;
+    }
+
+    .totals-label {
+      font-weight: 700;
+      color: #333;
+    }
+    .full-row {
+      grid-column: 1 / -1;
+    }
+
+    .full-row div:last-child {
+      line-height: 1.4;
+    }
+    .totals-value {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .muted { color:#333; font-weight: 700; }
+    
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      {{#logoSrc}}
+        <img src="{{logoSrc}}" style="height:120px" />
+      {{/logoSrc}}
+    </div>
+    <div style="width:140px;"></div>
+  </div>
+
+  <div class="rule"></div>
+  <div class="title">Invoice</div>
+  <div class="rule"></div>
+
+  <div class="grid2">
+    <div class="kv">
+      <div class="k">Invoice #:</div><div>{{invoiceNo}}</div>
+      <div class="k">Type of Invoice:</div><div>{{vatType}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Invoice Date:</div><div>{{invoiceDate}}</div>
+      <div class="k">Status:</div><div>{{status}}</div>
+    </div>
+  </div>
+  <h3>Customer Information</h3>
+
+  <div class="grid2">
+    <!-- Row 1: File No | Quotation No -->
+    <div class="kv">
+      <div class="k">File No.:</div><div>{{fileNo}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Quotation No.:</div><div>{{quotationNo}}</div>
+    </div>
+
+    <!-- Row 2: Customer Name (full width) -->
+    <div class="kv full-row">
+      <div class="k">Customer Name:</div><div>{{customerName}}</div>
+    </div>
+
+    <!-- Row 3: Billing Address (full width) -->
+    <div class="kv full-row">
+      <div class="k">Billing Address:</div><div>{{billingAddress}}</div>
+    </div>
+
+    <!-- Row 4: Contact Person | Contact No -->
+    <div class="kv">
+      <div class="k">Contact Person:</div><div>{{contactPerson}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Contact No.:</div><div>{{contactNo}}</div>
+    </div>
+
+    <!-- Row 5: Credit Term | Exchange Rate -->
+    <div class="kv">
+      <div class="k">Credit Term:</div><div>{{creditTerm}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Exchange Rate:</div><div>{{exchangeRate}}</div>
+    </div>
+  </div>
+  <h3>Shipping Information</h3>
+  <div class="grid2">
+    <div class="kv">
+      <div class="k">MAWB:</div><div>{{mAWB}}</div>
+      <div class="k">Reference Details:</div><div>{{referenceDetails}}</div>
+      <div class="k">Description:</div><div>{{description}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">HAWB:</div><div>{{hAWB}}</div>
+      <div class="k">Reference Date:</div><div>{{referenceDate}}</div>
+      <div class="k">Origin:</div><div>{{origin}}</div>
+    </div>
+  </div>
+
+  <h3>Items to Bill</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Basis</th>
+        <th colSpan="2" class="amount">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#charges}}
+      <tr>
+        <td>{{description}}</td>
+        <td>{{rateBasis}}</td>
+        <td colSpan="2" class="amount">{{rateFmt}}</td>
+      </tr>
+      {{/charges}}
+    </tbody>
+      <tbody>
+    {{#totalsRows}}
+    <tr>
+      <td class="totals-label">{{leftLabel}}</td>
+      <td class="totals-value">{{leftValue}}</td>
+      <td class="totals-label">{{rightLabel}}</td>
+      <td class="totals-value">{{rightValue}}</td>
+    </tr>
+    {{/totalsRows}}
+  </tbody>
+  </table>
+</body>
+</html>

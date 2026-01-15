@@ -3,8 +3,9 @@ const PDFDocument = require("pdfkit");
 const cors = require("cors");
 const https = require("https");
 const bodyParser = require("body-parser");
+const invoiceRoutes = require("./routes/invoice.routes.js");
 const app = express();
-app.use(express.json({ limit: "2mb" }));
+app.use(express.json({ limit: "5mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 // ---- Helpers ----
@@ -172,75 +173,6 @@ function renderOverlayValues(doc, pageWidthPt, pageHeightPt, fields) {
   }
 }
 
-function renderDebugMarkers(doc, pageHeightPt) {
-  // Put title at top-left for sanity check
-  doc
-    .font("Helvetica-Bold")
-    .fontSize(10)
-    .text(
-      "WAYBILL DEBUG MARKERS (top-left cm coords)",
-      cmToPt(0.8),
-      pageHeightPt - cmToPt(0.8)
-    );
-
-  // Draw marker for each field
-  for (const [key, layout] of Object.entries(WAYBILL_LAYOUT)) {
-    drawMarkerTopLeft(doc, pageHeightPt, layout.x, layout.y, key);
-  }
-
-  // Optional: add a simple border so you can see page edges
-  doc.rect(0.5, 0.5, doc.page.width - 1, doc.page.height - 1).stroke();
-}
-
-// ---- Core generator ----
-function generateWaybillOverlayPDF({ pageWidthCm, pageHeightCm, fields }) {
-  const pageWpt = cmToPt(pageWidthCm);
-  const pageHpt = cmToPt(pageHeightCm);
-
-  const doc = new PDFDocument({
-    size: [pageWpt, pageHpt],
-    margin: 0,
-  });
-
-  // Optional: keep it transparent-ish (PDF text only)
-  // No background image here because you said "values only"
-  // (If you later want an optional template image behind, we can add it.)
-
-  // Render fields based on layout
-  for (const [key, layout] of Object.entries(WAYBILL_LAYOUT)) {
-    const value = fields?.[key];
-    drawTextTopLeft(
-      doc,
-      pageWpt,
-      pageHpt,
-      layout.x,
-      layout.y,
-      value,
-      layout.opts
-    );
-  }
-
-  doc.end();
-  return doc;
-}
-
-// ---- REST Endpoint ----
-/**
- * POST /api/waybill/pdf
- * Body:
- * {
- *   "pageWidthCm": 28.0,
- *   "pageHeightCm": 20.0,
- *   "fields": {
- *     "accountNo": "B-2cm",
- *     "billingRef": "2025-58001",
- *     "waybillNo": "0015282",
- *     ...
- *   }
- * }
- */
-const backupServerTrigger = true;
-
 app.post("/api/waybill/pdf", (req, res) => {
   try {
     const { pageWidthCm, pageHeightCm, fields } = req.body || {};
@@ -269,6 +201,7 @@ app.post("/api/waybill/pdf", (req, res) => {
   }
 });
 
+app.use("/api", invoiceRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);
