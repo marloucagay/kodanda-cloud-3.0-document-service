@@ -5,6 +5,7 @@ const https = require("https");
 const bodyParser = require("body-parser");
 const invoiceRoutes = require("./routes/invoice.routes.js");
 const deliveryReceiptRoutes = require("./routes/deliveryReceipt.routes.js");
+const bulkPrint = require("./routes/bulkPrint.routes.js");
 const app = express();
 app.use(express.json({ limit: "5mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -204,6 +205,7 @@ app.post("/api/waybill/pdf", (req, res) => {
 
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/delivery-receipts", deliveryReceiptRoutes);
+app.use("/api/bulk-print", bulkPrint);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);
