@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @page {
+      size: {{pageWidthCm}}cm {{pageHeightCm}}cm;
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif;
+      position: relative;
+      width: {{pageWidthCm}}cm;
+      height: {{pageHeightCm}}cm;
+    }
+
+    .field {
+      position: absolute;
+      font-size: 9px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="field" style="left:1.2cm; top:3.2cm; font-size:9px;">
+    {{accountNumber}}
+  </div>
+
+  <div class="field" style="left:6cm; top:3.2cm;">
+    {{billingReference}}
+  </div>
+
+  <div class="field" style="left:23cm; top:2.8cm; font-size:11px;">
+    {{dRNumber}}
+  </div>
+
+  <!-- Pickup -->
+  <div class="field" style="left:1.2cm; top:6.2cm;">
+    {{waybillPickupSiteContactPerson}}
+  </div>
+
+  <div class="field" style="left:11.2cm; top:6.2cm;">
+    {{waybillPickupSiteContactNumber}}
+  </div>
+
+  <div class="field" style="left:1.2cm; top:7.6cm; width:12cm;">
+    {{waybillPickupSite}}
+  </div>
+
+  <div class="field" style="left:1.2cm; top:9cm; width:12cm;">
+    {{waybillPickupSiteAddress}}
+  </div>
+
+  <!-- Delivery -->
+  <div class="field" style="left:15.2cm; top:6.2cm;">
+    {{waybillDeliverySiteContactPerson}}
+  </div>
+
+  <div class="field" style="left:24cm; top:6.2cm;">
+    {{waybillDeliverySiteContactNumber}}
+  </div>
+
+  <!-- Cargo -->
+  <div class="field" style="left:1.2cm; top:13.4cm; width:26cm;">
+    {{waybillTypeOfCargo}}
+  </div>
+
+</body>
+</html>

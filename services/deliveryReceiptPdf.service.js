@@ -6,7 +6,7 @@ const mustache = require("mustache");
 const templatePath = path.join(
   process.cwd(),
   "templates",
-  "delivery-receipt.mustache"
+  "delivery-receipt.mustache",
 );
 const template = fs.readFileSync(templatePath, "utf8");
 
@@ -28,7 +28,7 @@ async function generateDeliveryReceiptPdfBuffer(vm) {
 
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // since you’re on Dockerfile now
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
