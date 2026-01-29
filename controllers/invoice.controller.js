@@ -44,6 +44,7 @@ function buildTotalsRows(summary = {}, overallTotal, clientCurrency) {
 
 function buildViewModel(invoice) {
   // Normalize fields used by template (avoid blank strings)
+  console.log("Building invoice view model for:", invoice);
   return {
     ...invoice,
     invoiceNo: safeText(invoice.invoiceNo),
@@ -66,6 +67,9 @@ function buildViewModel(invoice) {
     referenceDate: safeText(invoice.referenceDate),
     description: safeText(invoice.description),
     origin: safeText(invoice.origin),
+
+    clientTIN: safeText(invoice.clientTIN),
+    businessStyle: invoice.businessEntities || [],
 
     // If you want logo: use a base64 data-uri or a URL reachable by puppeteer.
     // logoSrc: "data:image/png;base64,....",
