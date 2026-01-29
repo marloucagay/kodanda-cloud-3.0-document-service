@@ -14,16 +14,21 @@
     }
 
     .company {
-      font-size: 10px;
+      font-size: 12px;
+      font-weight: 500;
       line-height: 1.25;
       margin-bottom: 6px;
       color: #111; 
       display:flex;
+      margin-left:12px;
       justify-content:center;
       align-items: start;
     }
+
     .company .info { text-align: center; }
-    .company .info .name { font-weight: 700; font-size: 14px;}
+
+    .company .info .name { font-weight: 700; font-size: 24px;}
+
     .top-right {
       float: right;
       font-size: 10px;
@@ -201,7 +206,7 @@
   <div class="company">
     <div>
       {{#logoSrc}}
-        <img src="{{logoSrc}}" style="height:55px" />
+        <img src="{{logoSrc}}" style="height:100px;" />
       {{/logoSrc}}
     </div>
     <div class="info">    
@@ -212,9 +217,7 @@
         <div>Tel. No.: (02) 4523644 / 8691-0165</div>
     </div>
   </div>
-  <div class="rule"></div>
-    <div class="title">{{documentTitle}}</div>
-  <div class="rule"></div>
+  <div class="title">{{documentTitle}}</div>
   <div class="drno">{{drNumber}}</div>
 
   <div class="row-grid">
