@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    @page { size: A4; margin: 2mm 10mm; }
+    .logo {
+    width: 180px;
+    z-index: 10;
+    display: block;
+    margin-left: -25px;
+    }
+    html, body {
+      height: 97%;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+    body { font-family: Arial, Helvetica, sans-serif; color: #111; }
+    .gatepassID { display: flex; flex-direction: column; align-items: flex-end; font-size: 12px; margin: 10px 0; color: red; font-weight: 700; }
+    .invoice-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .invoice-header-title { flex: 1; text-align: center; margin: 0; font-size: 19px; font-weight: 700; }
+
+    .grid1 { display:grid; gap: 6px; margin: 10px 0; }
+    .grid2 { display:grid; grid-template-columns: 2fr 1fr; gap: 6px 22px; margin-top: 10px; }
+    .kv { display: flex; }
+    .kv .k { font-size: 12px; color:#111; white-space: nowrap; font-weight: 700; }
+    .underline { font-size: 12px; border-bottom: 1px solid #111; width:100%; padding-left: 6px; }
+
+    table { width:100%; border-collapse:collapse; margin-top: 8px; }
+    th, td { border: 1px solid #111; padding: 8px; }
+    th { text-align:center; font-size: 12px }
+    td { font-size:12px }
+
+    /* Signature block styles */
+    .signature-row { display:grid; grid-template-columns: 2fr 1fr; gap: 4px 6px; margin-top: 10px; }
+    .signature-line {
+      border-bottom: 1px solid #111;
+      width: 300px;
+      height: 32px;
+      margin-bottom: 4px;
+      margin-left: auto;
+    }
+    .box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+    }
+    .box h3,
+    .box h4,
+    .box h5 {
+        margin: 0;
+        padding: 0;
+    }
+    .box h3 {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .box h4 {
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .box h5 {
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center;
+    }
+    .gatepass-footer {
+      margin-top: 20px;
+    }
+    .gatepass-footer h6 {
+      margin: 4px 0;
+      font-size: 10px;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+    <div>
+      <div class="company">
+        {{#logoSrc}}
+          <img src="{{logoSrc}}" class="logo" />
+        {{/logoSrc}}
+      </div>
+      
+      <div class="invoice-header-row">
+        <div class="invoice-header-title">MDLI GATEPASS</div>
+      </div>
+
+      <div class="gatepassID">
+        <div>{{gatepassID}}</div>
+      </div>
+
+      <div class="grid1">
+        <!-- Row 1: Client Namen | MDLI Ref. No. -->
+        <div class="kv">
+          <div class="k">Date:</div><div class="underline">{{gatepassDate}}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Name:</div><div class="underline">{{gatepassName}}</div>
+        </div>
+        <!-- Row 2: Business Style | TIN -->
+        <div class="kv">
+          <div class="k">Vehicle Type/Plate#:</div><div class="underline">{{gatepassVehicle}}</div>
+        </div>
+      </div>
+    
+      <table>
+      <thead>
+          <tr>
+          <th>Reference No.</th>
+          <th>QTY</th>
+          <th>Packaging</th>
+          </tr>
+      </thead>
+      <tbody>
+          {{#gatepassItems}}
+          <tr>
+              <td>{{tripTicketNo}}</td>
+              <td>{{quantity}}</td>
+              <td>{{packaging}}</td>
+          </tr>
+          {{/gatepassItems}}
+      </tbody>
+      </table>
+    </div>
+    
+    <div>
+      <div class="signature-row">
+          <div class="box">
+              <h3>Released by:</h3>
+              <h4>(Warehouse Personnel)</h4>
+          </div>
+          <div class="box">
+              <div class="signature-line"></div>
+              <h5>Name and Signature</h5>
+          </div>
+      </div>
+      <div class="signature-row">
+          <div class="box">
+              <h3>Approved by:</h3>
+          </div>
+          <div class="box">
+              <div class="signature-line"></div>
+              <h5>Name and Signature</h5>
+          </div>
+      </div>
+      <div class="signature-row">
+          <div class="box">
+              <h3>Security in Charge:</h3>
+          </div>
+          <div class="box">
+              <div class="signature-line"></div>
+              <h5>Name and Signature</h5>
+          </div>
+      </div>
+  
+      <div class="gatepass-footer">
+        <h6>Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City</h6>
+        <h6>Telephone: (02)8691-0615</h6>
+      </div>
+    </div>
+</body>
+</html>
