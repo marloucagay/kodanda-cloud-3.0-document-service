@@ -57,7 +57,7 @@ async function generateGatepassPdfBuffer(viewModel) {
         </div>
       `,
 
-footerTemplate: `
+      footerTemplate: `
   <div style="width:100%; padding:0 10mm; font-size:9px; color:#111;">
     <div>
       <div style="display:grid; grid-template-columns:2fr 1fr; gap:4px 6px; margin-top:10px;">

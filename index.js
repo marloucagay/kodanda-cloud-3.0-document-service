@@ -18,7 +18,7 @@ app.use("/api/waybills", waybillRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/delivery-receipts", deliveryReceiptRoutes);
 app.use("/api/bulk-print", bulkPrint);
-app
+app.use("/api/gatepass", gatepassRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);

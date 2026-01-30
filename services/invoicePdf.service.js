@@ -63,14 +63,32 @@ async function generateInvoicePdfBuffer(viewModel) {
           padding:0 10mm;
           font-size:9px;
           color:#111;
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
+
         ">
+        <h3>
+    <i>Please make all checks payable to MONARCH DIVERSIFIED LOGISTICS, INC</i>
+  </h3>
+
+  <div style="text-align:right margin-bottom:10px;">
+    <div style="border-bottom: 1px solid #111;
+      width: 350px;
+      height: 32px;
+      margin-bottom: 4px;
+      margin-left: auto;"></div>
+    <div style="font-size: 13px;
+      color: #333;
+      width: 350px;
+      text-align: center;
+      margin-left: auto;">
+      Authorized Representative Signature Over Printed Name
+    </div>
+  </div>
+        <div style="display:flex; flex-direction:row; justify-content:space-between;">
           <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(
-        printedOn
-      )}</div>
+            printedOn,
+          )}</div>
           <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
+          </div>
         </div>
       `,
 
