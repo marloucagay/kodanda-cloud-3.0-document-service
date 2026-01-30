@@ -1,301 +1,179 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <style>
-      @page {
-        size: A4;
-        margin: 12mm 0 10mm 0;
-      }
-      body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        color: #111;
-        line-height: 1.25;
-        padding: 0 14mm;
-      }
-
-      .logo-absolute {
-        position: absolute;
-        left: 13%;
-        top: 0;
-        width: 50px;
-        z-index: 10;
-      }
-
-      .company {
-        font-size: 11px;
-        line-height: 1.25;
-        margin-bottom: 6px;
-        color: #111;
-        display: flex;
-        justify-content: center;
-        align-items: start;
-        position: relative;
-      }
-      .company .info {
-        text-align: center;
-      }
-      .company .info .name {
-        font-weight: 700;
-        font-size: 20px;
-        margin-left: 10px;
-      }
-
-      .dr-header-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 16px;
-      }
-      .dr-header-title {
-        flex: 1;
-        text-align: center;
-        margin: 0;
-        font-size: 19px;
-        font-weight: 700;
-      }
-      .dr-header-no {
-        flex: 1;
-        text-align: right;
-        color: red;
-        font-size: 14px;
-        font-weight: 700;
-      }
-      .dr-header-empty {
-        flex: 1;
-        font-size: 12px;
-      }
-
-      .top-right {
-        float: right;
-        font-size: 10px;
-      }
-
-      .title {
-        clear: both;
-        text-align: center;
-        font-weight: 700;
-        font-size: 18px;
-        margin: 4px 0 4px;
-      }
-      .drno {
-        text-align: end;
-        font-weight: 700;
-        font-size: 12px;
-        color: #f56487;
-        margin-bottom: 8px;
-      }
-
-      .rule {
-        border-top: 1px solid #111;
-        margin: 3px 0;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      .info td {
-        padding: 2px 4px;
-        vertical-align: top;
-      }
-      .k {
-        font-weight: 700;
-        color: #333;
-        width: 130px;
-        white-space: nowrap;
-      }
-      .v {
-        color: #111;
-      }
-
-      .twocol td {
-        width: 50%;
-        vertical-align: top;
-      }
-
-      .block-title {
-        font-weight: 700;
-        margin: 8px 0 4px;
-      }
-
-      .pv td {
-        padding: 6px;
-        vertical-align: top;
-      }
-      .pv .k {
-        width: 120px;
-      }
-
-      .items th,
-      .items td {
-        border: 1px solid #111;
-        padding: 6px;
-        vertical-align: top;
-      }
-      .items th {
-        text-align: left;
-        font-weight: 700;
-      }
-      .items .qty {
-        width: 60px;
-        text-align: left;
-      }
-      .items .unit {
-        width: 60px;
-        text-align: left;
-      }
-      .items .particulars {
-        width: auto;
-      }
-
-      .part {
-        line-height: 1.35;
-      }
-
-      /* 2-column footer: left warning + right received section */
-      .footer-grid {
-        display: grid;
-        grid-template-columns: 1fr 360px; /* left flexible, right fixed like PDF */
-        column-gap: 18px;
-        margin-top: 10px;
-        align-items: stretch; /* allow bottom alignment in left column */
-      }
-
-      /* Left column pinned to bottom */
-      .footer-left {
-        display: flex;
-        align-items: flex-end; /* bottom align tax warning */
-      }
-
-      .tax-warn {
-        font-size: 9px;
-        font-weight: 500;
-        text-align: center;
-      }
-
-      /* Right column content */
-      .footer-right {
-        font-size: 10px;
-      }
-
-      .received-note {
-        margin-bottom: 8px;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .sig-block {
-        margin-bottom: 8px;
-      }
-
-      .sig-line {
-        border-top: 1px solid #111;
-        width: 100%;
-      }
-
-      .sig-sub {
-        font-size: 9px;
-        text-align: center;
-      }
-
-      /* Date row: label + value, aligned nicely */
-      .date-row {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        column-gap: 6px;
-        margin-bottom: 8px;
-        align-items: baseline;
-      }
-      .date-row .row-line {
-        border-top: 1px solid #111;
-        width: 100%;
-      }
-      .rule {
-        border-top: 1px solid #111;
-        margin: 6px 0 14px;
-      }
-      /* generic key-value row */
-
-      .row-grid {
-        display: grid;
-        grid-template-columns: 1fr 3fr 1fr 2fr;
-        column-gap: 16px;
-        row-gap: 4px; /* ⬅ tighter vertical spacing */
-        margin: 2px 0;
-        align-items: start;
-      }
-      .row-grid .label {
-        font-size: 11px;
-        font-weight: 300;
-      }
-      .row-grid .value {
-        font-size: 11px;
-        font-weight: normal;
-        text-decoration: underline;
-      }
-      .kv-inline {
-        display: inline-flex;
-        gap: 6px;
-        align-items: baseline;
-        min-width: 0; /* ⬅ prevents overflow in PDFs */
-      }
-
-      .kv-inline .v {
-        overflow-wrap: break-word;
-      }
-      .span-all {
-        grid-column: 1 / -1; /* ⬅ full row */
-      }
-      /* shipment info grid (2 columns, label can wrap) */
-      .shipment-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 18px;
-        row-gap: 4px;
-        margin-top: 6px;
-      }
-
-      .shipment-kv {
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        column-gap: 8px;
-        align-items: start;
-      }
-
-      .shipment-kv .k {
-        white-space: normal; /* allows Shipment / Reference wrapping */
-        line-height: 1.15;
-      }
-
-      /* pickup / delivery block */
-      .pd-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 18px;
-        margin-top: 10px;
-      }
-
-      .pd-block {
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        column-gap: 8px;
-        row-gap: 4px;
-      }
-
-      .pd-block .v {
-        word-break: break-word;
-      }
-    </style>
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    @page { size: A4; margin: 12mm 0 10mm 0; }
+    html, body {
+      height: 97%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      padding: 0 14mm;
+    }
+    .logo-absolute {
+      position: absolute;
+      left: 13%;
+      top: 0;
+      width: 50px;
+      z-index: 10;
+    }
+    .company {
+      font-size: 11px;
+      line-height: 1.25;
+      margin-bottom: 6px;
+      color: #111;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      position: relative;
+    }
+    .company .info {
+      text-align: center;
+      width: 100%;
+    }
+    .company .info .name {
+      font-weight: 700;
+      font-size: 20px;
+      margin-left: 10px;
+    }
+    .date {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      font-size: 12px;
+    }
+    .invoice-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+    .invoice-header-title {
+      flex: 1;
+      text-align: center;
+      margin: 0;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .invoice-header-no {
+      flex: 1;
+      text-align: right;
+      color: red;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .invoice-header-empty {
+      flex: 1;
+      font-size: 12px;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 4px 22px;
+      margin: 10px 0;
+      font-size: 12px;
+    }
+    .kv {
+      display: flex;
+      font-weight: 700;
+    }
+    .kv .k {
+      color: #111;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .k {
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .underline {
+      border-bottom: 1px solid #111;
+      width: 100%;
+      padding-left: 6px;
+      font-weight: 400;
+      display: inline-block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .items th, .items td {
+      border: 1px solid #111;
+      padding: 6px;
+      vertical-align: top;
+    }
+    .items th {
+      text-align: left;
+      font-weight: 700;
+    }
+    .items .qty,
+    .items .unit {
+      width: 60px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .items .particulars {
+      width: auto;
+      text-align: center;
+    }
+    .part {
+      line-height: 1.35;
+      text-align: left;
+      padding-left: 10px;
+    }
+    /* Pick-up/Delivery header blocks */
+    .pd-header-row {
+      display: flex;
+      flex-direction: row;
+      gap: 0;
+    }
+    .pd-header-block {
+      flex: 1 1 0;
+      padding: 10px;
+      vertical-align: top;
+    }
+    .pd-header-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pd-header-row .pd-header-block + .pd-header-block {
+      border-left: 1px solid #111;
+    }
+    .pd-header-line {
+      display: flex;
+      align-items: center;
+    }
+    .pd-header-label {
+      white-space: nowrap;
+    }
+    .pickup-block, .delivery-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px;
+    }
+    .pickup-row, .delivery-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    } 
+  </style>
+</head>
+<body>
+  <div>
     <div class="company">
       {{#logoSrc}}
-      <img src="{{logoSrc}}" class="logo-absolute" />
+        <img src="{{logoSrc}}" class="logo-absolute" />
       {{/logoSrc}}
-      <div class="info" style="width: 100%">
+      <div class="info">
         <div class="name">MONARCH DIVERSIFIED LOGISTICS, INC.</div>
         <div>Lot 1 Ninoy Aquino Ave. cor. Old Kabihasnan St. San Dionisio,</div>
         <div>City of Parañaque, NCR, Fourth District, Philippines 1700</div>
@@ -304,107 +182,75 @@
       </div>
     </div>
 
-    <div class="dr-header-row">
-      <div class="dr-header-empty"></div>
-      <div class="dr-header-title">{{documentTitle}}</div>
-      <div class="dr-header-no">{{drNumber}}</div>
+    <div class="invoice-header-row">
+      <div class="invoice-header-empty"></div>
+      <div class="invoice-header-title">DELIVERY RECEIPT</div>
+      <div class="invoice-header-no">{{drNumber}}</div>
     </div>
 
-    <div class="row-grid">
-      <div class="">
-        <span class="label">Client:</span>
+    <div class="grid2">
+      <div class="kv">
+        <div class="k">Client:</div><div class="underline">{{client}}</div>
       </div>
-      <div class=""><span class="value">{{client}}</span></div>
-
-      <div class="kv-inline">
-        <span class="k">Requesting Unit:</span>
-        <span class="v">{{requestingUnit}}</span>
+      <div class="kv">
+        <div class="k">Date:</div><div class="underline">{{date}}</div>
       </div>
-
-      <div class="kv-inline">
-        <span class="k">Date:</span>
-        <span class="v">{{date}}</span>
+      <div class="kv">
+        <div class="k">Shipment Reference:</div><div class="underline">{{shipmentReference}}</div>
       </div>
-
-      <div class="kv-inline">
-        <span class="k">Shipment<br />Reference:</span>
-        <span class="v">{{shipmentReference}}</span>
-      </div>
-
-      <div class="kv-inline">
-        <span class="k">Declared Value:</span>
-        <span class="v">{{declaredValue}}</span>
-      </div>
-
-      <div class="kv-inline">
-        <span class="k">File #:</span>
-        <span class="v">{{transactionFile}}</span>
-      </div>
-
-      <div class="kv-inline">
-        <div class="k">Type of Cargo:</div>
-        <div class="v">{{typeOfCargo}}</div>
-      </div>
-
-      <div class="kv-inline">
-        <div class="k">Picking List No:</div>
-        <div class="v">{{pickingListNo}}</div>
-      </div>
-      <div class="kv-inline">
-        <div class="k"></div>
-        <div class="v"></div>
-      </div>
-
-      <div class="kv-inline span-all">
-        <span class="k">Special<br />Instructions:</span>
-        <span class="v">{{specialInstructions}}</span>
-      </div>
-
-      <div class="kv-inline">
-        <div class="k">DRSF No.:</div>
-        <div class="v">{{drsfNo}}</div>
-      </div>
-
-      <div class="kv-inline">
-        <div class="k">Number Of Boxes:</div>
-        <div class="v">{{numberOfBoxes}}</div>
+      <div class="kv">
+        <div class="k">File#:</div><div class="underline">{{transactionFile}}</div>
       </div>
     </div>
 
-    <div class="block-title"></div>
-
-    <div class="pd-grid">
-      <!-- Pickup -->
-      <div class="pd-block">
-        <div class="k">Pickup Site:</div>
-        <div class="v">{{pickupSite}}</div>
-        <div class="k">Pickup Address:</div>
-        <div class="v">{{pickupAddress}}</div>
-        <div class="k">Contact Person:</div>
-        <div class="v">{{pickupContactPerson}}</div>
-        <div class="k">Contact No.:</div>
-        <div class="v">{{pickupContactNumber}}</div>
-      </div>
-
-      <!-- Delivery -->
-      <div class="pd-block">
-        <div class="k">Delivery Site:</div>
-        <div class="v">{{deliverySite}}</div>
-        <div class="k">Delivery Address:</div>
-        <div class="v">{{deliveryAddress}}</div>
-        <div class="k">Contact Person:</div>
-        <div class="v">{{deliveryContactPerson}}</div>
-        <div class="k">Contact No.:</div>
-        <div class="v">{{deliveryContactNumber}}</div>
-      </div>
-    </div>
-
-    <table class="items" style="margin-top: 10px">
+    <table class="items" style="margin-top:10px;">
       <thead>
         <tr>
-          <th class="qty">QTY</th>
+          <th colspan="3" class="pickup-header">
+            <div class="pickup-block">
+              <div class="pickup-row">
+                <span class="k">Pick-up Site:</span>
+                <span class="underline">{{pickupSite}}</span>
+              </div>
+              <div class="pickup-row">
+                <span class="k">Pick-up Address:</span>
+                <span class="underline">{{pickupAddress}}</span>
+              </div>
+              <div class="pickup-row">
+                <span class="k">Contact Person:</span>
+                <span class="underline">{{pickupContactPerson}}</span>
+              </div>
+              <div class="pickup-row">
+                <span class="k">Contact Number:</span>
+                <span class="underline">{{pickupContactNumber}}</span>
+              </div>
+            </div>
+          </th>
+          <th colspan="3" class="delivery-header">
+            <div class="delivery-block">
+              <div class="delivery-row">
+                <span class="k">Delivery Site:</span>
+                <span class="underline">{{deliverySite}}</span>
+              </div>
+              <div class="delivery-row">
+                <span class="k">Delivery Address:</span>
+                <span class="underline">{{deliveryAddress}}</span>
+              </div>
+              <div class="delivery-row">
+                <span class="k">Contact Person:</span>
+                <span class="underline">{{deliveryContactPerson}}</span>
+              </div>
+              <div class="delivery-row">
+                <span class="k">Contact Number:</span>
+                <span class="underline">{{deliveryContactNumber}}</span>
+              </div>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th class="qty">QTY.</th>
           <th class="unit">UNIT</th>
-          <th class="particulars">PARTICULARS</th>
+          <th class="particulars" colspan="3">PARTICULARS</th>
         </tr>
       </thead>
       <tbody>
@@ -412,7 +258,7 @@
         <tr>
           <td class="qty">{{qty}}</td>
           <td class="unit">{{unit}}</td>
-          <td class="particulars">
+          <td class="particulars" colspan="3">
             <div class="part">
               <div><b>Description:</b> {{description}}</div>
               <div><b>Lot/Batch No.:</b> {{lot}}</div>
@@ -424,35 +270,6 @@
         {{/items}}
       </tbody>
     </table>
-
-    <div class="footer-grid">
-      <!-- LEFT: warning pinned to bottom -->
-      <div class="footer-left">
-        <div class="tax-warn">
-          <b>THIS DOCUMENT IS NOT VALID FOR CLAIMING INPUT TAX</b>
-        </div>
-      </div>
-
-      <!-- RIGHT: received section -->
-      <div class="footer-right">
-        <div class="received-note">
-          Received the above items in good order and condition.
-        </div>
-
-        <div class="date-row">
-          <div class="sig-label"><b>Received by:</b></div>
-          <div class="sig-line"></div>
-          <div></div>
-        </div>
-        <div class="date-row">
-          <div></div>
-          <div class="sig-sub">Printed Name and Signature</div>
-        </div>
-        <div class="date-row">
-          <div class="date-label"><b>Date:</b></div>
-          <div class="row-line"></div>
-        </div>
-      </div>
-    </div>
-  </body>
+  </div>
+</body>
 </html>
