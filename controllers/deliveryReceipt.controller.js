@@ -14,7 +14,7 @@ function buildViewModel(payload) {
 
   return {
     // Header
-    documentTitle: "Delivery Receipt",
+    documentTitle: "DELIVERY RECEIPT",
     drNumber: dash(payload.dRNumber),
 
     // Top info
@@ -81,7 +81,7 @@ async function generateDeliveryReceiptPdf(req, res) {
     } catch (e) {
       console.warn(
         "DR logo fetch failed, continuing without logo:",
-        e?.message || e
+        e?.message || e,
       );
       vm.logoSrcDataUri = "";
     }

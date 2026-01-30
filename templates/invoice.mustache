@@ -4,25 +4,53 @@
   <meta charset="utf-8" />
   <style>
     @page { size: A4; margin: 2mm 10mm; }
+    .logo-absolute {
+      position: absolute;
+      left: 13%;
+      top: 0;
+      width: 50px;
+      z-index: 10;
+    }
+    .company {
+      font-size: 11px;
+      line-height: 1.25;
+      margin-bottom: 6px;
+      color: #111; 
+      display:flex;
+      justify-content:center;
+      align-items: start;
+      position: relative;
+    }
+    .company .info { text-align: center; }
+    .company .info .name { font-weight: 700; font-size: 20px; margin-left: 10px; }
+    .top-right {
+      float: right;
+      font-size: 10px;
+    }
+
     body > * {
       position: relative;
       z-index: 1;
     }
-    body { font-family: Arial, Helvetica, sans-serif; color: #111; font-size: 12px; }
-    .header { display:flex; align-items:flex-start; justify-content:space-between; }
-    .title { text-align:center; font-size: 20px; font-weight: 700; margin: 12px 0 8px; }
-    .rule { border-top: 1px solid #111; margin: 6px 0 14px; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #111; }
+    .date { display: flex; flex-direction: column; align-items: flex-end; font-size: 12px; }
+    .invoice-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .invoice-header-title { flex: 1; text-align: center; margin: 0; font-size: 19px; font-weight: 700; }
+    .invoice-header-no { flex: 1; text-align: right; color: red; font-size: 12px; font-weight: 700; }
+    .invoice-header-empty { flex: 1; font-size: 12px; }
 
-    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; }
-    .kv { display:grid; grid-template-columns: 130px 1fr; row-gap: 2px; font-size:11px }
-    .kv .k { color:#111; }
+    .grid2 { display:grid; grid-template-columns: 2fr 1fr; gap: 4px 22px; margin-top: 10px; }
+    .kv { display: flex; font-size: 12px }
+    .kv .k { color:#111; white-space: nowrap; font-weight: 500; }
+    .underline { border-bottom: 1px solid #111; width:100%; padding-left: 6px; }
+    .full-row { margin: 4px 0 10px 0; }
 
     h3 { font-size: 12px; margin: 12px 0 8px; }
 
     table { width:100%; border-collapse:collapse; margin-top: 8px; }
     th, td { border: 1px solid #111; padding: 8px; }
-    th { text-align:left; font-size:11px }
-    td { font-size:10px}
+    th { text-align:center; font-size: 12px }
+    td { font-size:12px}
     td.amount, th.amount { text-align:right; }
 
     .totals-table {
@@ -38,15 +66,8 @@
     }
 
     .totals-label {
-      font-weight: 700;
+      font-weight: 600;
       color: #333;
-    }
-    .full-row {
-      grid-column: 1 / -1;
-    }
-
-    .full-row div:last-child {
-      line-height: 1.4;
     }
     .totals-value {
       text-align: right;
@@ -67,99 +88,104 @@
       white-space: nowrap;
     }
 
+    .desc-label, .basis-label {
+      font-weight: 700;
+      color: #333;
+    }
+    .desc-value, .basis-value {
+      margin-left: 12px;
+    }
+
+    /* Signature block styles */
+    .signature-block {
+      margin-top: 20px;
+      text-align: right;
+    }
+    .signature-line {
+      border-bottom: 1px solid #111;
+      width: 350px;
+      height: 32px;
+      margin-bottom: 4px;
+      margin-left: auto;
+    }
+    .signature-label {
+      font-size: 13px;
+      color: #333;
+      width: 350px;
+      text-align: center;
+      margin-left: auto;
+    }
   </style>
 </head>
 <body>
   {{#isDraft}}
   <div class="watermark">DRAFT</div>
   {{/isDraft}}
-  <div class="header">
-    <div>
-      {{#logoSrc}}
-        <img src="{{logoSrc}}" style="height:120px" />
-      {{/logoSrc}}
+  <div class="company">
+    {{#logoSrc}}
+      <img src="{{logoSrc}}" class="logo-absolute" />
+    {{/logoSrc}}
+    <div class="info" style="width:100%;">
+      <div class="name">MONARCH DIVERSIFIED LOGISTICS, INC.</div>
+      <div>Lot 1 Ninoy Aquino Ave. cor. Old Kabihasnan St. San Dionisio,</div>
+      <div>City of Parañaque, NCR, Fourth District, Philippines 1700</div>
+      <div>Tel. No.: (02) 4523644 / 8691-0165</div>
+      <div>VAT Reg. TIN:009-586-612-00000</div>
     </div>
-    <div style="width:140px;"></div>
+  </div>
+  
+  <div class="invoice-header-row">
+    <div class="invoice-header-empty"></div>
+    <div class="invoice-header-title">Service Invoice</div>
+    <div class="invoice-header-no">{{invoiceNo}}</div>
   </div>
 
-  <div class="rule"></div>
-  <div class="title">Invoice</div>
-  <div class="rule"></div>
+  <div class="date">
+    <div>Date: {{invoiceDate}}</div>
+  </div>
 
   <div class="grid2">
+    <!-- Row 1: Client Namen | MDLI Ref. No. -->
     <div class="kv">
-      <div class="k">Invoice #:</div><div>{{invoiceNo}}</div>
+      <div class="k">Client Registered Name:</div><div class="underline">{{customerName}}</div>
     </div>
     <div class="kv">
-      <div class="k">Invoice Date:</div><div>{{invoiceDate}}</div>
+      <div class="k">MDLI Ref. No.:</div><div class="underline">{{fileNo}}</div>
+    </div>
+    <!-- Row 2: Business Style | TIN -->
+    <div class="kv">
+      <div class="k">Business Style:</div><div class="underline">{{businessStyle}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">TIN:</div><div class="underline">{{clientTIN}}</div>
     </div>
   </div>
-  <h3>Customer Information</h3>
-
-  <div class="grid2">
-    <!-- Row 1: File No | Quotation No -->
-    <div class="kv">
-      <div class="k">File No.:</div><div>{{fileNo}}</div>
-    </div>
-    <div class="kv">
-      <div class="k">Quotation No.:</div><div>{{quotationNo}}</div>
-    </div>
-
-    <!-- Row 2: Customer Name (full width) -->
-    <div class="kv full-row">
-      <div class="k">Customer Name:</div><div>{{customerName}}</div>
-    </div>
-
-    <!-- Row 3: Billing Address (full width) -->
-    <div class="kv full-row">
-      <div class="k">Billing Address:</div><div>{{billingAddress}}</div>
-    </div>
-
-    <!-- Row 4: Contact Person | Contact No -->
-    <div class="kv">
-      <div class="k">Contact Person:</div><div>{{contactPerson}}</div>
-    </div>
-    <div class="kv">
-      <div class="k">Contact No.:</div><div>{{contactNo}}</div>
-    </div>
-
-    <!-- Row 5: Credit Term | Exchange Rate -->
-    <div class="kv">
-      <div class="k">Credit Term:</div><div>{{creditTerm}}</div>
-    </div>
-    <div class="kv">
-      <div class="k">Exchange Rate:</div><div>{{exchangeRate}}</div>
-    </div>
-  </div>
-  <h3>Shipping Information</h3>
-  <div class="grid2">
-    <div class="kv">
-      <div class="k">MAWB:</div><div>{{mAWB}}</div>
-      <div class="k">Reference Details:</div><div>{{referenceDetails}}</div>
-      <div class="k">Description:</div><div>{{description}}</div>
-    </div>
-    <div class="kv">
-      <div class="k">HAWB:</div><div>{{hAWB}}</div>
-      <div class="k">Reference Date:</div><div>{{referenceDate}}</div>
-      <div class="k">Origin:</div><div>{{origin}}</div>
-    </div>
+    <!-- Row 3: Address (full width) -->
+  <div class="kv full-row">
+    <div class="k">Address:</div><div class="underline">{{billingAddress}}</div>
   </div>
 
-  <h3>Items to Bill</h3>
   <table>
     <thead>
       <tr>
-        <th>Description</th>
-        <th>Basis</th>
-        <th colSpan="2" class="amount">Amount</th>
+        <th colSpan="3">PARTICULARS</th>
+        <th>AMOUNT</th>
       </tr>
     </thead>
     <tbody>
       {{#charges}}
       <tr>
-        <td>{{description}}</td>
-        <td>{{rateBasis}}</td>
-        <td colSpan="2" class="amount">{{rateFmt}}</td>
+        <td colSpan="3">
+          <div>
+            <span class="desc-label">Description:</span>
+            <span class="desc-value">{{description}}</span>
+          </div>
+          <div style="margin-top:3px;">
+            <span class="basis-label">Basis:</span>
+            <span class="basis-value">{{rateBasis}}</span>
+          </div>
+        </td>
+        <td class="amount">{{rateFmt}}</td>
       </tr>
       {{/charges}}
     </tbody>
@@ -174,5 +200,15 @@
     {{/totalsRows}}
   </tbody>
   </table>
+  <h3>
+    <i>Please make all checks payable to MONARCH DIVERSIFIED LOGISTICS, INC</i>
+  </h3>
+
+  <div class="signature-block">
+    <div class="signature-line"></div>
+    <div class="signature-label">
+      Authorized Representative Signature Over Printed Name
+    </div>
+  </div>
 </body>
 </html>
