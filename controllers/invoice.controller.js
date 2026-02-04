@@ -73,7 +73,8 @@ function buildViewModel(invoice) {
 
     // If you want logo: use a base64 data-uri or a URL reachable by puppeteer.
     // logoSrc: "data:image/png;base64,....",
-    logoSrc: invoice.logoSrc || "",
+    logoSrc:
+      "https://res.cloudinary.com/dmfafvgb3/image/upload/v1747245421/favicon-removebg-preview_ohhkzm.png",
 
     charges: (invoice.charges ?? []).map((c) => ({
       ...c,
@@ -85,7 +86,7 @@ function buildViewModel(invoice) {
     totalsRows: buildTotalsRows(
       invoice.summary,
       invoice.overallTotal,
-      invoice.clientCurrency
+      invoice.clientCurrency,
     ),
   };
 }
