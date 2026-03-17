@@ -1,7 +1,8 @@
 const { safeText } = require("../utils/format.js");
 const {
   generateReceivingReportExcelBuffer,
-  generateOutgoingStockExcelBuffer
+  generateOutgoingStockExcelBuffer,
+  generateInventorySummaryExcelBuffer
 } = require("../services/generateStockReport.service.js");
 
 const configs = {
@@ -92,4 +93,28 @@ const generateStockReportExcel = async (req, res) => {
   }
 };
 
-module.exports = { generateStockReportExcel };
+const generateInventorySummaryExcel = async (req, res) => {
+  try {
+    const { items, onHandItems, clientName, logoSrc, itemCode, itemName, quantity } = req.body;
+
+    const viewModel = {
+      logo: logoSrc || "",
+      clientName: clientName || "",
+      itemCode: itemCode || "",
+      itemName: itemName || "",
+      quantity: quantity || "",
+      items: Array.isArray(items) ? items : [],
+      onHandItems: Array.isArray(onHandItems) ? onHandItems : []
+    };
+
+    const buffer = await generateInventorySummaryExcelBuffer(viewModel);
+
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    return res.status(200).send(buffer);
+  } catch (err) {
+    console.error("generateInventorySummaryExcel error:", err?.stack || err);
+    return res.status(500).json({ message: "Failed to generate inventory summary Excel" });
+  }
+};
+
+module.exports = { generateStockReportExcel, generateInventorySummaryExcel };
