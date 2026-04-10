@@ -373,8 +373,244 @@ async function generateInventorySummaryExcelBuffer(viewModel) {
     return workbook.xlsx.writeBuffer();
 }
 
+async function generateBillingReportExcelBuffer(viewModel) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Billing Report');
+
+    if (viewModel.logo) {
+        let imageBuffer;
+        if (/^https?:\/\//.test(viewModel.logo)) {
+            const response = await axios.get(viewModel.logo, { responseType: 'arraybuffer' });
+            imageBuffer = Buffer.from(response.data, 'binary');
+        } else {
+            imageBuffer = fs.readFileSync(viewModel.logo);
+        }
+        const imageId = workbook.addImage({
+            buffer: imageBuffer,
+            extension: 'png',
+        });
+        worksheet.addImage(imageId, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 120, height: 80 }
+        });
+        worksheet.getRow(1).height = 80;
+    }
+
+    worksheet.addRow(['Billing Report']).font = { name: 'Arial', size: 14, bold: true };
+    worksheet.addRow([`Client: ${viewModel?.clientName || ''}`]).font = { name: 'Arial', size: 8, bold: true };
+    worksheet.addRow([`Address: ${viewModel?.clientAddress || ''}`]).font = { name: 'Arial', size: 8, bold: true };
+    worksheet.addRow([`TIN: ${viewModel?.clientTIN || ''}`]).font = { name: 'Arial', size: 8, bold: true };
+    worksheet.addRow([]);
+
+    const billings = Array.isArray(viewModel.billings) ? viewModel.billings : [];
+
+    const header = [
+        'Date Submitted', 'Date Received', 'Transaction ID', 'Type of Booking', 'Booking/Transaction File', 'Quotation No', 'Contact Person', 'Contact No.', 'Transaction Status', 'Received By', 'Invoice Date', 'Invoice No.', 'Invoice Status'
+    ];
+    const headerRow = worksheet.addRow(header);
+    headerRow.font = { name: 'Arial', size: 8, bold: true };
+    header.map((_, idx) => {
+        headerRow.getCell(idx + 1).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFD3D3D3' }
+        };
+        headerRow.getCell(idx + 1).border = {
+            top:    { style: 'thin' },
+            left:   { style: 'thin' },
+            bottom: { style: 'thin' },
+            right:  { style: 'thin' }
+        };
+    });
+
+    if (billings && billings.length > 0) {
+        billings.map(item => {  
+            const row = worksheet.addRow([
+                item.date|| '',
+                item.dateReceived || '',
+                item.transactionID,
+                item.typeOfBooking || '',
+                item.transactionFile || '',
+                item.quotationNo || '',
+                item.contactPerson || '',
+                item.contactNo || '',
+                item.status || '',
+                item.receivedBy || '',
+                item.invoiceDate || '',
+                item.invoiceNo || '',
+                item.invoiceStatus || ''
+            ]);
+            row.font = { name: 'Arial', size: 8 };
+            row.eachCell(cell => {
+                cell.border = {
+                    top:    { style: 'thin' },
+                    left:   { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right:  { style: 'thin' }
+                };
+            });
+            return null;
+        });
+    } else {
+        const notFoundRow = worksheet.addRow(['No billing records found for the selected client.']);
+        notFoundRow.font = { name: 'Arial', size: 8, italic: true };
+        notFoundRow.height = 20;
+
+        worksheet.mergeCells(`A${notFoundRow.number}:${String.fromCharCode(65 + header.length - 1)}${notFoundRow.number}`);
+        notFoundRow.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' };
+    }
+
+
+    worksheet.columns.forEach(col => { col.width = 15; });
+    worksheet.getColumn(1).width = 15;
+    worksheet.getColumn(2).width = 15;
+    worksheet.getColumn(3).width = 20;
+
+    return workbook.xlsx.writeBuffer();
+}
+
+async function generateInvoiceDebitExcelBuffer(viewModel) {
+    const workbook = new ExcelJS.Workbook();
+    const billings = Array.isArray(viewModel.billings) ? viewModel.billings : [];
+
+    if (billings.length === 0) {
+        // Optionally add a default sheet if no billings
+        const ws = workbook.addWorksheet('No Billings');
+        ws.addRow(['No billing records found.']);
+        return workbook.xlsx.writeBuffer();
+    }
+
+    for (const billing of billings) {
+        // Sheet name: billing + vatType (spaces replaced with dashes for safety)
+        const sheetName = `${billing.billing}-${billing.vatType}`.replace(/\s+/g, '-');
+        const ws = workbook.addWorksheet(sheetName.substring(0, 31)); // Excel sheet name max 31 chars
+
+        // Header rows (customize as needed)
+        ws.addRow([`${billing.billing} ${billing.vatType}`]).font = { name: 'Arial', size: 14, bold: true };
+        ws.addRow([`Invoice No.: ${billing.invoiceNo || ''}`, `Status: ${billing.status || ''}`]).font = { name: 'Arial', size: 8 };
+        ws.addRow([`Date Created: ${billing.dateCreated || ''}`]).font = { name: 'Arial', size: 8 };
+        ws.addRow([]);
+
+        // 7 columns
+        ws.columns = Array(7).fill({ width: 18 });
+
+        // Table header
+        const headerRowNumber = ws.lastRow.number + 1;
+        ws.addRow(['PARTICULARS', '', '', '', '', '', 'AMOUNT']);
+        ws.mergeCells(`A${headerRowNumber}:F${headerRowNumber}`);
+        ws.getCell(`A${headerRowNumber}`).font = { name: 'Arial', size: 10, bold: true };
+        ws.getCell(`G${headerRowNumber}`).font = { name: 'Arial', size: 10, bold: true };
+        ws.getCell(`A${headerRowNumber}`).alignment = { horizontal: 'center', vertical: 'middle' };
+        ws.getCell(`G${headerRowNumber}`).alignment = { horizontal: 'center', vertical: 'middle' };
+
+        // Charges
+        if (Array.isArray(billing.charges) && billing.charges.length > 0) {
+            billing.charges.forEach(charge => {
+                const descRowNum = ws.lastRow.number + 1;
+                ws.addRow([`Description : ${charge.description || ''}`, '', '', '', '', '', `${charge.rate || ''}`]);
+                ws.mergeCells(`A${descRowNum}:F${descRowNum}`);
+                ws.getCell(`A${descRowNum}`).font = { name: 'Arial', size: 9 };
+                ws.getCell(`G${descRowNum}`).font = { name: 'Arial', size: 9 };
+                ws.getCell(`A${descRowNum}`).alignment = { vertical: 'middle' };
+                ws.getCell(`G${descRowNum}`).alignment = { vertical: 'middle', indent: 2, horizontal: 'right' };
+
+                const basisRowNum = descRowNum + 1;
+                ws.addRow([`Basis : ${charge.rateBasis || ''}`, '', '', '', '', '', '']);
+                ws.mergeCells(`A${basisRowNum}:F${basisRowNum}`);
+                ws.getCell(`A${basisRowNum}`).font = { name: 'Arial', size: 9, italic: true };
+                ws.getCell(`A${basisRowNum}`).alignment = { vertical: 'middle', indent: 2 };
+
+                ws.mergeCells(`G${descRowNum}:G${basisRowNum}`);
+
+                // Borders
+                ['A', 'B', 'C', 'D', 'E', 'F'].forEach(col => {
+                    ws.getCell(`${col}${descRowNum}`).border = {
+                        top: { style: 'thin' }, left: { style: 'thin' }, bottom: undefined, right: { style: 'thin' }
+                    };
+                    ws.getCell(`${col}${basisRowNum}`).border = {
+                        top: undefined, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' }
+                    };
+                });
+
+                ws.getCell(`G${descRowNum}`).border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+                ws.getCell(`G${basisRowNum}`).border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
+        } else {
+            const notFoundRow = ws.addRow(['No charges found for this billing.']);
+            ws.mergeCells(`A${notFoundRow.number}:G${notFoundRow.number}`);
+            notFoundRow.font = { name: 'Arial', size: 8, italic: true };
+            notFoundRow.height = 20;
+            notFoundRow.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' };
+        }
+
+        // Optionally, add summary rows here using billing.summary
+        // Example:
+        if (billing.summary) {
+            ws.addRow([]);
+            ws.addRow(['Summary', '', '', '', '', '', '']).font = { bold: true };
+
+            // Vatable Sales and Total Sales in one row
+            const summaryRowNum = ws.lastRow.number + 1;
+            ws.addRow([
+                'Vatable Sales', '', '', billing.summary.vatableSales || '',
+                'Total Sales', '', billing.summary.totalSales || ''
+            ]);
+            ws.addRow([
+                'VAT', '', '', billing.summary.vat || '',
+                'Less VAT', '', billing.summary.lessVat || ''
+            ]);
+            ws.addRow([
+                'Zero Rated Sales', '', '', billing.summary.zeroRatedSales || '',
+                'Amount Net of Vat', '', billing.summary.netOfVat || ''
+            ]);
+            ws.addRow([
+                'VAT Exempt Sales', '', '', billing.summary.vatExemptSales || '',
+                'Less: Discount (SC/PWD/NAAC/MOV/SP', '', billing.summary.discount || ''
+            ]);
+            ws.addRow([
+                '', '', '', '',
+                'Add: VAT', '', billing.summary.addVat || ''
+            ]);
+            ws.addRow([
+                '', '', '', '',
+                'Less: Without Tax', '', billing.summary.withholdingTax || ''
+            ]);
+            if (Array.isArray(billing.summary.withholdingGroups)) {
+                billing.summary.withholdingGroups.forEach(group => {
+                    ws.addRow([
+                        '', '', '', '',
+                        `Withholding Tax ${group.witholdingPercentage || ''}%`, '', group.totalWithholdingTax || ''
+                    ]);
+                });
+            }
+            ws.addRow([
+                '', '', '', '',
+                'Total Amount Due (PHP)', '', (billing.summary.totalSales || 0) + (billing.summary.addVat || 0)
+            ]);
+            ws.mergeCells(`A${summaryRowNum}:C${summaryRowNum}`); // Vatable Sales label
+            // D is amount for Vatable Sales
+            ws.mergeCells(`E${summaryRowNum}:F${summaryRowNum}`); // Total Sales label
+            // G is amount for Total Sales
+        }
+    }
+
+    return workbook.xlsx.writeBuffer();
+}
+
 module.exports = {
     generateReceivingReportExcelBuffer,
     generateOutgoingStockExcelBuffer,
-    generateInventorySummaryExcelBuffer
+    generateInventorySummaryExcelBuffer,
+    generateBillingReportExcelBuffer,
+    generateInvoiceDebitExcelBuffer
 };

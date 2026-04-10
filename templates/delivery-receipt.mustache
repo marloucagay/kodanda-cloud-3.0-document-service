@@ -262,8 +262,12 @@
             <div class="part">
               <div><b>Description:</b> {{description}}</div>
               <div><b>Lot/Batch No.:</b> {{lot}}</div>
+              {{#expiryDate}}
               <div><b>Expiry Date:</b> {{expiryDate}}</div>
+              {{/expiryDate}}
+              {{#serialNo}}
               <div><b>Serial No.:</b> {{serialNo}}</div>
+              {{/serialNo}}
             </div>
           </td>
         </tr>

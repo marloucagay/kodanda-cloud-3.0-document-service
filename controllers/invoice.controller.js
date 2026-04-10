@@ -21,15 +21,15 @@ function buildTotalsRows(summary = {}, overallTotal, clientCurrency) {
     ["Less: Withholding Tax", money(summary.withholdingTax)],
   ];
 
-  const groups = Array.isArray(summary.withholdingGroups)
-    ? summary.withholdingGroups
-    : [];
-  for (const g of groups) {
-    right.push([
-      `Withholding Tax ${safeText(g.witholdingPercentage)}%`,
-      money(g.totalWithholdingTax),
-    ]);
-  }
+  // const groups = Array.isArray(summary.withholdingGroups)
+  //   ? summary.withholdingGroups
+  //   : [];
+  // for (const g of groups) {
+  //   right.push([
+  //     `Withholding Tax ${safeText(g.witholdingPercentage)}%`,
+  //     money(g.totalWithholdingTax),
+  //   ]);
+  // }
 
   right.push([`Total Amount Due (${clientCurrency})`, money(overallTotal)]);
 
@@ -44,7 +44,7 @@ function buildTotalsRows(summary = {}, overallTotal, clientCurrency) {
 
 function buildViewModel(invoice) {
   // Normalize fields used by template (avoid blank strings)
-  console.log("Building invoice view model for:", invoice);
+  // console.log("Building invoice view model for:", invoice);
   return {
     ...invoice,
     invoiceNo: safeText(invoice.invoiceNo),

@@ -109,14 +109,12 @@
       </div>
 
       <div class="grid1">
-        <!-- Row 1: Client Namen | MDLI Ref. No. -->
         <div class="kv">
           <div class="k">Date:</div><div class="underline">{{gatepassDate}}</div>
         </div>
         <div class="kv">
           <div class="k">Name:</div><div class="underline">{{gatepassName}}</div>
         </div>
-        <!-- Row 2: Business Style | TIN -->
         <div class="kv">
           <div class="k">Vehicle Type/Plate#:</div><div class="underline">{{gatepassVehicle}}</div>
         </div>
@@ -133,7 +131,7 @@
       <tbody>
           {{#gatepassItems}}
           <tr>
-              <td>{{tripTicketNo}}</td>
+              <td>{{displayRefNo}}</td>
               <td>{{quantity}}</td>
               <td>{{packaging}}</td>
           </tr>

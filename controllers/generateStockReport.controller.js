@@ -2,7 +2,9 @@ const { safeText } = require("../utils/format.js");
 const {
   generateReceivingReportExcelBuffer,
   generateOutgoingStockExcelBuffer,
-  generateInventorySummaryExcelBuffer
+  generateInventorySummaryExcelBuffer,
+  generateBillingReportExcelBuffer,
+  generateInvoiceDebitExcelBuffer
 } = require("../services/generateStockReport.service.js");
 
 const configs = {
@@ -117,4 +119,45 @@ const generateInventorySummaryExcel = async (req, res) => {
   }
 };
 
-module.exports = { generateStockReportExcel, generateInventorySummaryExcel };
+const generateBillingReportExcel = async (req, res) => {
+  try {
+    const { billings, clientName, logoSrc, clientAddress, clientTIN } = req.body;
+
+    const viewModel = {
+      logo: logoSrc || "",
+      clientName: clientName || "",
+      clientAddress: clientAddress || "",
+      clientTIN: clientTIN || "",
+      billings: Array.isArray(billings) ? billings : [],
+    };
+
+    const buffer = await generateBillingReportExcelBuffer(viewModel);
+
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    return res.status(200).send(buffer);
+  } catch (err) {
+    console.error("generateBillingReportExcel error:", err?.stack || err);
+    return res.status(500).json({ message: "Failed to generate billing report Excel" });
+  }
+};
+
+const generateInvoiceDebitExcel = async (req, res) => {
+  try {
+    const { billings, clientName } = req.body;
+
+    const viewModel = {
+      clientName: clientName || "",
+      billings: Array.isArray(billings) ? billings : [],
+    };
+
+    const buffer = await generateInvoiceDebitExcelBuffer(viewModel);
+
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    return res.status(200).send(buffer);
+  } catch (err) {
+    console.error("generateInvoiceDebitExcel error:", err?.stack || err);
+    return res.status(500).json({ message: "Failed to generate invoice debit Excel" });
+  }
+};
+
+module.exports = { generateStockReportExcel, generateInventorySummaryExcel, generateBillingReportExcel, generateInvoiceDebitExcel };

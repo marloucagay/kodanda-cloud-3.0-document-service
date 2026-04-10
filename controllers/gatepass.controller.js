@@ -12,6 +12,10 @@ function buildViewModel(gatepass) {
     gatepassDate: safeText(gatepass.date),
     gatepassName: safeText(gatepass.name),
     gatepassVehicle: safeText(gatepass.vehicle),
+    gatepassItems: (gatepass.gatepassItems || []).map(item => ({
+      ...item,
+      displayRefNo: item.tripTicketNo || item.serialNo || '',
+    })),
   };
 }
 
@@ -23,7 +27,6 @@ async function generateGatepassPdf(req, res) {
   try {
     const gatepass = req.body;
 
-    // Minimal validation
     if (!gatepass || typeof gatepass !== "object") {
       return res.status(400).json({ message: "Invalid gatepass payload" });
     }

@@ -9,6 +9,8 @@ const bulkPrint = require("./routes/bulkPrint.routes.js");
 const waybillRoutes = require("./routes/waybill.routes.js");
 const gatepassRoutes = require("./routes/gatepass.routes.js");
 const generateStockReportRoutes = require("./routes/generateStockReport.routes.js");
+const drsfRoutes = require("./routes/drsf.routes.js");
+const generateConsolidatedBillingRoutes = require("./routes/generateConsolidatedBilling.routes.js");
 
 const app = express();
 app.use(express.json({ limit: "5mb" }));
@@ -20,7 +22,9 @@ app.use("/api/invoices", invoiceRoutes);
 app.use("/api/delivery-receipts", deliveryReceiptRoutes);
 app.use("/api/bulk-print", bulkPrint);
 app.use("/api/gatepass", gatepassRoutes);
+app.use("/api/drsf", drsfRoutes);
 app.use("/api/generate-stock-report", generateStockReportRoutes);
+app.use("/api/generate-consolidated-billing", generateConsolidatedBillingRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);
