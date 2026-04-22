@@ -49,32 +49,55 @@ async function generateDrsfPdfBuffer(viewModel) {
         displayHeader: false,
 
         headerTemplate: `
-            <style>
-            .h { width:100%;}
-            </style>
-            <div class="h">
-            
-            </div>
+          <style>
+              .header-container {
+                  width: 100%;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  padding: 0 10mm;
+                  margin-top: 8px;
+              }
+              .logo {
+                  width: 200px;
+                  margin-left: -22px;
+                  margin-top: -20px;
+              }
+              .quotation-header-title {
+                  width: 100%;
+                  text-align: start;
+                  font-size: 19px;
+                  font-weight: 700;
+                  padding: 6px 0;
+                  margin-top: -10px;
+              }
+          </style>
+          <div class="header-container">
+              ${logo ? `<img src="${logo}" class="logo" />` : ""}
+              <div class="quotation-header-title">Delivery Receipt Supplementary Form</div>
+          </div>
         `,
 
         footerTemplate: `
         <div style="width:100%; padding:0 10mm; font-size:9px; color:#111;">
             <div>
             <div style="display:grid; grid-template-columns:2fr 1fr; gap:4px 6px; margin-top:10px;">
-                <div style="display:flex; flex-direction:column; justify-content:center; gap:4px;">
-                <h3 style="margin:0; font-size:12px; font-weight:700;">Prepared by:</h3>
+                <div style="display:flex; gap:4px; align-items:center;">
+                    <h3 style="margin:0; font-size:12px; font-weight:700;">Prepared by:</h3>
+                    <div style="border-bottom:1px solid #111; width:230px; height:32px; margin-bottom:4px;"></div>
                 </div>
                 <div>
-                <h5 style="margin-left: -10px; font-size:12px; font-weight:700; text-align:start;">Received the above boxes in completed and good condition:</h5>
+                    <h5 style="margin-left: -10px; font-size:12px; font-weight:700; text-align:start;">Received the above boxes in completed and good condition:</h5>
                 </div>
             </div>
             <div style="display:grid; grid-template-columns:2fr 1fr; gap:4px 6px; margin-top:5px;">
-                <div style="display:flex; flex-direction:column; justify-content:center; gap:4px;">
-                <h3 style="margin:0; font-size:12px; font-weight:700;">Checked By:</h3>
+                <div style="display:flex; gap:4px; align-items:center;">
+                    <h3 style="margin:0; font-size:12px; font-weight:700;">Checked by:</h3>
+                    <div style="border-bottom:1px solid #111; width:230px; height:32px; margin-bottom:4px;"></div>
                 </div>
                 <div style="display:flex; flex-direction:column; justify-content:center; gap:4px;">
-                <div style="border-bottom:1px solid #111; width:250px; height:32px; margin-bottom:4px; margin-left:auto;"></div>
-                <h5 style="margin:0; font-size:12px; font-weight:400; text-align:center;">Signature over Printed Name/Date</h5>
+                    <div style="border-bottom:1px solid #111; width:250px; height:32px; margin-bottom:4px; margin-left:auto;"></div>
+                    <h5 style="margin:0; font-size:12px; font-weight:400; text-align:center;">Signature over Printed Name/Date</h5>
                 </div>
             </div>
             <div style="margin-top:20px; border-top:1px solid #bababa ; padding-top: 5px;">
@@ -95,10 +118,10 @@ async function generateDrsfPdfBuffer(viewModel) {
 
         // Must provide room for header/footer
         margin: {
-            top: "14mm",
-            bottom: "14mm",
-            left: "10mm",
-            right: "10mm",
+            top: "44mm",
+            bottom: "70mm",
+            left: "8mm",
+            right: "8mm",
         },
     });
 

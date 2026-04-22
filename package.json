@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon --ext js,mustache index.js",
     "postinstall": "node -e \"process.env.PUPPETEER_CACHE_DIR='/workspace/.cache/puppeteer';\" && npx puppeteer browsers install chrome"
   },
   "keywords": [],

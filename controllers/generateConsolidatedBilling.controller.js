@@ -1,6 +1,6 @@
 const {
   generateConsolidatedBillingBuffer
-} = require("../services/generateConsolidatedBilling.services.js");
+} = require("../services/generateConsolidatedBilling.service.js");
 
 const generateConsolidatedBilling = async (req, res) => {
   try {

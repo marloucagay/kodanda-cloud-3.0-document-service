@@ -1,6 +1,4 @@
-const {
-  generateDrsfPdfBuffer,
-} = require("../services/drsfPdf.service.js");
+const { generateDrsfPdfBuffer } = require("../services/drsfPdf.service.js");
 const { money, safeText } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
@@ -8,6 +6,15 @@ const { ensureDataUriLogo } = require("../utils/logoUri.js");
  * POST /api/drsf/:drsfID/pdf
  * Body: DRSF object
  */
+
+const padRows = (arr, targetLength) => {
+  const padded = arr.slice(0, targetLength);
+  while (padded.length < targetLength) {
+    padded.push({});
+  }
+  return padded;
+};
+
 async function generateDrsfPdf(req, res) {
   try {
     const drsf = req.body;
@@ -17,6 +24,15 @@ async function generateDrsfPdf(req, res) {
     }
 
     drsf.logoSrcDataUri = await ensureDataUriLogo(drsf.logoSrc);
+
+    if (drsf.cargoDimensions && Array.isArray(drsf.cargoDimensions)) {
+      drsf.cargoDimensionsFirstPage = padRows(drsf.cargoDimensions || [], 10);
+      drsf.cargoDimensionsRest =
+        drsf.cargoDimensions && drsf.cargoDimensions.length > 10
+          ? drsf.cargoDimensions.slice(10)
+          : [];
+    }
+
     const pdfBuffer = await generateDrsfPdfBuffer(drsf);
 
     res.setHeader("Content-Type", "application/pdf");

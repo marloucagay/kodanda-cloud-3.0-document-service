@@ -3,41 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <style>
-    @page { size: A4; margin: 2mm 10mm 60mm 10mm; }
+    html, body {
+      height: 100%;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
     body { font-family: Arial, Helvetica, sans-serif; color: #111; }
-    .logo {
-      width: 180px;
-      z-index: 10;
-      display: block;
-      margin-left: -45px;
-      margin-top: -10px;
-    }
-    .company {
-      margin-left: 20px;
-      font-size: 11px;
-      line-height: 1.25;
-      margin-bottom: 6px;
-      color: #111;
-      display: flex;
-      align-items: start;
-    }
-    .drsf-header-title { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; }
     th, td { border: 1px solid #111; padding: 8px; }
     th { text-align: center; font-size: 12px; }
     td { font-size: 12px; }
     h4, h5 { margin: 0; }
+    .drsf-row { height: 30px; }
   </style>
 </head>
 <body>
   <div>
-    <div class="company">
-      {{#logoSrc}}
-        <img src="{{logoSrc}}" class="logo" />
-      {{/logoSrc}}
-    </div>
-    <div class="drsf-header-title">Delivery Receipt Supplementary Form</div>
-    <div style="margin-top: 10px; display: flex; gap: 20px;">
+    <div style="margin-top: -10px; display: flex; gap: 20px;">
       <table>
         <tbody>
           <tr>
@@ -68,10 +56,10 @@
       </table>
       <div style="display: flex; margin-left: 15px; margin-right: 20px; white-space: nowrap; margin-top: 15px;">
         <h5>DRSF No.</h5>
-        <h5 style="font-weight: 700; color: red; margin-left: 6px;">{{dRSFNo}}</h5>
+        <h5 style="font-weight: 700; color: #c0392b; margin-left: 6px;">{{dRSFNo}}</h5>
       </div>
     </div>
-    <h5>Carg Dimensions</h5>
+    <h5>Cargo Dimensions</h5>
     <table>
       <thead>
         <tr>
@@ -92,8 +80,8 @@
         </tr>
       </thead>
       <tbody>
-        {{#cargoDimensions}}
-        <tr>
+        {{#cargoDimensionsFirstPage}}
+        <tr class="drsf-row">
           <td align="center">{{boxNumber}}</td>
           <td align="center">{{length}}</td>
           <td align="center">{{width}}</td>
@@ -105,9 +93,49 @@
           <td align="center">{{gellPack}}</td>
           <td align="center">{{dryIce}}</td>
         </tr>
-        {{/cargoDimensions}}
+        {{/cargoDimensionsFirstPage}}
       </tbody>
     </table>
+
+    {{#cargoDimensionsRest.length}}
+    <div style="page-break-before: always;"></div>
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2" style="text-align:center;">Box Number</th>
+          <th colspan="3" style="text-align:center;">Dimension</th>
+          <th colspan="3" style="text-align:center;">Weight</th>
+          <th rowspan="2" style="text-align:center;">MDLI Boxes/Styro</th>
+          <th rowspan="2" style="text-align:center;">Gell pack (pcs)</th>
+          <th rowspan="2" style="text-align:center;">Dry Ice (kgs)</th>
+        </tr>
+        <tr>
+          <th align="center">Length (cm)</th>
+          <th align="center">Width (cm)</th>
+          <th align="center">Height (cm)</th>
+          <th align="center">Actual (kgs)</th>
+          <th align="center">Volume</th>
+          <th align="center">Chargeable</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#cargoDimensionsRest}}
+        <tr class="drsf-row">
+          <td align="center">{{boxNumber}}</td>
+          <td align="center">{{length}}</td>
+          <td align="center">{{width}}</td>
+          <td align="center">{{height}}</td>
+          <td align="center">{{actual}}</td>
+          <td align="center">{{volume}}</td>
+          <td align="center">{{chargeable}}</td>
+          <td align="start">{{mdliBoxesStyro}}</td>
+          <td align="center">{{gellPack}}</td>
+          <td align="center">{{dryIce}}</td>
+        </tr>
+        {{/cargoDimensionsRest}}
+      </tbody>
+    </table>
+    {{/cargoDimensionsRest.length}}
   </div>
 </body>
 </html>

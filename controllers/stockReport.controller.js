@@ -25,7 +25,7 @@ function buildViewModel(pickingList) {
     pickingListNo: safeText(pickingList.pickingListNo) || safeText(pickingList.pickListNo) || '-',
     transactionFile: safeText(pickingList.transactionFile) || '-',
     customerRef: safeText(pickingList.customerReference) || '-',
-    serialNumber: safeText(pickingList.serialNo) || '-',
+    serialNo: safeText(pickingList.incomingStocksNo) || safeText(pickingList.outgoingStocksNo) || '-',
     deliverySite: safeText(pickingList.deliverySite) || '-',
     remarks: safeText(pickingList.remarks) || '-',
     address: safeText(pickingList.deliverySiteAddress) || safeText(pickingList.clientAddress) || '-',
@@ -80,14 +80,13 @@ const printDummyStockReport = async (req, res) => {
 async function generateStockReportPdf(req, res) {
   try {
     const pickingList = req.body;
-    // Minimal validation
+ 
     if (!pickingList || typeof pickingList !== "object") {
       return res.status(400).json({ message: "Invalid picking list payload" });
     }
 
     const vm = buildViewModel(pickingList);
     vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
-    // vm.isDraft = String(vm.status || "").toLowerCase() === "draft";
 
     const pdfBuffer = await generateStockReportPdfBuffer(vm);
     

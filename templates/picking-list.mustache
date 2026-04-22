@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body {
+      height: 100%;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+    }
+
+    .grid1 { display:grid; gap: 6px; margin: 6px 0; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; }
+    .kv { display: flex; }
+    .kv .k { font-size: 12px; color:#111; white-space: nowrap; font-weight: 700; }
+    .data { font-size: 12px; width:100%; padding-left: 6px; }
+    .quantity-section { width: 300px; display: flex; font-size: 12px; color: #111; white-space: nowrap; padding-top: 10px; margin-top: 10px;}
+    .remarks-section { width: 300px; display: flex; font-size: 12px; color: #111; white-space: nowrap; padding: 10px 0; border-bottom: 1px solid #ddd; }
+    .quantity-section .quantity { font-weight: 700; }
+    .quantity-section .data,
+    .remarks-section .data { flex: 1; text-align: center; }
+
+    table { width:100%; border-collapse:collapse;  }
+    th, td { border: 1px solid #111; padding: 6px; }
+    th { text-align: start; font-size: 12px }
+    td { font-size:12px }
+  </style>
+</head>
+<body>
+    <div>
+      <div class="grid2" style="margin-top: -10px;">
+          <div class="kv">
+              <div class="k">Client:</div><div class="data">{{client}}</div>
+          </div>
+          <div class="kv">
+              <div class="k">Date:</div><div class="data">{{date}}</div>
+          </div>
+          <div class="kv">
+              <div class="k">Picking List #:</div><div class="data">{{pickingListNo}}</div>
+          </div>
+          <div class="kv">
+              <div class="k">Transaction File:</div><div class="data">{{transactionFile}}</div>
+          </div>
+          <div class="kv">
+              <div class="k">Customer Reference:</div><div class="data">{{customerRef}}</div>
+          </div>
+          <div class="kv">
+              <div class="k">Serial No:</div><div class="data">{{serialNo}}</div>
+          </div>
+      </div>
+      <div class="kv grid1">
+          <div class="k">Delivery Site:</div><div class="data">{{deliverySite}}</div>
+      </div>
+    
+      <table>
+        <thead>
+            <tr>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>UOM</th>
+                <th>Lot/Batch No.</th>
+                <th>Serial No.</th>
+                <th>Expiration Date</th>
+                <th>Location</th>
+                <th>Remarks/Reference</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#pickingListsItems}}
+            <tr>
+                <td>{{itemCode}}</td>
+                <td>{{itemName}}</td>
+                <td>{{quantity}}</td>
+                <td>{{uQ}}</td>
+                <td>{{batchNo}}</td>
+                <td>{{serialNo}}</td>
+                <td>{{displayExpiry}}</td>
+                <td>{{location}}</td>
+                <td>{{remarks}}</td>
+            </tr>
+            {{/pickingListsItems}}
+        </tbody>
+      </table>
+
+      <div class="quantity-section">
+          <div class="quantity">Total Quantity: </div>
+          <div class="data">{{totalQuantity}}</div>
+      </div>
+      <div class="remarks-section">
+          <div class="remarks">Remarks: </div>
+          <div class="data">{{remarks}}</div>
+      </div>
+
+    </div>
+    
+</body>
+</html>
