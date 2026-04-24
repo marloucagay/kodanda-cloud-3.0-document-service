@@ -3,37 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <style>
-    @page { size: A4; margin: 2mm 10mm; }
-    .logo {
-    width: 180px;
-    z-index: 10;
-    display: block;
-    margin-left: -25px;
-    }
     html, body {
       height: 97%;
       display: flex; 
       flex-direction: column; 
       justify-content: space-between; 
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
     }
-
-    body > * {
-      position: relative;
-      z-index: 1;
-    }
-    .company {
-      margin-left: 20px;
-      font-size: 11px;
-        line-height: 1.25;
-        margin-bottom: 6px;
-        color: #111;
-        display: flex;
-        align-items: start;
-        position: relative;
-        z-index: 2;
-    }
-    body { font-family: Arial, Helvetica, sans-serif; color: #111; }
-    .gatepassID { display: flex; flex-direction: column; align-items: flex-end; font-size: 12px; margin: 10px 0; color: red; font-weight: 700; }
     .invoice-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .invoice-header-title { flex: 1; text-align: center; margin: 0; font-size: 19px; font-weight: 700; }
 
@@ -43,12 +20,11 @@
     .kv .k { font-size: 12px; color:#111; white-space: nowrap; font-weight: 700; }
     .underline { font-size: 12px; border-bottom: 1px solid #111; width:100%; padding-left: 6px; }
 
-    table { width:100%; border-collapse:collapse; margin-top: 8px; }
+    table { width:100%; border-collapse:collapse; margin-top: 15px; }
     th, td { border: 1px solid #111; padding: 8px; }
     th { text-align:center; font-size: 12px }
     td { font-size:12px }
 
-    /* Signature block styles */
     .signature-row { display:grid; grid-template-columns: 2fr 1fr; gap: 4px 6px; margin-top: 10px; }
     .signature-line {
       border-bottom: 1px solid #111;
@@ -94,21 +70,7 @@
 </head>
 <body>
     <div>
-      <div class="company">
-        {{#logoSrc}}
-          <img src="{{logoSrc}}" class="logo" />
-        {{/logoSrc}}
-      </div>
-      
-      <div class="invoice-header-row">
-        <div class="invoice-header-title">MDLI GATEPASS</div>
-      </div>
-
-      <div class="gatepassID">
-        <div>{{gatepassID}}</div>
-      </div>
-
-      <div class="grid1">
+      <div class="grid1" style="margin-top: -10px;">
         <div class="kv">
           <div class="k">Date:</div><div class="underline">{{gatepassDate}}</div>
         </div>

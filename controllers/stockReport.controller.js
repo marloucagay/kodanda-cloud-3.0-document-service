@@ -5,6 +5,61 @@ const { money, safeText } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 function buildViewModel(pickingList) {
+  const dummyData = [
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+    {itemCode: 'ITEM001', itemName: 'Sample Item 1', quantity: 10, uQ: 'pcs', batchNo: 'BATCH001', serialNo: 'SN00001', displayExpiry: '2025-12-31', location: 'LOC-1', remarks: 'Remark for item 1'},
+    {itemCode: 'ITEM002', itemName: 'Sample Item 2', quantity: 5, uQ: 'pcs', batchNo: 'BATCH002', serialNo: 'SN00002', displayExpiry: '2026-01-15', location: 'LOC-2', remarks: 'Remark for item 2'},
+    {itemCode: 'ITEM003', itemName: 'Sample Item 3', quantity: 20, uQ: 'pcs', batchNo: 'BATCH003', serialNo: 'SN00003', displayExpiry: '2026-06-30', location: 'LOC-3', remarks: 'Remark for item 3'},
+  ]
+  // const pickingListsItems = Array.isArray(dummyData)
+  //   ? dummyData.map(item => ({
   const pickingListsItems = Array.isArray(pickingList.pickingLists)
     ? pickingList.pickingLists.map(item => ({
         ...item,
@@ -25,7 +80,7 @@ function buildViewModel(pickingList) {
     pickingListNo: safeText(pickingList.pickingListNo) || safeText(pickingList.pickListNo) || '-',
     transactionFile: safeText(pickingList.transactionFile) || '-',
     customerRef: safeText(pickingList.customerReference) || '-',
-    serialNo: safeText(pickingList.incomingStocksNo) || safeText(pickingList.outgoingStocksNo) || '-',
+    serialNo: safeText(pickingList.incomingStocksNo) || safeText(pickingList.outgoingStocksNo) || safeText(pickingList.serialNo) || '-',
     deliverySite: safeText(pickingList.deliverySite) || '-',
     remarks: safeText(pickingList.remarks) || '-',
     address: safeText(pickingList.deliverySiteAddress) || safeText(pickingList.clientAddress) || '-',
@@ -84,7 +139,6 @@ async function generateStockReportPdf(req, res) {
     if (!pickingList || typeof pickingList !== "object") {
       return res.status(400).json({ message: "Invalid picking list payload" });
     }
-
     const vm = buildViewModel(pickingList);
     vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
 

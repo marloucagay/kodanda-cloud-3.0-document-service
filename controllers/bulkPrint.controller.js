@@ -9,6 +9,18 @@ function buildViewModel(doc, payload) {
   const dash = (v) => safeText(v, "");
   const get = (obj, key) => (obj && obj[key] ? obj[key] : "");
 
+  const resolveField = (value, key) => {
+    if (!value) return "";
+
+    if (typeof value === "string") return value;
+
+    if (typeof value === "object") {
+      return value[key] || "";
+    }
+
+    return "";
+  };
+
   // function extractSiteName(site) {
   //   if (!site) return "";
   //   if (typeof site === "string") return site;
@@ -21,6 +33,25 @@ function buildViewModel(doc, payload) {
   //   if (typeof site === "object") return site.address || "";
   //   return "";
   // }
+
+  const dummyData = [
+    { quantity: 1, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+    { quantity: 2, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 3, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+    { quantity: 4, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 5, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+    { quantity: 6, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 7, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+    { quantity: 8, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 9, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+    { quantity: 10, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 11, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 12, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+    { quantity: 13, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 14, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+    { quantity: 15, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+    { quantity: 16, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  ];
 
   return {
     // Header
@@ -41,19 +72,21 @@ function buildViewModel(doc, payload) {
     numberOfBoxes: dash(doc.numberOfBoxes),
 
     // Pickup / Delivery info
-    pickupSite: dash(doc.pickupSite || get(doc.pickUpSite, "pickUpSite")),
-    deliverySite: dash(doc.deliverySite || get(doc.deliverySite, "deliverySite")),
+    pickupSite: dash(resolveField(doc.pickupSite || doc.pickUpSite, "pickUpSite")),
+    deliverySite: dash(resolveField(doc.deliverySite, "deliverySite")),
 
-    pickupAddress: dash(doc.pickupAddress || get(doc.pickUpSite, "address")),
-    deliveryAddress: dash(doc.deliveryAddress || get(doc.deliverySite, "address")),
+    pickupAddress: dash(resolveField(doc.pickupAddress || doc.pickUpSite, "address")),
+    deliveryAddress: dash(resolveField(doc.deliveryAddress || doc.deliverySite, "address")),
 
-    pickupContactPerson: dash(doc.pickupContactPerson || get(doc.pickUpSite, "contactPerson")),
-    pickupContactNumber: dash(doc.pickupContactNumber || get(doc.pickUpSite, "contactNo")),
+    pickupContactPerson: dash(resolveField(doc.pickupContactPerson || doc.pickUpSite, "contactPerson")),
+    pickupContactNumber: dash(resolveField(doc.pickupContactNumber || doc.pickUpSite, "contactNo")),
 
-    deliveryContactPerson: dash(doc.deliveryContactPerson || get(doc.deliverySite, "contactPerson")),
-    deliveryContactNumber: dash(doc.deliveryContactNumber || get(doc.deliverySite, "contactNo")),
+    deliveryContactPerson: dash(resolveField(doc.deliveryContactPerson || doc.deliverySite, "contactPerson")),
+    deliveryContactNumber: dash(resolveField(doc.deliveryContactNumber || doc.deliverySite, "contactNo")),
 
     // For Delivery Items table
+    // items: Array.isArray(dummyData)
+    //   ? dummyData.map((it) => ({
     items: Array.isArray(doc.deliveryItems)
       ? doc.deliveryItems.map((it) => ({
           qty: dash(it.quantity ?? doc.qty),
@@ -78,7 +111,7 @@ async function generateBulkPrintPdf(req, res) {
   try {
     const payload = req.body;
     const docs = Array.isArray(payload.deliveryDocuments) ? payload.deliveryDocuments : [];
-    console.log("Received bulk print request with documents:", docs);
+
     if (docs.length === 0) {
       return res.status(400).json({ message: "No delivery documents found" });
     }

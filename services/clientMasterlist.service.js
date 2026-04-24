@@ -2,21 +2,21 @@ const fs = require("fs");
 const path = require("path");
 const mustache = require("mustache");
 const puppeteer = require("puppeteer");
-const templatePath = path.join(process.cwd(), "templates", "picking-list.mustache");
+const templatePath = path.join(process.cwd(), "templates", "client-masterlist.mustache");
 const template = fs.readFileSync(templatePath, "utf8");
 
 /**
  * Render HTML using mustache template
  */
-function renderPickingListHtml(viewModel) {
+function renderClientMasterlistHtml(viewModel) {
   return mustache.render(template, viewModel);
 }
 
 /**
  * Convert HTML to PDF Buffer using Puppeteer
  */
-async function generatePickingListPdfBuffer(viewModel) {
-  const html = renderPickingListHtml(viewModel);
+async function generateClientMasterlistPdfBuffer(viewModel) {
+  const html = renderClientMasterlistHtml(viewModel);
 
   const browser = await puppeteer.launch({
     headless: "new",
@@ -36,7 +36,7 @@ async function generatePickingListPdfBuffer(viewModel) {
     // Helpful if your HTML has external assets (ideally none)
     await page.setCacheEnabled(false);
 
-    await page.setContent(html, { waitUntil: "networkidle0" });
+    await page.setContent(html, { waitUntil: "networkidle0", timeout: 60000 });
 
     const printedBy = viewModel.printedBy || "System";
     const printedOn = viewModel.printedOn || new Date().toLocaleString();
@@ -76,13 +76,13 @@ async function generatePickingListPdfBuffer(viewModel) {
           </style>
           <div class="header-container">
               ${logo ? `<img src="${logo}" class="logo" />` : ""}
-              <div class="quotation-header-title">Picking List</div>
+              <div class="quotation-header-title">Client Information Sheet</div>
           </div>
         `,
 
         footerTemplate: `
         <div style="width:100%; padding:0 10mm; color:#111; font-family: Arial, sans-serif;">
-            <div style="margin-bottom:4px; font-size:9px; text-align: center; color: #1E3A8A;">
+            <div style="margin-bottom:4px; font-size:9px; text-align: center;">
             <div>Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City</div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px;">
@@ -95,7 +95,7 @@ async function generatePickingListPdfBuffer(viewModel) {
       // Must provide room for header/footer
       margin: {
           top: "46mm",
-          bottom: "18mm",
+          bottom: "25mm",
           left: "8mm",
           right: "8mm",
       },
@@ -103,11 +103,11 @@ async function generatePickingListPdfBuffer(viewModel) {
 
     return pdfBuffer;
   } catch (err) {
-    console.error("Picking List PDF ERROR:", err?.stack || err);
+    console.error("Client Masterlist PDF ERROR:", err?.stack || err);
 
     // send a short message back (don’t leak internals in prod if you don’t want to)
     return res.status(500).json({
-      message: "Failed to generate picking list PDF",
+      message: "Failed to generate client masterlist PDF",
       error: String(err?.message || err),
     });
   } finally {
@@ -125,5 +125,5 @@ function escapeHtml(str) {
 }
 
 module.exports = {
-  generatePickingListPdfBuffer,
+  generateClientMasterlistPdfBuffer,
 };

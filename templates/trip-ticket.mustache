@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body {
+      height: 97%;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between;
+      font-family: Arial, Helvetica, sans-serif; 
+      color: #111;
+    }
+
+    .grid1 { display:grid; gap: 6px; margin: 6px 0; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 6px 22px;}
+    .grid4 { display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px 22px; margin-top: 10px; }
+    .kv { display: grid; grid-template-columns: 1fr 1fr; }
+    .kv .k { font-size: 10px; color:#111; white-space: nowrap; font-weight: 700; }
+    .kv .balance { font-size: 10px; color:#111; white-space: nowrap; font-weight: 800; font-style: italic; }
+
+    .data { font-size: 10px; width:100%; padding-left: 6px; }
+    .quantity-section { width: 300px; display: flex; font-size: 10px; color: #111; white-space: nowrap; padding-top: 12px; }
+    .remarks-section { width: 300px; display: flex; font-size: 10px; color: #111; white-space: nowrap; padding: 10px 0; border-bottom: 1px solid #ddd; }
+    .remarks-section .data { flex: 1; text-align: center; }
+
+    table { width:100%; border-collapse:collapse; margin-top: 6px; }
+    th, td { border: 1px solid black; padding: 8px; }
+    th { text-align: start; font-size: 10px }
+    td { font-size:10px }
+    h5 { font-size: 10px; font-weight: 700; margin: 15px 0 0 0; }
+  </style>
+</head>
+<body>
+    <div>
+        <div class="grid2" style="margin-top: -10px;">
+            <div class="kv">
+                <div class="k">Plate No:</div><div class="data">{{plateNo}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Date Dispatched:</div><div class="data">{{dateDispatched}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Driver:</div><div class="data">{{driver}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Helper:</div><div class="data">{{helper}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">ADD/ATD:</div><div class="data">{{aDDATD}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">ADA/ATA:</div><div class="data">{{aDAATA}}</div>
+            </div>
+            <div class="kv">
+                <div class="balance">Beginning Balance</div>
+            </div>
+            <div class="kv">
+                <div class="balance">Remaining Balance</div>
+            </div>
+        </div>
+
+        <div class="grid4">
+            <div class="kv">
+                <div class="k">Autosweep:</div><div class="data">{{beginningBalanceAutosweep}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Easy Trip:</div><div class="data">{{beginningBalanceEasyTrip}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Autosweep:</div><div class="data">{{remainingBalanceAutosweep}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Easy Trip:</div><div class="data">{{remainingBalanceEasyTrip}}</div>
+            </div>
+        </div>
+    
+      <h5>Details of Pickup & Delivery</h5>
+      <table>
+        <thead>
+            <tr>
+                <th>DR No.</th>
+                <th>Pickup Site</th>
+                <th>Destination</th>
+                <th>Transaction File</th>
+                <th>QTY</th>
+                <th>Type of Cargo</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#pickupAndDeliveryDetails}}
+              {{#isTotal}}
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total:</td>
+                <td>{{qty}}</td>
+                <td></td>
+                <td></td>
+              </tr>
+              {{/isTotal}}
+              {{^isTotal}}
+              <tr>
+                  <td>{{dRNumber}}</td>
+                  <td>{{pickupSite}}</td>
+                  <td>{{deliverySite}}</td>
+                  <td>{{transactionFile}}</td>
+                  <td>{{qty}}</td>
+                  <td>{{typeOfCargo}}</td>
+                  <td>{{remarks}}</td>
+              </tr>
+              {{/isTotal}}
+            {{/pickupAndDeliveryDetails}}
+        </tbody>
+      </table>
+
+    </div>
+</body>
+</html>

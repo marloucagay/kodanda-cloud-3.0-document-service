@@ -14,6 +14,8 @@ const drsfRoutes = require("./routes/drsf.routes.js");
 const generateConsolidatedBillingRoutes = require("./routes/generateConsolidatedBilling.routes.js");
 const quotationRoutes = require("./routes/quotation.routes.js");
 const stockReportRoutes = require("./routes/stockReport.routes.js");
+const clientMasterlistRoutes = require("./routes/clientMasterlist.routes.js");
+const tripTicketRoutes = require("./routes/tripTicket.routes.js");
 
 const app = express();
 app.use(express.json({ limit: "5mb" }));
@@ -31,6 +33,8 @@ app.use("/api/quotation", quotationRoutes);
 app.use("/api/generate-stock-report", generateStockReportRoutes);
 app.use("/api/generate-consolidated-billing", generateConsolidatedBillingRoutes);
 app.use("/api/stock-report", stockReportRoutes);
+app.use("/api/client-masterlist", clientMasterlistRoutes);
+app.use("/api/trip-ticket", tripTicketRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);

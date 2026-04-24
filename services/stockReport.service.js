@@ -54,6 +54,7 @@ async function generateStockReportPdfBuffer(viewModel) {
     const printedBy = viewModel.printedBy || "System";
     const printedOn = viewModel.printedOn || new Date().toLocaleString();
     const logo = viewModel.logoSrcDataUri || "";
+    const stockName = viewModel.warehouseMode === 'Incoming' ? 'Incoming Stocks' : 'Outgoing Stocks';
 
     const pdfBuffer = await page.pdf({
       format: "A4",
@@ -62,16 +63,39 @@ async function generateStockReportPdfBuffer(viewModel) {
       displayHeader: false,
 
       headerTemplate: `
-        <style>
-          .h { width:100%;}
-        </style>
-        <div class="h">
-          
-        </div>
-      `,
+          <style>
+            .header-container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0 10mm;
+                margin-top: 8px;
+            }
+            .logo {
+                width: 200px;
+                margin-left: -22px;
+                margin-top: -20px;
+            }
+            .stock-header-title {
+                width: 100%;
+                text-align: center;
+                font-size: 18px;
+                font-weight: 700;
+                border-top: 1px solid #d0d0d0;
+                border-bottom: 1px solid #d0d0d0;
+                padding: 6px 0;
+                margin-top: -10px;
+            }
+          </style>
+          <div class="header-container">
+              ${logo ? `<img src="${logo}" class="logo" />` : ""}
+              <div class="stock-header-title">${stockName}</div>
+          </div>
+        `,
 
         footerTemplate: `
-        <div style="width:100%; padding:0 10mm; color:#111;">
+        <div style="width:100%; padding:0 10mm; color:#111; font-family: Arial, sans-serif;">
             ${getFooterHtml(viewModel)}
             <div style="margin-bottom:4px; font-size:9px; text-align: center;">
             <div>${escapeHtml(viewModel.address || '')}</div>
@@ -85,10 +109,10 @@ async function generateStockReportPdfBuffer(viewModel) {
 
       // Must provide room for header/footer
       margin: {
-        top: "14mm",
-        bottom: "14mm",
-        left: "10mm",
-        right: "10mm",
+        top: "47mm",
+        bottom: "40mm",
+        left: "8mm",
+        right: "8mm",
       },
     });
 
@@ -132,7 +156,7 @@ function getFooterHtml(viewModel) {
     `;
   } else if (viewModel.warehouseMode === 'Outgoing') {
     return `
-      <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+      <div style="display: flex; gap: 8px; margin-bottom: 10px; font-family: Courier, Courier, monospace;">
         <div style="flex: 1 1 50%; display: flex; align-items: center; white-space: nowrap;">
           <div style="width: 50%; font-size: 12px; margin-bottom: 0;">Released By:</div>
           <div style="width: 50%; font-size: 12px; padding-left: 6px;">${escapeHtml(viewModel.releasedBy || '')}</div>
