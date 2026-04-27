@@ -41,6 +41,7 @@ async function generateInvoicePdfBuffer(viewModel) {
     const printedBy = viewModel.printedBy || "System";
     const printedOn = viewModel.printedOn || new Date().toLocaleString();
     const logo = viewModel.logoSrcDataUri || "";
+    const invoiceNo = viewModel.invoiceNo || "";
 
     const pdfBuffer = await page.pdf({
       format: "A4",
@@ -49,12 +50,31 @@ async function generateInvoicePdfBuffer(viewModel) {
       displayHeader: false,
 
       headerTemplate: `
-        <style>
-          .h { width:100%;}
-        </style>
-        <div class="h">
-          
-        </div>
+        <div style="width: 100%; font-family: Arial, sans-serif; padding: 2mm 2mm 0 2mm;">
+            <!-- Company -->
+            <div style="font-size: 11px; line-height: 1.25; margin-bottom: 6px; color: #111; display: flex; justify-content: center; position: relative;">
+              ${logo ? `<img src="${logo}" style="position: absolute; left: 16%; top: 0; width: 50px;" />` : ""}
+              <div style="text-align: center; width: 100%;">
+                <div style="font-weight: 700; font-size: 20px; margin-left: 10px;">
+                  MONARCH DIVERSIFIED LOGISTICS, INC.
+                </div>
+                <div>Lot 1 Ninoy Aquino Ave. cor. Old Kabihasnan St. San Dionisio,</div>
+                <div>City of Parañaque, NCR, Fourth District, Philippines 1700</div>
+                <div>Tel. No.: (02) 4523644 / 8691-0165</div>
+                <div>VAT Reg. TIN:009-586-612-00000</div>
+              </div>
+            </div>
+            <!-- Header Row -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin: 20px 0; padding-right: 8mm">
+              <div style="flex: 1;"></div>
+              <div style="flex: 1; text-align: center; font-size: 19px; font-weight: 700;">
+                SERVICE INVOICE
+              </div>
+              <div style="flex: 1; text-align: right; color: #c0392b; font-size: 12px; font-weight: 700;">
+                ${invoiceNo}
+              </div>
+            </div>
+          </div>
       `,
 
       footerTemplate: `
@@ -94,8 +114,8 @@ async function generateInvoicePdfBuffer(viewModel) {
 
       // Must provide room for header/footer
       margin: {
-        top: "14mm",
-        bottom: "14mm",
+        top: "45mm",
+        bottom: "35mm",
         left: "10mm",
         right: "10mm",
       },

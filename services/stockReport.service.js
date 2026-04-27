@@ -71,6 +71,7 @@ async function generateStockReportPdfBuffer(viewModel) {
                 align-items: flex-start;
                 padding: 0 10mm;
                 margin-top: 8px;
+                font-family: Arial, sans-serif;
             }
             .logo {
                 width: 200px;
