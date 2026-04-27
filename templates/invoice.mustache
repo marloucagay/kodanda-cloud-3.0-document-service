@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8" />
   <style>
-    @page { size: A4; margin: 2mm 10mm; }
     .logo-absolute {
       position: absolute;
       left: 13%;
@@ -39,7 +38,7 @@
     .invoice-header-no { flex: 1; text-align: right; color: red; font-size: 12px; font-weight: 700; }
     .invoice-header-empty { flex: 1; font-size: 12px; }
 
-    .grid2 { display:grid; grid-template-columns: 2fr 1fr; gap: 4px 22px; margin-top: 10px; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; margin-top: 10px; }
     .kv { display: flex; font-size: 12px }
     .kv .k { color:#111; white-space: nowrap; font-weight: 500; }
     .underline { border-bottom: 1px solid #111; width:100%; padding-left: 6px; }
@@ -52,6 +51,7 @@
     th { text-align:center; font-size: 12px }
     td { font-size:12px}
     td.amount, th.amount { text-align:right; }
+    tr { page-break-inside: avoid; }
 
     .totals-table {
       width: 100%;
@@ -121,26 +121,8 @@
   {{#isDraft}}
   <div class="watermark">DRAFT</div>
   {{/isDraft}}
-  <div class="company">
-    {{#logoSrc}}
-      <img src="{{logoSrc}}" class="logo-absolute" />
-    {{/logoSrc}}
-    <div class="info" style="width:100%;">
-      <div class="name">MONARCH DIVERSIFIED LOGISTICS, INC.</div>
-      <div>Lot 1 Ninoy Aquino Ave. cor. Old Kabihasnan St. San Dionisio,</div>
-      <div>City of Parañaque, NCR, Fourth District, Philippines 1700</div>
-      <div>Tel. No.: (02) 4523644 / 8691-0165</div>
-      <div>VAT Reg. TIN:009-586-612-00000</div>
-    </div>
-  </div>
-  
-  <div class="invoice-header-row">
-    <div class="invoice-header-empty"></div>
-    <div class="invoice-header-title">SERVICE INVOICE</div>
-    <div class="invoice-header-no">{{invoiceNo}}</div>
-  </div>
 
-  <div class="date">
+  <div class="date" style="margin-top: -10px;">
     <div>Date: {{invoiceDate}}</div>
   </div>
 
@@ -165,7 +147,41 @@
     <div class="k">Address:</div><div class="underline">{{billingAddress}}</div>
   </div>
 
-  <table>
+  <!-- Shipping Info -->
+  <div class="grid2" style="margin-top: 15px;">
+    <div class="kv">
+      <div class="k">MAWB:</div><div class="underline">{{masterAirwaybillNo}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">HAWB:</div><div class="underline">{{houseAirwaybillNo}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Shipper:</div><div class="underline">{{shipper}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Consignee:</div><div class="underline">{{consignee}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Origin:</div><div class="underline">{{countryOfOrigin}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Delivery Site:</div><div class="underline">{{deliverySite}}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Reference Date:</div><div class="underline"></div>
+    </div>
+    <div class="kv">
+      <div class="k">Date Services Performed:</div><div class="underline"></div>
+    </div>
+    <div class="kv">
+      <div class="k">Reference Details:</div><div class="underline"></div>
+    </div>
+    <div class="kv">
+      <div class="k">Description:</div><div class="underline"></div>
+    </div>
+  </div>
+
+  <table style="margin-top: 15px;">
     <thead>
       <tr>
         <th colSpan="3">PARTICULARS</th>

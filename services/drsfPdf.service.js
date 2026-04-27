@@ -57,6 +57,7 @@ async function generateDrsfPdfBuffer(viewModel) {
                   align-items: flex-start;
                   padding: 0 10mm;
                   margin-top: 8px;
+                  font-family: Arial, sans-serif;
               }
               .logo {
                   width: 200px;
@@ -79,7 +80,7 @@ async function generateDrsfPdfBuffer(viewModel) {
         `,
 
         footerTemplate: `
-        <div style="width:100%; padding:0 10mm; font-size:9px; color:#111;">
+        <div style="width:100%; padding:0 10mm; font-size:9px; color:#111; font-family: Arial, sans-serif;">
             <div>
             <div style="display:grid; grid-template-columns:2fr 1fr; gap:4px 6px; margin-top:10px;">
                 <div style="display:flex; gap:4px; align-items:center;">

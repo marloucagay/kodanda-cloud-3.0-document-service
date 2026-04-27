@@ -61,8 +61,8 @@ function buildViewModel(invoice) {
     creditTerm: safeText(invoice.creditTerm),
     exchangeRate: safeText(invoice.exchangeRate),
 
-    mAWB: safeText(invoice.mAWB),
-    hAWB: safeText(invoice.hAWB),
+    masterAirwaybillNo: safeText(invoice.masterAirwaybillNo),
+    houseAirwaybillNo: safeText(invoice.houseAirwaybillNo),
     referenceDetails: safeText(invoice.referenceDetails),
     referenceDate: safeText(invoice.referenceDate),
     description: safeText(invoice.description),
@@ -71,7 +71,11 @@ function buildViewModel(invoice) {
     clientTIN: safeText(invoice.clientTIN),
     businessStyle: invoice.businessEntities || [],
 
-    // If you want logo: use a base64 data-uri or a URL reachable by puppeteer.
+    consignee: safeText(invoice.consignee),
+    shipper: safeText(invoice.shipper),
+    countryOfOrigin: safeText(invoice.countryOfOrigin),
+    deliverySite: safeText(invoice.deliverySite),
+
     // logoSrc: "data:image/png;base64,....",
     logoSrc:
       "https://res.cloudinary.com/dmfafvgb3/image/upload/v1747245421/favicon-removebg-preview_ohhkzm.png",
