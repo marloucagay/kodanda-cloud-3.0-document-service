@@ -6,12 +6,94 @@ const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 function buildViewModel(gatepass) {
   // Normalize fields used by template (avoid blank strings)
+  // const items = [
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  //   { displayRefNo: '25_00001', quantity: 1, packaging: 'Box' },
+  // ];
   return {
     ...gatepass,
     gatepassID: safeText(gatepass.gatepassID),
     gatepassDate: safeText(gatepass.date),
     gatepassName: safeText(gatepass.name),
     gatepassVehicle: safeText(gatepass.vehicle),
+    // gatepassItems: (items || []).map(item => ({
+    gatepassItems: (gatepass.gatepassItems || []).map(item => ({
+      ...item,
+      displayRefNo: item.tripTicketNo || item.serialNo || '',
+    })),
   };
 }
 
@@ -23,7 +105,6 @@ async function generateGatepassPdf(req, res) {
   try {
     const gatepass = req.body;
 
-    // Minimal validation
     if (!gatepass || typeof gatepass !== "object") {
       return res.status(400).json({ message: "Invalid gatepass payload" });
     }

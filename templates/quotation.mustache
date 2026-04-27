@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body {
+      height: 100%;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+    body { font-family: Arial, Helvetica, sans-serif; color: #111; }
+    .grid1 { display:grid; gap: 6px; margin: 10px 0; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; }
+    .kv { display: flex; }
+    .kv .k { font-size: 10px; color:#111; white-space: nowrap; font-weight: 600; padding-right: 6px; }
+    .value { font-size: 10px; width:100%; }
+    .kv > .k {
+    flex: 0 0 120px;
+    }
+    .kv > .value {
+    flex: 3 1 0;
+    min-width: 0;
+    }
+
+    table { width:100%; border-collapse:collapse;  }
+    th, td { border: 1px solid #111; padding: 6px; }
+    th { text-align:center; font-size: 10px }
+    td { font-size:10px }
+    tr { page-break-inside: avoid; }
+
+    .service-head {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: -3px;
+    }
+    .service-sub-head {
+        font-size: 10px;
+        font-weight: 700;
+        opacity: 0.9;
+        margin: 8px 0;
+    }
+
+    .line {
+        border-top: 1px solid #d0d0d0;
+    }
+  </style>
+</head>
+<body>
+    <div>      
+        <div class="grid2" style="margin-top: -10px;">
+            <!-- Row 1 -->
+            <div class="kv">
+                <div class="k">Client Name:</div><div class="value">{{clientName}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Quotation No.:</div><div class="value">{{quotationNo}}</div>
+            </div>
+            <!-- Row 2-->
+            <div class="kv">
+                <div class="k">Client Address:</div><div class="value">{{address}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Date:</div><div class="value">{{date}}</div>
+            </div>
+            <!-- Row 3-->
+            <div class="kv">
+                <div class="k">Quotation Name:</div><div class="value">{{quotationName}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Validity:</div><div class="value">{{validity}}</div>
+            </div>
+            <!-- Row 4-->
+            <div class="kv">
+                <div class="k">Contact Person:</div><div class="value">{{contactPerson}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Contact No.:</div><div class="value">{{contactNo}}</div>
+            </div>
+            <!-- Row 5-->
+            <div class="kv">
+                <div class="k">Email Address:</div><div class="value">{{emailAddress}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Credit Terms:</div><div class="value">{{creditTerms}}</div>
+            </div>
+            <!-- Row 6-->
+            <div class="kv">
+                <div class="k">Dear Mr./Ms.:</div><div class="value">{{dearMrMs}}</div>
+            </div>
+        </div>
+        <div class="grid1">
+            <div class="kv">
+                <div class="value">Thank you for considering Monarch Diversified Logistics Inc. to quote on your requirement. We are pleased to submit our proposal for the subject services, details of which you will find further below. Hope you'll find our proposal acceptable.</div>
+            </div>
+        </div>
+    
+        {{#servicesArray}}
+            <h2 class="service-head">{{serviceName}}</h2>
+            {{#sections}}
+                <h3 class="service-sub-head">{{sectionName}}</h3>
+                <table>
+                <thead>
+                    <tr>
+                    {{#columns}}
+                    <th>{{label}}</th>
+                        {{/columns}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#rows}}
+                        <tr>
+                            {{#.}}
+                            <td>{{{.}}}</td>
+                            {{/.}}
+                        </tr>
+                    {{/rows}}
+                    {{#isCharges}}
+                        <tr>
+                            {{#totals}}
+                            <td>{{.}}</td>
+                            {{/totals}}
+                        </tr>
+                    {{/isCharges}}
+                </tbody>
+                </table>
+            {{/sections}}
+        {{/servicesArray}}
+
+        {{#incedentalCharges.length}}
+            <h3 class="service-sub-head">Incidental Charges</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Charge Code</th>
+                    <th>Description</th>
+                    <th>Currency</th>
+                    <th>Rate</th>
+                    <th>Rate Basis</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#incedentalCharges}}
+                    <tr>
+                    <td>{{chargeCode}}</td>
+                    <td>{{description}}</td>
+                    <td>{{currency}}</td>
+                    <td>{{rate}}</td>
+                    <td>{{rateBasis}}</td>
+                    </tr>
+                {{/incedentalCharges}}
+                </tbody>
+            </table>
+        {{/incedentalCharges.length}}
+
+        <h3 class="service-head">Additional Information</h3>
+        <div class="grid1">
+            <div class="kv">
+                <div class="value">1. Valuation charge is 1% of declared value for parcel and cargo.</div>
+            </div>
+            <div class="kv">
+                <div class="value">2. Fuel surcharge will be based on the actual weight of cargo after 3 kgs.</div>
+            </div>
+            <div class="kv">
+                <div class="value">3. ODA & Emergency charges apply (Annex 2). For new sites not included in the list shall be communicated and subject to approval.</div>
+            </div>
+            <div class="kv">
+                <div class="value">4. DG Fee is 50% of freight charges.</div>
+            </div>
+        </div>
+
+        <h3 class="service-head">Terms and Condition</h3>
+        <div class="grid1">
+            <div class="kv">
+                <div class="value">1. Above rates are VAT-Exclusive</div>
+            </div>
+            <div class="kv">
+                <div class="value">2. Limit of liability shall be agreed upon by both parties.</div>
+            </div>
+            <div class="kv">
+                <div class="value">3. Our proposal is exclusive to insurance. Coverage shall be made only in written instructions and shall be subject to the corresponding premium.</div>
+            </div>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="grid1">
+            <div class="kv">
+                <div class="value">If you find the above proposal acceptable, please sign and send a copy to our website or email to:</div>
+            </div>
+        </div>
+        <div>
+            <div class="grid2">
+                <div class="kv">
+                    <div class="k">Yours respectfully,</div>
+                </div>
+                <div class="kv">
+                    <div class="k">Conforme:</div><div class="value">{{conforme}}</div>
+                </div>
+            </div>
+
+            {{#signature}}
+                <div class="signature-block">
+                    <img src="{{signatureDataUri}}" alt="Signature" style="max-width:180px;max-height:100px;">
+                </div>
+            {{/signature}}
+        </div>
+
+        <div class="grid2">
+            <div class="kv">
+                <div class="k">Name:</div><div class="value">{{name}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Contact Person:</div><div class="value">{{contactPersonConforme}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Designation:</div><div class="value">{{conforme}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Designation:</div><div class="value">{{contactPersonPosition}}</div>
+            </div>
+        </div>
+        <div class="grid1">
+            <div class="kv">
+                <div class="k">Contact No.:</div><div class="value">{{contactNoConforme}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Email Address:</div><div class="value">{{emailAddressConforme}}</div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body {
+      height: 100%;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111
+    }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+    th, td { border: 1px solid #111; padding: 8px; }
+    th { text-align: center; font-size: 12px; }
+    td { font-size: 12px; }
+    h5 { margin: 10px 0; }
+    .row { display: flex; }
+    .main-text { width: 30%; font-size: 12px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div>
+    <div style=" display: flex;">
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="6">
+              <div class="row">
+                <span class="main-text">Client Account Number:</span>
+                <span>{{clientAccountNumber}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <div class="row">
+                <span class="main-text">Business Name:</span>
+                <span>{{businessName}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">Lot/Blk:</span>
+                <span>{{lot}}</span>
+              </div>
+            </td>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">Street:</span>
+                <span>{{street}}</span>
+              </div>
+            </td>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">Brgy:</span>
+                <span>{{barangay}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">Region:</span>
+                <span>{{region}}</span>
+              </div>
+            </td>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">City:</span>
+                <span>{{city}}</span>
+              </div>
+            </td>
+            <td colspan="2">
+            <div class="row">
+                <span class="main-text">Province:</span>
+                <span>{{province}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">Area:</span>
+                <span>{{area}}</span>
+              </div>
+            </td>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">Country:</span>
+                <span>{{country}}</span>
+              </div>
+            </td>
+            <td colspan="2">
+              <div class="row">
+                <span class="main-text">Zip Code:</span>
+                <span>{{zipCode}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <div class="row">
+                <span class="main-text">Type of Business:</span>
+                <span>{{typeOfBusiness}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <div class="row">
+                <span class="main-text">SEC/DTI Registration:</span>
+                <span>{{dtiRegistration}}</span>
+              </div>
+            </td>
+            <td colspan="3">
+              <div class="row">
+                <span class="main-text">Date of Registration:</span>
+                <span>{{dateOfRegistration}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <div class="row">
+                <span class="main-text">Tax Identification Number:</span>
+                <span>{{taxIdentificationNumber}}</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <div class="row">
+                <span class="main-text">Credit Term:</span>
+                <span>{{creditTerm}}</span>
+              </div>
+            </td>
+            <td colspan="3">
+              <div class="row">
+                <span class="main-text">Currency:</span>
+                <span>{{foreignCurrency}}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row" style="margin-bottom: 10px; opacity: 0.9;">
+      <span class="main-text">Nature of Business/Trade:</span>
+      <span style="font-size: 12px;">{{natureOfBusiness}}</span>
+    </div>
+
+    <h5>Designations</h5>
+    <table>
+        <thead>
+            <th>
+                Designation
+            </th>
+            <th>
+                Person
+            </th>
+            <th>
+                Contact Number
+            </th>
+            <th>
+                Email Address
+            </th>
+        </thead>
+        <tbody>
+          {{#designations}}
+          <tr>
+            <td>{{designation}}</td>
+            <td>{{person}}</td>
+            <td>{{contactNumber}}</td>
+            <td>{{emailAddress}}</td>
+          </tr>
+          {{/designations}}
+        </tbody>
+    </table>
+
+    <h5>Trade References</h5>
+    <table>
+        <thead>
+            <th>
+                Trade Reference
+            </th>
+            <th>
+                Contact Person
+            </th>
+            <th>
+                Contact Number
+            </th>
+        </thead>
+        <tbody>
+          {{#tradeReferences}}
+          <tr>
+            <td>{{tradeReference}}</td>
+            <td>{{contactPerson}}</td>
+            <td>{{contactNumber}}</td>
+          </tr>
+          {{/tradeReferences}}
+        </tbody>
+    </table>
+
+    <h5>Bank References</h5>
+    <table>
+        <thead>
+            <th>
+                Bank Reference
+            </th>
+            <th>
+                Contact Person
+            </th>
+            <th>
+                Contact Number
+            </th>
+        </thead>
+        <tbody>
+          {{#bankReferences}}
+          <tr>
+            <td>{{bankReference}}</td>
+            <td>{{contactPerson}}</td>
+            <td>{{contactNumber}}</td>
+          </tr>
+          {{/bankReferences}}
+        </tbody>
+    </table>
+  </div>
+</body>
+</html>

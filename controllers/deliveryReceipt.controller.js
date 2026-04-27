@@ -60,7 +60,7 @@ function buildViewModel(payload) {
     receivedDate: dash(payload.receivedDate),
 
     // Logo for Puppeteer header
-    logoSrc: payload.logoSrc || "",
+    logoSrc: payload.logo || "",
   };
 }
 
@@ -74,7 +74,6 @@ async function generateDeliveryReceiptPdf(req, res) {
     }
 
     const vm = buildViewModel(payload);
-
     // Best-effort logo URL -> data URI so header always renders in Cloud Run
     try {
       vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
