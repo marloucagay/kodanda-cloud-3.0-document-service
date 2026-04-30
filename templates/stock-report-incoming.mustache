@@ -15,6 +15,8 @@
     .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 6px 22px;}
     .kv { display: grid; grid-template-columns: 1fr 1fr; }
     .kv .k { font-size: 12px; color:#111; white-space: nowrap; font-weight: 700; }
+    .kv2 { display: grid; grid-template-columns: 1fr 3fr; }
+    .kv2 .k { font-size: 12px; color:#111; white-space: nowrap; font-weight: 700; }
     .data { font-size: 12px; width:100%; padding-left: 6px; }
     .quantity-section { width: 300px; display: flex; font-size: 12px; color: #111; white-space: nowrap; padding-top: 12px; }
     .remarks-section { width: 300px; display: flex; font-size: 12px; color: #111; white-space: nowrap; padding: 10px 0; border-bottom: 1px solid #ddd; }
@@ -42,6 +44,32 @@
             </div>
             <div class="kv">
                 <div class="k">Transaction File:</div><div class="data">{{transactionFile}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Supplier:</div><div class="data">{{supplier}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Delivery Plate #:</div><div class="data">{{deliveryPlateNumber}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Truck Type:</div><div class="data">{{truckType}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Date of Arrival #:</div><div class="data">{{dateOfArrival}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Warehouse Activity:</div><div class="data">{{billingReference}}</div>
+            </div>
+            <div class="kv">
+                <div class="k">Pallet No:</div><div class="data">{{palletNo}}</div>
+            </div>
+        </div>
+        <div class="grid1">
+            <div class="kv2">
+                <div class="k">Customer Reference:</div><div class="data">{{customerReference}}</div>
+            </div>
+            <div class="kv2">
+                <div class="k">Remarks:</div><div class="data">{{remarks}}</div>
             </div>
         </div>
     

@@ -98,8 +98,8 @@ async function generateStockReportPdfBuffer(viewModel) {
         footerTemplate: `
         <div style="width:100%; padding:0 10mm; color:#111; font-family: Arial, sans-serif;">
             ${getFooterHtml(viewModel)}
-            <div style="margin-bottom:4px; font-size:9px; text-align: center;">
-            <div>${escapeHtml(viewModel.address || '')}</div>
+            <div style="margin-bottom:4px; font-size:9px; text-align: center; color: #1E3A8A">
+            <div>Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City</div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px;">
             <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
