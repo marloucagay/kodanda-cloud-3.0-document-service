@@ -102,7 +102,7 @@ async function generateBulkPrintPdfBuffer(viewModels) {
                 </div>
               </div>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px; margin-top:32px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; margin-top:32px; color: #1E3A8A;">
               <div>Printed by: ${printedBy} | Printed on: ${printedOn}</div>
               <div><span class="pageNumber"></span> of <span class="totalPages"></span></div>
             </div>

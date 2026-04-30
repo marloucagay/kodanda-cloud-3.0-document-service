@@ -83,7 +83,7 @@ async function generateQuotationPdfBuffer(viewModel) {
 
         footerTemplate: `
         <div style="width:100%; padding:0 10mm; font-size:9px; color:#111; font-family: Arial, sans-serif;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:20px; color: #1E3A8A;">
                 <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
                 <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
             </div>

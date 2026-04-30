@@ -83,10 +83,24 @@ async function generatePickingListPdfBuffer(viewModel) {
 
         footerTemplate: `
         <div style="width:100%; padding:0 10mm; color:#111; font-family: Arial, sans-serif;">
-            <div style="margin-bottom:4px; font-size:9px; text-align: center; color: #1E3A8A;">
-            <div>Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap: 8px; margin-bottom: 24px;">
+              <div style="display:flex; justify-content:center; gap:4px;">
+                  <h5 style="margin:0; font-size:12px; font-weight:400; text-align:center;">Picked (Date/By):</h5>
+                  <div style="border-bottom:1px solid #111; flex:1; margin-bottom:4px; margin-left:auto;"></div>
+              </div>
+              <div style="display:flex; justify-content:center; gap:4px;">
+                  <h5 style="margin:0; font-size:12px; font-weight:400; text-align:center;">Checked (Date/By):</h5>
+                  <div style="border-bottom:1px solid #111; flex:1; margin-bottom:4px; margin-left:auto;"></div>
+              </div>
+              <div style="display:flex; justify-content:center; gap:4px;">
+                  <h5 style="margin:0; font-size:12px; font-weight:400; text-align:center;">Finalized (Date/By):</h5>
+                  <div style="border-bottom:1px solid #111; flex:1; margin-bottom:4px; margin-left:auto;"></div>
+              </div>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px;">
+            <div style="margin-bottom:4px; font-size:9px; text-align: center; color: #1E3A8A;">
+              <div>Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px;  color: #1E3A8A;">
             <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
             <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
             </div>

@@ -86,7 +86,7 @@ async function generateClientMasterlistPdfBuffer(viewModel) {
             <div style="margin-bottom:4px; font-size:9px; text-align: center;">
             <div>Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City</div>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px; color: #1E3A8A;">
             <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
             <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
             </div>
