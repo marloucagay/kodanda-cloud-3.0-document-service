@@ -6,7 +6,7 @@ const {
 async function createWaybillPdf(req, res) {
   try {
     const { pageWidthCm, pageHeightCm, fields } = req.body;
-
+    console.log(fields, pageWidthCm, pageHeightCm);
     if (!pageWidthCm || !pageHeightCm) {
       return res.status(400).json({
         error: "pageWidthCm and pageHeightCm are required",

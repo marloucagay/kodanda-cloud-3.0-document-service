@@ -192,14 +192,9 @@
       {{#charges}}
       <tr>
         <td colSpan="3">
-          <div>
-            <span class="desc-label">Description:</span>
-            <span class="desc-value">{{description}}</span>
-          </div>
-          <div style="margin-top:3px;">
-            <span class="basis-label">Basis:</span>
-            <span class="basis-value">{{rateBasis}}</span>
-          </div>
+           <span>
+            {{description}}{{#rateBasis}} ({{rateBasis}}){{/rateBasis}}
+          </span>
         </td>
         <td class="amount">{{rateFmt}}</td>
       </tr>
