@@ -48,6 +48,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
+      table-layout: fixed;
     }
 
     .items {
@@ -82,7 +83,6 @@
     /* Pickup / Delivery */
     .pickup-header,
     .delivery-header {
-      width: 50%;
     }
 
     .pickup-block,
@@ -129,7 +129,7 @@
     <table class="items">
       <thead>
         <tr>
-          <th colspan="3" class="pickup-header">
+          <th class="pickup-header" colspan="4">
             <div class="pickup-block">
               <div class="pickup-row">
                 <span class="k">Pick-up Site:</span>
@@ -150,7 +150,7 @@
             </div>
           </th>
 
-          <th colspan="3" class="delivery-header">
+          <th class="delivery-header" colspan="4">
             <div class="delivery-block">
               <div class="delivery-row">
                 <span class="k">Delivery Site:</span>
@@ -175,7 +175,7 @@
         <tr>
           <th class="qty">QTY.</th>
           <th class="unit">UNIT</th>
-          <th class="particulars" colspan="3">PARTICULARS</th>
+          <th class="particulars" colspan="6">PARTICULARS</th>
         </tr>
       </thead>
 
@@ -184,10 +184,16 @@
         <tr>
           <td class="qty">{{qty}}</td>
           <td class="unit">{{unit}}</td>
-          <td class="particulars" colspan="3">
+          <td class="particulars" colspan="6">
             <div class="part">
+
+              {{#description}}
               <div><b>Description:</b> {{description}}</div>
+              {{/description}}
+
+              {{#lot}}
               <div><b>Lot/Batch No.:</b> {{lot}}</div>
+              {{/lot}}
 
               {{#expiryDate}}
               <div><b>Expiry Date:</b> {{expiryDate}}</div>

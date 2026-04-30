@@ -102,10 +102,10 @@ async function generateDrsfPdfBuffer(viewModel) {
                 </div>
             </div>
             <div style="margin-top:20px; border-top:1px solid #bababa ; padding-top: 5px;">
-                <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; opacity:0.6;">
+                <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; color: #1E3A8A;">
                     Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City
                 </h6>
-                <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; opacity:0.6;">
+                <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; color: #1E3A8A;">
                     Telephone: (02)8691-0615
                 </h6>
                 </div>

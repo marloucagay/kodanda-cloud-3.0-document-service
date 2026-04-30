@@ -60,7 +60,7 @@ function buildViewModel(payload) {
     receivedDate: dash(payload.receivedDate),
 
     // Logo for Puppeteer header
-    logoSrc: payload.logo || "",
+    logoSrc: payload.logoSrc || payload.logo || "",
   };
 }
 
