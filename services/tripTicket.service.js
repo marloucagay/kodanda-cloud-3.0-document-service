@@ -115,7 +115,7 @@ async function generateTripTicketPdfBuffer(viewModel) {
                         <h6 style="margin:4px 0; font-size:10px; font-weight:400;">Telephone: (02)8691-0615</h6>
                     </div>
                 </div>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; justify-content:space-between; align-items:center; color: #1E3A8A;">
                     <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
                     <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
                 </div>
