@@ -29,8 +29,10 @@ async function generateWaybillPdf(data) {
   const pdf = await page.pdf({
     printBackground: true,
     preferCSSPageSize: true,
+    width: `${data.pageWidthCm}cm`,
+    height: `${data.pageHeightCm}cm`,
+    scale: 1.5,
   });
-
   await browser.close();
   return pdf;
 }
@@ -66,6 +68,9 @@ async function generateMultiWaybillPdf({
   const pdf = await page.pdf({
     printBackground: true,
     preferCSSPageSize: true,
+    width: `${data.pageWidthCm}cm`,
+    height: `${data.pageHeightCm}cm`,
+    scale: 1.5,
   });
 
   await browser.close();
