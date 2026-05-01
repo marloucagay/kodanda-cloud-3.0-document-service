@@ -16,6 +16,7 @@ const quotationRoutes = require("./routes/quotation.routes.js");
 const stockReportRoutes = require("./routes/stockReport.routes.js");
 const clientMasterlistRoutes = require("./routes/clientMasterlist.routes.js");
 const tripTicketRoutes = require("./routes/tripTicket.routes.js");
+const generateExcelRoutes = require("./routes/generateExcel.routes.js");
 
 const app = express();
 app.use(express.json({ limit: "5mb" }));
@@ -35,6 +36,10 @@ app.use("/api/generate-consolidated-billing", generateConsolidatedBillingRoutes)
 app.use("/api/stock-report", stockReportRoutes);
 app.use("/api/client-masterlist", clientMasterlistRoutes);
 app.use("/api/trip-ticket", tripTicketRoutes);
+
+app.use("/api/generate-stock-movement", generateExcelRoutes);
+app.use("/api/generate-billing-summary", generateExcelRoutes);
+app.use("/api/generate-billing-service", generateExcelRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);
