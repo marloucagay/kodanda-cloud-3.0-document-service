@@ -123,7 +123,9 @@
   {{/isDraft}}
 
   <div class="date" style="margin-top: -10px;">
+    {{#invoiceDate}}
     <div>Date: {{invoiceDate}}</div>
+    {{/invoiceDate}}
   </div>
 
   <div class="grid2">
@@ -150,10 +152,10 @@
   <!-- Shipping Info -->
   <div class="grid2" style="margin-top: 15px;">
     <div class="kv">
-      <div class="k">MAWB:</div><div class="underline">{{masterAirwaybillNo}}</div>
+      <div class="k">MAWB:</div><div class="underline">{{mAWB}}</div>
     </div>
     <div class="kv">
-      <div class="k">HAWB:</div><div class="underline">{{houseAirwaybillNo}}</div>
+      <div class="k">HAWB:</div><div class="underline">{{hAWB}}</div>
     </div>
     <div class="kv">
       <div class="k">Shipper:</div><div class="underline">{{shipper}}</div>
@@ -168,16 +170,16 @@
       <div class="k">Delivery Site:</div><div class="underline">{{deliverySite}}</div>
     </div>
     <div class="kv">
-      <div class="k">Reference Date:</div><div class="underline"></div>
+      <div class="k">Reference Date:</div><div class="underline">{{referenceDate}}</div>
     </div>
     <div class="kv">
-      <div class="k">Date Services Performed:</div><div class="underline"></div>
+      <div class="k">Date Services Performed:</div><div class="underline">{{dateServicesPerformed}}</div>
     </div>
     <div class="kv">
-      <div class="k">Reference Details:</div><div class="underline"></div>
+      <div class="k">Reference Details:</div><div class="underline">{{referenceDetails}}</div>
     </div>
     <div class="kv">
-      <div class="k">Description:</div><div class="underline"></div>
+      <div class="k">Description:</div><div class="underline">{{description}}</div>
     </div>
   </div>
 

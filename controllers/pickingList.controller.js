@@ -1,7 +1,7 @@
 const {
   generatePickingListPdfBuffer,
 } = require("../services/pickingList.service.js");
-const { money, safeText } = require("../utils/format.js");
+const { money, safeText, dateFormat } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 function buildViewModel(pickingList) {
@@ -248,7 +248,7 @@ function buildViewModel(pickingList) {
     ...pickingList,
     pickingListsItems,
     client: safeText(pickingList.client) || '-',
-    date: safeText(pickingList.date) || '-',
+    date: dateFormat(pickingList.date) || '-',
     pickingListNo: safeText(pickingList.pickingListNo) || '-',
     transactionFile: safeText(pickingList.transactionFile) || '-',
     customerRef: safeText(pickingList.customerReference) || '-',

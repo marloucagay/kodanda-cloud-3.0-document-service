@@ -11,10 +11,12 @@
       font-family: Arial, Helvetica, sans-serif;
       color: #111
     }
-    .grid1 { display:grid; gap: 6px; margin: 6px 0; }
-    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; }
+    .grid1 { display:grid; grid-template-columns: 1fr 3fr; margin: 6px 0; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 6px 0px; }
     .kv { display: grid; grid-template-columns: 1fr 1fr; }
+    .kv1 { display: grid; }
     .kv .k { font-size: 12px; color:#111; white-space: nowrap; font-weight: 700; }
+    .kv1 .k { font-size: 12px; color:#111; white-space: nowrap; font-weight: 700; }
     .data { font-size: 12px; width:100%; padding-left: 6px; }
     .quantity-section { width: 300px; display: flex; font-size: 12px; color: #111; white-space: nowrap; padding-top: 12px; }
     .remarks-section { width: 300px; display: flex; font-size: 12px; color: #111; white-space: nowrap; padding: 10px 0; border-bottom: 1px solid #ddd; }
@@ -50,8 +52,13 @@
                 <div class="k">Serial No:</div><div class="data">{{serialNo}}</div>
             </div>
         </div>
-        <div class="kv grid1">
-            <div class="k">Delivery Site:</div><div class="data">{{deliverySite}}</div>
+        <div class="grid1">
+            <div class="kv1">
+                <div class="k">Delivery Site:</div>
+            </div>
+            <div class="kv1">
+                <div class="data">{{deliverySite}}</div>
+            </div>
         </div>
     
       <table>
@@ -64,7 +71,6 @@
                 <th>Lot/Batch No.</th>
                 <th>Serial No.</th>
                 <th>Expiration Date</th>
-                <th>Location</th>
                 <th>Remarks/Reference</th>
             </tr>
         </thead>
@@ -78,7 +84,6 @@
                 <td>{{batchNo}}</td>
                 <td>{{serialNo}}</td>
                 <td>{{displayExpiry}}</td>
-                <td>{{location}}</td>
                 <td>{{remarks}}</td>
             </tr>
             {{/pickingListsItems}}

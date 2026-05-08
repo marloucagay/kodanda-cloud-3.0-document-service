@@ -1,5 +1,5 @@
 const { generateDrsfPdfBuffer } = require("../services/drsfPdf.service.js");
-const { money, safeText } = require("../utils/format.js");
+const { money, safeText, dateFormat } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 /**
@@ -24,14 +24,29 @@ async function generateDrsfPdf(req, res) {
     }
 
     drsf.logoSrcDataUri = await ensureDataUriLogo(drsf.logoSrc);
+    drsf.date = dateFormat(drsf.date);
 
-    if (drsf.cargoDimensions && Array.isArray(drsf.cargoDimensions)) {
-      drsf.cargoDimensionsFirstPage = padRows(drsf.cargoDimensions || [], 10);
-      drsf.cargoDimensionsRest =
-        drsf.cargoDimensions && drsf.cargoDimensions.length > 10
-          ? drsf.cargoDimensions.slice(10)
-          : [];
-    }
+    const totalChargeable = drsf.cargoDimensions.reduce((sum, row) => sum + (row.chargeable || 0), 0);
+
+    const totalRow = {
+        boxNumber: '',
+        length: '',
+        width: '',
+        height: '',
+        volume: 'Total:',
+        totalChargeable: totalChargeable,
+        isTotal: true
+    };
+    const drsfTotalChargeable = [...drsf.cargoDimensions, totalRow];
+    drsf.cargoDimensions = drsfTotalChargeable;
+
+    // if (drsf.cargoDimensions && Array.isArray(drsf.cargoDimensions)) {
+    //   drsf.cargoDimensionsFirstPage = padRows(drsf.cargoDimensions || [], 10);
+    //   drsf.cargoDimensionsRest =
+    //     drsf.cargoDimensions && drsf.cargoDimensions.length > 10
+    //       ? drsf.cargoDimensions.slice(10)
+    //       : [];
+    // }
 
     const pdfBuffer = await generateDrsfPdfBuffer(drsf);
 

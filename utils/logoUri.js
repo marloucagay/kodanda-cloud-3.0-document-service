@@ -26,7 +26,7 @@ async function ensureDataUriLogo(logoSrc, { ttlMs = 10 * 60 * 1000 } = {}) {
     responseType: "arraybuffer",
     // Optional: if your logo host blocks unknown agents, this helps
     headers: { "User-Agent": "InvoicePDF/1.0" },
-    timeout: 15000,
+    timeout: 60000,
   });
 
   const contentType = resp.headers["content-type"] || "image/png";

@@ -1,7 +1,7 @@
 const {
   generateInvoicePdfBuffer,
 } = require("../services/invoicePdf.service.js");
-const { money, safeText } = require("../utils/format.js");
+const { money, safeText, dateFormat } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 function buildTotalsRows(summary = {}, overallTotal, clientCurrency) {
@@ -32,6 +32,7 @@ function buildTotalsRows(summary = {}, overallTotal, clientCurrency) {
   // }
 
   right.push([`Total Amount Due (${clientCurrency})`, money(overallTotal)]);
+  // right.push([`Total Amount Due (${clientCurrency})`, money(summary.totalSales)]);
 
   const rows = Math.max(left.length, right.length);
   return Array.from({ length: rows }).map((_, i) => ({
@@ -49,7 +50,7 @@ function buildViewModel(invoice) {
     ...invoice,
     invoiceNo: safeText(invoice.invoiceNo),
     vatType: safeText(invoice.vatType),
-    invoiceDate: safeText(invoice.invoiceDate),
+    invoiceDate: dateFormat(invoice.invoiceDate),
     status: safeText(invoice.status),
 
     fileNo: safeText(invoice.fileNo),
@@ -75,6 +76,8 @@ function buildViewModel(invoice) {
     shipper: safeText(invoice.shipper),
     countryOfOrigin: safeText(invoice.countryOfOrigin),
     deliverySite: safeText(invoice.deliverySite),
+    dateServicesPerformed: dateFormat(invoice.dateServicesPerformed),
+    referenceDate: dateFormat(invoice.referenceDate),
 
     // logoSrc: "data:image/png;base64,....",
     logoSrc:
@@ -84,7 +87,8 @@ function buildViewModel(invoice) {
       ...c,
       description: safeText(c.description),
       rateBasis: safeText(c.rateBasis),
-      rateFmt: money(c.rate ?? c.ratePHP ?? 0),
+      rateFmt: money(c.total ?? 0),
+      // rateFmt: money(c.rate ?? c.ratePHP ?? 0),
     })),
 
     totalsRows: buildTotalsRows(
@@ -107,6 +111,7 @@ async function generateInvoicePdf(req, res) {
     if (!invoice || typeof invoice !== "object") {
       return res.status(400).json({ message: "Invalid invoice payload" });
     }
+    console.log("Received invoice for PDF generation:", invoice);
 
     const vm = buildViewModel(invoice);
     vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);

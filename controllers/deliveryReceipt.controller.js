@@ -1,5 +1,5 @@
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
-const { safeText } = require("../utils/format.js");
+const { safeText, dateFormat } = require("../utils/format.js");
 const {
   generateDeliveryReceiptPdfBuffer,
 } = require("../services/deliveryReceiptPdf.service.js");
@@ -57,7 +57,8 @@ function buildViewModel(payload) {
     })),
 
     // Footer fields
-    receivedDate: dash(payload.receivedDate),
+    receivedDate: dateFormat(payload.receivedDate),
+    date: dateFormat(payload.date),
 
     // Logo for Puppeteer header
     logoSrc: payload.logoSrc || payload.logo || "",

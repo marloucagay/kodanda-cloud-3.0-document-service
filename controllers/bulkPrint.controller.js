@@ -107,43 +107,128 @@ function buildViewModel(doc, payload) {
   };
 }
 
+// async function generateBulkPrintPdf(req, res) {
+//   try {
+//     const payload = req.body;
+//     const docs = Array.isArray(payload.deliveryDocuments) ? payload.deliveryDocuments : [];
+
+//     if (docs.length === 0) {
+//       return res.status(400).json({ message: "No delivery documents found" });
+//     }
+
+//     const allWaybills = docs.every((doc) => doc.deliveryDocument === "Waybill");
+
+//     let pdfBuffer;
+
+//     if (allWaybills) {
+//       // For Waybill document service
+//     } else {
+//       const viewModels = await Promise.all(
+//         docs.map(async (doc) => {
+//           const vm = buildViewModel(doc, payload);
+//           try {
+//             vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
+//           } catch (e) {
+//             vm.logoSrcDataUri = "";
+//           }
+//           return vm;
+//         })
+//       );
+
+//       pdfBuffer = await generateBulkPrintPdfBuffer(viewModels);
+//     }
+
+//     res.setHeader("Content-Type", "application/pdf");
+//     res.setHeader("Content-Disposition", `inline; filename="bulk-print.pdf"`);
+//     return res.status(200).send(pdfBuffer);
+//   } catch (err) {
+//     console.error("generateBulkPrintPdf error:", err?.stack || err);
+//     return res.status(500).json({ message: "Failed to generate bulk print PDF" });
+//   }
+// }
+
 async function generateBulkPrintPdf(req, res) {
   try {
     const payload = req.body;
-    const docs = Array.isArray(payload.deliveryDocuments) ? payload.deliveryDocuments : [];
+    const docs = Array.isArray(payload.documents) ? payload.documents : [];
 
     if (docs.length === 0) {
       return res.status(400).json({ message: "No delivery documents found" });
     }
 
-    const allWaybills = docs.every((doc) => doc.deliveryDocument === "Waybill");
+    const waybills = docs.filter(doc => doc.deliveryDocument === "Waybill");
+    const deliveryReceipts = docs.filter(doc => doc.deliveryDocument !== "Waybill");
 
-    let pdfBuffer;
+    const pdfBuffers = [];
 
-    if (allWaybills) {
-      // For Waybill document service
+    // WAYBILLS
+    if (waybills.length > 0) {
+      try {
+        const waybillPdf = await generateMultiWaybillPdf({
+          pageWidthCm: payload.pageWidthCm || 28,
+          pageHeightCm: payload.pageHeightCm || 20,
+          waybills: waybills
+        });
+        pdfBuffers.push(waybillPdf);
+      } catch (err) {
+        console.error("Waybill generation error:", err);
+        throw new Error(`Failed to generate waybill PDFs: ${err.message}`);
+      }
+    }
+
+    // Delivery Receipt
+    if (deliveryReceipts.length > 0) {
+      try {
+        const viewModels = await Promise.all(
+          deliveryReceipts.map(async (doc) => {
+            const vm = buildViewModel(doc, payload);
+            try {
+              vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
+            } catch (e) {
+              vm.logoSrcDataUri = "";
+            }
+            return vm;
+          })
+        );
+
+        const deliveryPdf = await generateBulkPrintPdfBuffer(viewModels);
+        pdfBuffers.push(deliveryPdf);
+      } catch (err) {
+        console.error("Delivery receipt generation error:", err);
+        throw new Error(`Failed to generate delivery receipt PDFs: ${err.message}`);
+      }
+    }
+
+    // Merge all PDFs if there are multiple types
+    let finalPdfBuffer;
+
+    if (pdfBuffers.length === 1) {
+      finalPdfBuffer = pdfBuffers[0];
+    } else if (pdfBuffers.length > 1) {
+      try {
+        const mergedPdf = await PDFDocument.create();
+
+        for (const pdfBuffer of pdfBuffers) {
+          const pdf = await PDFDocument.load(pdfBuffer);
+          const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+          pages.forEach((page) => mergedPdf.addPage(page));
+        }
+
+        finalPdfBuffer = await mergedPdf.save();
+      } catch (err) {
+        console.error("PDF merge error:", err);
+        throw new Error(`Failed to merge PDFs: ${err.message}`);
+      }
     } else {
-      const viewModels = await Promise.all(
-        docs.map(async (doc) => {
-          const vm = buildViewModel(doc, payload);
-          try {
-            vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
-          } catch (e) {
-            vm.logoSrcDataUri = "";
-          }
-          return vm;
-        })
-      );
-
-      pdfBuffer = await generateBulkPrintPdfBuffer(viewModels);
+      return res.status(400).json({ message: "No valid documents to process" });
     }
 
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", `inline; filename="bulk-print.pdf"`);
-    return res.status(200).send(pdfBuffer);
+    return res.status(200).send(finalPdfBuffer);
   } catch (err) {
     console.error("generateBulkPrintPdf error:", err?.stack || err);
-    return res.status(500).json({ message: "Failed to generate bulk print PDF" });
+    return res.status(500).json({ message: err.message || "Failed to generate bulk print PDF" });
   }
 }
 
