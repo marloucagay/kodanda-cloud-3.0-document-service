@@ -1,15 +1,16 @@
 const {
   generateTripTicketPdfBuffer,
 } = require("../services/tripTicket.service.js");
-const { money, safeText } = require("../utils/format.js");
+const { money, safeText, dateFormat } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 function buildViewModel(tripTicket) {
   
   return {
     ...tripTicket,
+    dateDispatched: dateFormat(tripTicket.dateDispatched),
     tripTicketID: safeText(tripTicket.tripTicketID),
-    tripTicketDate: safeText(tripTicket.date),
+    tripTicketDate: dateFormat(tripTicket.date),
     tripTicketName: safeText(tripTicket.name),
     tripTicketVehicle: safeText(tripTicket.vehicle),
     tripTicketItems: (tripTicket.tripTicketItems || []).map(item => ({
@@ -49,6 +50,9 @@ async function generateTripTicketPdf(req, res) {
 
     // const vm = buildViewModel(gatepass);
     tripTicketData.logoSrcDataUri = await ensureDataUriLogo(tripTicketData.logoSrc);
+    tripTicketData.dateDispatched = dateFormat(tripTicketData.dateDispatched);
+    tripTicketData.aDDATD = dateFormat(tripTicketData.aDDATD);
+    tripTicketData.aDAATA = dateFormat(tripTicketData.aDAATA);
     // vm.isDraft = String(vm.status || "").toLowerCase() === "draft";
 
     const pdfBuffer = await generateTripTicketPdfBuffer(tripTicketData);

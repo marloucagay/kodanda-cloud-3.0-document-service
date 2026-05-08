@@ -1,7 +1,7 @@
 const {
   generateGatepassPdfBuffer,
 } = require("../services/gatepassPdf.service.js");
-const { money, safeText } = require("../utils/format.js");
+const { money, safeText, dateFormat } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 function buildViewModel(gatepass) {
@@ -86,7 +86,7 @@ function buildViewModel(gatepass) {
   return {
     ...gatepass,
     gatepassID: safeText(gatepass.gatepassID),
-    gatepassDate: safeText(gatepass.date),
+    gatepassDate: dateFormat(gatepass.date),
     gatepassName: safeText(gatepass.name),
     gatepassVehicle: safeText(gatepass.vehicle),
     // gatepassItems: (items || []).map(item => ({

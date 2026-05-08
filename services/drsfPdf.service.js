@@ -82,37 +82,43 @@ async function generateDrsfPdfBuffer(viewModel) {
         footerTemplate: `
         <div style="width:100%; padding:0 10mm; font-size:9px; color:#111; font-family: Arial, sans-serif;">
             <div>
-            <div style="display:grid; grid-template-columns:2fr 1fr; gap:4px 6px; margin-top:10px;">
-                <div style="display:flex; gap:4px; align-items:center;">
-                    <h3 style="margin:0; font-size:12px; font-weight:700;">Prepared by:</h3>
-                    <div style="border-bottom:1px solid #111; width:230px; height:32px; margin-bottom:4px;"></div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <div style="display:flex; gap:4px; align-items:start; padding-left: 8px;">
+                            <div style="width:300px; display: flex; align-items: center; border: 1px solid #111; padding: 6px 8px">
+                                <h3 style="margin:0; font-size:12px; font-weight:700;">Prepared by:</h3>
+                                <div style="width:20px; height:32px; margin-bottom:4px;"></div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:4px; align-items:start; padding-left: 8px; margin-top:12px;">
+                            <div style="width:300px; display: flex; align-items: center; border: 1px solid #111; padding: 6px 8px">
+                                <h3 style="margin:0; font-size:12px; font-weight:700;">Checked by:</h3>
+                                <div style="width:20px; height:32px; margin-bottom:4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:8px; border: 1px solid #111; padding: 0px 8px; width:250px;">
+                        <div>
+                            <h5 style="font-size:12px; font-weight:700; text-align:start;">Received the above boxes in completed and good condition:</h5>
+                        </div>
+                        <div style="display:flex; flex-direction:column; justify-content:center; gap:4px; margin-bottom:8px;">
+                            <div style="border-bottom:1px solid #111; width:250px; height:32px; margin-bottom:4px; margin-left:auto;"></div>
+                            <h5 style="margin:0; font-size:12px; font-weight:400; text-align:center;">Signature over Printed Name/Date</h5>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h5 style="margin-left: -10px; font-size:12px; font-weight:700; text-align:start;">Received the above boxes in completed and good condition:</h5>
+                <div style="margin-top:20px; border-top:1px solid #bababa ; padding-top: 5px;">
+                    <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; color: #1E3A8A;">
+                        Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City
+                    </h6>
+                    <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; color: #1E3A8A;">
+                        Telephone: (02)8691-0615
+                    </h6>
+                    </div>
                 </div>
-            </div>
-            <div style="display:grid; grid-template-columns:2fr 1fr; gap:4px 6px; margin-top:5px;">
-                <div style="display:flex; gap:4px; align-items:center;">
-                    <h3 style="margin:0; font-size:12px; font-weight:700;">Checked by:</h3>
-                    <div style="border-bottom:1px solid #111; width:230px; height:32px; margin-bottom:4px;"></div>
-                </div>
-                <div style="display:flex; flex-direction:column; justify-content:center; gap:4px;">
-                    <div style="border-bottom:1px solid #111; width:250px; height:32px; margin-bottom:4px; margin-left:auto;"></div>
-                    <h5 style="margin:0; font-size:12px; font-weight:400; text-align:center;">Signature over Printed Name/Date</h5>
-                </div>
-            </div>
-            <div style="margin-top:20px; border-top:1px solid #bababa ; padding-top: 5px;">
-                <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; color: #1E3A8A;">
-                    Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City
-                </h6>
-                <h6 style="margin:4px 0; font-size:10px; font-weight:400; text-transform:uppercase; font-style:italic; color: #1E3A8A;">
-                    Telephone: (02)8691-0615
-                </h6>
-                </div>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:20px; color: #1E3A8A;">
-            <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
-            <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:20px; color: #1E3A8A;">
+                <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
+                <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
             </div>
         </div>
         `,

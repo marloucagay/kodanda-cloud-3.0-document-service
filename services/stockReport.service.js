@@ -102,7 +102,7 @@ async function generateStockReportPdfBuffer(viewModel) {
             <div>Lot 1 Ninoy Aquino Ave., Corner Old Kabihasnan St., San Dionisio, Parañaque City</div>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px; color: #1E3A8A;">
-            <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}</div>
+            <div>Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}${viewModel.lastEdited ? ' | Last Modified: ' + escapeHtml(viewModel.lastEdited) : ''}</div>
             <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
             </div>
         </div>
@@ -134,7 +134,7 @@ async function generateStockReportPdfBuffer(viewModel) {
 function getFooterHtml(viewModel) {
   if (viewModel.warehouseMode === 'Incoming') {
     return `
-      <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+      <div style="display: flex; gap: 8px; margin-bottom: 10px; font-family: Arial, Helvetica, sans-serif;">
         <div style="flex: 1 1 50%; display: flex; align-items: center; white-space: nowrap;">
           <div style="width: 50%; font-size: 12px; margin-bottom: 0;">Encoded By:</div>
           <div style="width: 50%; font-size: 12px; padding-left: 6px;">${escapeHtml(viewModel.encodedBy || '')}</div>
@@ -157,7 +157,7 @@ function getFooterHtml(viewModel) {
     `;
   } else if (viewModel.warehouseMode === 'Outgoing') {
     return `
-      <div style="display: flex; gap: 8px; margin-bottom: 10px; font-family: Courier, Courier, monospace;">
+      <div style="display: flex; gap: 8px; margin-bottom: 10px; font-family: Arial, Helvetica, sans-serif;">
         <div style="flex: 1 1 50%; display: flex; align-items: center; white-space: nowrap;">
           <div style="width: 50%; font-size: 12px; margin-bottom: 0;">Released By:</div>
           <div style="width: 50%; font-size: 12px; padding-left: 6px;">${escapeHtml(viewModel.releasedBy || '')}</div>
