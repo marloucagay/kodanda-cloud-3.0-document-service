@@ -40,6 +40,7 @@ app.use("/api/trip-ticket", tripTicketRoutes);
 app.use("/api/generate-stock-movement", generateExcelRoutes);
 app.use("/api/generate-billing-summary", generateExcelRoutes);
 app.use("/api/generate-billing-service", generateExcelRoutes);
+app.use("/api/generate-storage-report", generateExcelRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);

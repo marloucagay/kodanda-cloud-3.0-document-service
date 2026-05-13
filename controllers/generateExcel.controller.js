@@ -1,7 +1,8 @@
 const {
   generateStockMovementBuffer,
   generateBillingSummaryBuffer,
-  generateBillingServiceBuffer
+  generateBillingServiceBuffer,
+  generateStorageReportBuffer
 } = require("../services/generateExcel.service.js");
 
 const generateStockMovementExcel = async (req, res) => {
@@ -64,4 +65,24 @@ const generateBillingServiceExcel = async (req, res) => {
   }
 };
 
-module.exports = { generateStockMovementExcel, generateBillingSummaryExcel, generateBillingServiceExcel };
+const generateStorageReportExcel = async (req, res) => {
+  try {
+    const { client, logoSrc, stocks } = req.body;
+
+    const viewModel = {
+      clientName: client || "",
+      logo: logoSrc || "",
+      stocks: Array.isArray(stocks) ? stocks : [],
+    };
+
+    const buffer = await generateStorageReportBuffer(viewModel);
+
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    return res.status(200).send(buffer);
+  } catch (err) {
+    console.error("generateStorageReportExcel error:", err?.stack || err);
+    return res.status(500).json({ message: "Failed to generate storage report" });
+  }
+};
+
+module.exports = { generateStockMovementExcel, generateBillingSummaryExcel, generateBillingServiceExcel, generateStorageReportExcel };

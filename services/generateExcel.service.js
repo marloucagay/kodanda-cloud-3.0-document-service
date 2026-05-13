@@ -213,121 +213,6 @@ async function generateBillingSummaryBuffer(viewModel) {
   return workbook.xlsx.writeBuffer();
 }
 
-// async function generateBillingServiceBuffer(viewModel) {
-//   const workbook = new ExcelJS.Workbook();
-//   const worksheet = workbook.addWorksheet("Billing Service Report");
-
-//   if (viewModel.logo) {
-//     let imageBuffer;
-//     if (/^https?:\/\//.test(viewModel.logo)) {
-//       const response = await axios.get(viewModel.logo, {
-//         responseType: "arraybuffer",
-//       });
-//       imageBuffer = Buffer.from(response.data, "binary");
-//     } else {
-//       imageBuffer = fs.readFileSync(viewModel.logo);
-//     }
-//     const imageId = workbook.addImage({
-//       buffer: imageBuffer,
-//       extension: "png",
-//     });
-//     worksheet.addImage(imageId, {
-//       tl: { col: 0, row: 0 },
-//       ext: { width: 120, height: 80 },
-//     });
-//     worksheet.getRow(1).height = 80;
-//   }
-
-//   worksheet.addRow([`Billing Service Report`]).font = {
-//     name: "Arial",
-//     size: 14,
-//     bold: true,
-//   };
-//   worksheet.addRow([`Client: ${viewModel?.clientName || ""}`]).font = {
-//     name: "Arial",
-//     size: 8,
-//     bold: true,
-//   };
-//   worksheet.addRow([]);
-
-//   // Table header
-//   const tableHeader = [
-//     'Invoice Date',
-//     'Invoice No',
-//     'Quotation No.',
-//     'Consignee',
-//     'Shipper',
-//     'Delivery Site',
-//     'Foreign Currency',
-//     'Credit Term',
-//     'File No',
-//     'Contact Person',
-//     'Contact No.',
-//     'Currency',
-//     'Total Amount',
-//     'VAT',
-//     'Net Amount',
-//     'Status'
-//   ];
-//   const tableHeaderRow = worksheet.addRow(tableHeader);
-//   tableHeaderRow.font = { name: "Arial", size: 8, bold: true };
-
-//   tableHeader.forEach((_, idx) => {
-//     tableHeaderRow.getCell(idx + 1).fill = {
-//       type: "pattern",
-//       pattern: "solid",
-//       fgColor: { argb: "FFD3D3D3" },
-//     };
-//     tableHeaderRow.getCell(idx + 1).border = {
-//       top: { style: "thin" },
-//       left: { style: "thin" },
-//       bottom: { style: "thin" },
-//       right: { style: "thin" },
-//     };
-//   });
-
-//  viewModel.billings.forEach((vm) => {
-//     const row = worksheet.addRow([
-//         vm.invoiceDate || "",
-//         vm.invoiceNo || "",
-//         vm.quotationNo || "",
-//         vm.consignee || "",
-//         vm.shipper || "",
-//         vm.deliverySite || "",
-//         vm.currency || "",
-//         vm.creditTerm || "",
-//         vm.fileNo || "",
-//         vm.contactPerson || "",
-//         vm.contactNo || "",
-//         vm.currency || "",
-//         vm.totalAmount || 0,
-//         vm.vat || 0,
-//         vm.netAmount || 0,
-//         vm.status || ""
-//     ]);
-
-//     row.font = { name: "Arial", size: 8 };
-
-//     row.getCell(13).numFmt = '#,##0.00';
-//     row.getCell(14).numFmt = '#,##0.00';
-//     row.getCell(15).numFmt = '#,##0.00';
-
-//     row.eachCell((cell) => {
-//         cell.border = {
-//             top: { style: "thin" },
-//             left: { style: "thin" },
-//             bottom: { style: "thin" },
-//             right: { style: "thin" },
-//         };
-//     });
-// });
-//   worksheet.addRow([]);
-//   worksheet.columns.forEach((col) => {
-//     col.width = 12;
-//   });
-//   return workbook.xlsx.writeBuffer();
-// }
-
 async function generateBillingServiceBuffer(viewModel) {
   const workbook = new ExcelJS.Workbook();
 
@@ -430,8 +315,117 @@ async function generateBillingServiceBuffer(viewModel) {
   return workbook.xlsx.writeBuffer();
 }
 
+async function generateStorageReportBuffer(viewModel) {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Storage Report");
+
+  if (viewModel.logo) {
+    let imageBuffer;
+    if (/^https?:\/\//.test(viewModel.logo)) {
+      const response = await axios.get(viewModel.logo, {
+        responseType: "arraybuffer",
+      });
+      imageBuffer = Buffer.from(response.data, "binary");
+    } else {
+      imageBuffer = fs.readFileSync(viewModel.logo);
+    }
+    const imageId = workbook.addImage({
+      buffer: imageBuffer,
+      extension: "png",
+    });
+    worksheet.addImage(imageId, {
+      tl: { col: 0, row: 0 },
+      ext: { width: 120, height: 80 },
+    });
+    worksheet.getRow(1).height = 80;
+  }
+
+  worksheet.addRow([`Storage Report`]).font = {
+    name: "Arial",
+    size: 14,
+    bold: true,
+  };
+  worksheet.addRow([`Client: ${viewModel?.clientName || ""}`]).font = {
+    name: "Arial",
+    size: 8,
+    bold: true,
+  };
+  worksheet.addRow([]);
+
+  // Table header
+  const tableHeader = [
+    "Date",
+    "Picklist #",
+    "PICKLIST FORM",
+    "CUSTOMER",
+    "Delivery Site",
+    "Customer Ref #",
+    "PRODUCT CODE",
+    "DESCRIPTION",
+    "MFG. Date.",
+    "Serial Number",
+    "Batch/Lot Number",
+    "Expiration",
+    "Qty",
+    "UQ",
+    "Location"
+  ];
+  const tableHeaderRow = worksheet.addRow(tableHeader);
+  tableHeaderRow.font = { name: "Arial", size: 8, bold: true };
+
+  tableHeader.forEach((_, idx) => {
+    tableHeaderRow.getCell(idx + 1).fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFD3D3D3" },
+    };
+    tableHeaderRow.getCell(idx + 1).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+  });
+
+  // Table rows
+  viewModel.stocks.forEach((vm) => {
+    const row = worksheet.addRow([
+      vm.date || "",
+      vm.pickListNo || "",
+      vm.picklistForm || "",
+      vm.customer || "",
+      vm.deliverySite || "",
+      vm.customerReference || "",
+      vm.pickingLists?.[0].itemCode || "",
+      vm.pickingLists?.[0].itemDescription || "",
+      vm.pickingLists?.[0].manufacturedDate || "",
+      vm.pickingLists?.[0].serialNo || "",
+      vm.pickingLists?.[0].batchNo || "",
+      vm.pickingLists?.[0].expirationDate || "",
+      vm.pickingLists?.[0].quantity || 0,
+      vm.pickingLists?.[0].uQ || "",
+      vm.pickingLists?.[0].location || ""
+    ]);
+    row.font = { name: "Arial", size: 8 };
+    row.eachCell((cell) => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+  });
+  worksheet.addRow([]);
+  worksheet.columns.forEach((col) => {
+    col.width = 12;
+  });
+  return workbook.xlsx.writeBuffer();
+}
+
 module.exports = {
   generateStockMovementBuffer,
   generateBillingSummaryBuffer,
   generateBillingServiceBuffer,
+  generateStorageReportBuffer
 };
