@@ -4,11 +4,13 @@ const {
   generateStockMovementExcel,
   generateBillingSummaryExcel,
   generateBillingServiceExcel,
-  generateStorageReportExcel
+  generateStorageReportExcel,
+  generateStockItemsExcel
 } = require("../controllers/generateExcel.controller.js");
-router.post("/excel", generateStockMovementExcel);
-router.post("/excel-billing", generateBillingSummaryExcel);
-router.post("/excel-billing-service", generateBillingServiceExcel);
-router.post("/excel-storage", generateStorageReportExcel);
+router.post("/stock-movement/excel", generateStockMovementExcel);
+router.post("/billing-summary/excel", generateBillingSummaryExcel);
+router.post("/billing-service/excel", generateBillingServiceExcel);
+router.post("/storage-reports/excel", generateStorageReportExcel);
+router.post("/stock-items/excel", generateStockItemsExcel);
 
 module.exports = router;

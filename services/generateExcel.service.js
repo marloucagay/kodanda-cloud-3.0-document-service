@@ -423,9 +423,95 @@ async function generateStorageReportBuffer(viewModel) {
   return workbook.xlsx.writeBuffer();
 }
 
+async function generateStockItemsBuffer(viewModel) {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Stock Items Report");
+
+  worksheet.addRow([`Stock Items Report`]).font = {
+    name: "Arial",
+    size: 14,
+    bold: true,
+  };
+  worksheet.addRow([]);
+
+  // Table header
+  const tableHeader = [
+    "Customer",
+    "Product Code",
+    "Description",
+    "Date Received",
+    "Manufacturing Date",
+    "Serial No",
+    "Batch No",
+    "Expiration Date",
+    "Location",
+    "Quantity",
+    "Allocated Quantity",
+    "Total Quantity",
+    "Unit Quantity",
+    "Ageing"
+  ];
+  const tableHeaderRow = worksheet.addRow(tableHeader);
+  tableHeaderRow.font = { name: "Arial", size: 8, bold: true };
+
+  tableHeader.forEach((_, idx) => {
+    tableHeaderRow.getCell(idx + 1).fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFD3D3D3" },
+    };
+    tableHeaderRow.getCell(idx + 1).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+  });
+
+  // Table rows
+  viewModel.stocks.forEach((vm) => {
+    const row = worksheet.addRow([
+      vm.clientName || "",
+      vm.itemCode || "",
+      vm.itemName || "",
+      vm.dateReceived || "",
+      vm.manufacturedDate || "",
+      vm.serialNo || "",
+      vm.batchNo || "",
+      vm.expiryDate || "",
+      vm.location || "",
+      vm.qty || "",
+      vm.allocatedQuantity || "",
+      vm.totalQuantity || "",
+      vm.uQ || "",
+      vm.ageing || "",
+    ]);
+    row.font = { name: "Arial", size: 8 };
+
+    row.getCell(10).numFmt = '#,##0';
+    row.getCell(11).numFmt = '#,##0';
+    row.getCell(12).numFmt = '#,##0';
+    
+    row.eachCell((cell) => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+  });
+  worksheet.addRow([]);
+  worksheet.columns.forEach((col) => {
+    col.width = 12;
+  });
+  return workbook.xlsx.writeBuffer();
+}
+
 module.exports = {
   generateStockMovementBuffer,
   generateBillingSummaryBuffer,
   generateBillingServiceBuffer,
-  generateStorageReportBuffer
+  generateStorageReportBuffer,
+  generateStockItemsBuffer
 };

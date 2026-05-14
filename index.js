@@ -19,7 +19,7 @@ const tripTicketRoutes = require("./routes/tripTicket.routes.js");
 const generateExcelRoutes = require("./routes/generateExcel.routes.js");
 
 const app = express();
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
@@ -37,10 +37,11 @@ app.use("/api/stock-report", stockReportRoutes);
 app.use("/api/client-masterlist", clientMasterlistRoutes);
 app.use("/api/trip-ticket", tripTicketRoutes);
 
-app.use("/api/generate-stock-movement", generateExcelRoutes);
-app.use("/api/generate-billing-summary", generateExcelRoutes);
-app.use("/api/generate-billing-service", generateExcelRoutes);
-app.use("/api/generate-storage-report", generateExcelRoutes);
+app.use("/api/generate", generateExcelRoutes);
+app.use("/api/generate", generateExcelRoutes);
+app.use("/api/generate", generateExcelRoutes);
+app.use("/api/generate", generateExcelRoutes);
+app.use("/api/generate", generateExcelRoutes);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Document Service listening on port ${PORT}`);

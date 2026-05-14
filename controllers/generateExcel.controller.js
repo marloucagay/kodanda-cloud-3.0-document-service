@@ -2,7 +2,8 @@ const {
   generateStockMovementBuffer,
   generateBillingSummaryBuffer,
   generateBillingServiceBuffer,
-  generateStorageReportBuffer
+  generateStorageReportBuffer,
+  generateStockItemsBuffer
 } = require("../services/generateExcel.service.js");
 
 const generateStockMovementExcel = async (req, res) => {
@@ -85,4 +86,22 @@ const generateStorageReportExcel = async (req, res) => {
   }
 };
 
-module.exports = { generateStockMovementExcel, generateBillingSummaryExcel, generateBillingServiceExcel, generateStorageReportExcel };
+const generateStockItemsExcel = async (req, res) => {
+  try {
+    const { stocks } = req.body;
+
+    const viewModel = {
+      stocks: Array.isArray(stocks) ? stocks : [],
+    };
+
+    const buffer = await generateStockItemsBuffer(viewModel);
+
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    return res.status(200).send(buffer);
+  } catch (err) {
+    console.error("generateStockItemsExcel error:", err?.stack || err);
+    return res.status(500).json({ message: "Failed to generate stock items report" });
+  }
+};
+
+module.exports = { generateStockMovementExcel, generateBillingSummaryExcel, generateBillingServiceExcel, generateStorageReportExcel, generateStockItemsExcel };
