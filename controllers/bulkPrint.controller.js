@@ -1,5 +1,5 @@
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
-const { safeText } = require("../utils/format.js");
+const { safeText, dateFormat } = require("../utils/format.js");
 const {
   generateBulkPrintPdfBuffer,
 } = require("../services/bulkPrintPdf.service.js");
@@ -34,24 +34,24 @@ function buildViewModel(doc, payload) {
   //   return "";
   // }
 
-  const dummyData = [
-    { quantity: 1, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
-    { quantity: 2, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 3, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
-    { quantity: 4, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 5, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
-    { quantity: 6, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 7, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
-    { quantity: 8, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 9, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
-    { quantity: 10, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 11, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 12, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
-    { quantity: 13, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 14, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-    { quantity: 15, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
-    { quantity: 16, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
-  ];
+  // const dummyData = [
+  //   { quantity: 1, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+  //   { quantity: 2, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 3, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+  //   { quantity: 4, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 5, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+  //   { quantity: 6, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 7, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+  //   { quantity: 8, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 9, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+  //   { quantity: 10, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 11, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 12, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+  //   { quantity: 13, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 14, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  //   { quantity: 15, unit: "box", itemDescription: "Item B", lot: "L002", expiryDate: "2025-06-30", serialNo: "S002", dangerousGoods: true },
+  //   { quantity: 16, unit: "pcs", itemDescription: "Item A", lot: "L001", expiryDate: "2024-12-31", serialNo: "S001", dangerousGoods: false },
+  // ];
 
   return {
     // Header
@@ -61,7 +61,7 @@ function buildViewModel(doc, payload) {
     // Top info
     client: dash(doc.client || payload.clientName),
     requestingUnit: dash(doc.requestingUnit),
-    date: dash(doc.dateCreated || doc.date),
+    date: dateFormat(doc.dateCreated || doc.date),
     shipmentReference: dash(doc.shipmentReference),
     declaredValue: dash(doc.declaredValue),
     transactionFile: dash(doc.transactionFile || payload.transactionFile),
