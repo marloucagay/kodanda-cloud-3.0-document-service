@@ -17,16 +17,20 @@ function money(n, decimals = 2) {
 function dateFormat(date) {
   if (!date) return '';
 
-  const cleanDate = date.replace(/\s+/g, ' ').trim();
+  const cleanDate = String(date).replace(/\s+/g, ' ').trim();
   const hasTime = cleanDate.includes(':');
 
-  const m = moment(
-    cleanDate,
-    hasTime ? 'MM/DD/YYYY HH:mm' : 'MM/DD/YYYY',
-    true
-  );
+  const formats = hasTime
+    ? ['MM/DD/YYYY HH:mm', 'YYYY-MM-DD HH:mm', 'DD MMM YYYY HH:mm']
+    : ['MM/DD/YYYY', 'YYYY-MM-DD', 'DD MMM YYYY'];
 
-  if (!m.isValid()) return '';
+  let m;
+  for (const format of formats) {
+    m = moment(cleanDate, format, true);
+    if (m.isValid()) break;
+  }
+
+  if (!m || !m.isValid()) return '';
 
   return hasTime
     ? m.format('DD MMM YYYY HH:mm')
