@@ -19,11 +19,11 @@ const tripTicketRoutes = require("./routes/tripTicket.routes.js");
 const generateExcelRoutes = require("./routes/generateExcel.routes.js");
 
 const app = express();
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "50mb" }));
 app.use(
   bodyParser.urlencoded({
     extended: true,
-    limit: "10mb",
+    limit: "50mb",
   }),
 );
 app.use(cors());
