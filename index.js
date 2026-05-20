@@ -20,7 +20,12 @@ const generateExcelRoutes = require("./routes/generateExcel.routes.js");
 
 const app = express();
 app.use(express.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: "10mb",
+  }),
+);
 app.use(cors());
 
 app.use("/api/waybills", waybillRoutes);
@@ -32,7 +37,10 @@ app.use("/api/gatepass", gatepassRoutes);
 app.use("/api/drsf", drsfRoutes);
 app.use("/api/quotation", quotationRoutes);
 app.use("/api/generate-stock-report", generateStockReportRoutes);
-app.use("/api/generate-consolidated-billing", generateConsolidatedBillingRoutes);
+app.use(
+  "/api/generate-consolidated-billing",
+  generateConsolidatedBillingRoutes,
+);
 app.use("/api/stock-report", stockReportRoutes);
 app.use("/api/client-masterlist", clientMasterlistRoutes);
 app.use("/api/trip-ticket", tripTicketRoutes);
