@@ -511,9 +511,9 @@ async function generateStockItemsBuffer(viewModel) {
       vm.batchNo || "",
       vm.expiryDate || "",
       vm.location || "",
-      vm.qty || "",
-      vm.allocatedQuantity || "",
-      vm.totalQuantity || "",
+      Number(vm.qty || 0),
+      Number(vm.allocatedQuantity || 0),
+      Number(vm.totalQuantity || 0),
       vm.uQ || "",
       vm.ageing || "",
     ]);

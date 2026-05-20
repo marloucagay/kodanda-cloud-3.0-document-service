@@ -4,6 +4,7 @@ const {
   generateBillingServiceBuffer,
   generateStorageReportBuffer,
   generateStockItemsBuffer,
+  generateStockItemsStream,
 } = require("../services/generateExcel.service.js");
 
 const generateStockMovementExcel = async (req, res) => {
@@ -106,29 +107,6 @@ const generateStorageReportExcel = async (req, res) => {
   }
 };
 
-// const generateStockItemsExcel = async (req, res) => {
-//   try {
-//     const { stocks } = req.body;
-
-//     const viewModel = {
-//       stocks: Array.isArray(stocks) ? stocks : [],
-//     };
-
-//     const buffer = await generateStockItemsBuffer(viewModel);
-
-//     res.setHeader(
-//       "Content-Type",
-//       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-//     );
-//     return res.status(200).send(buffer);
-//   } catch (err) {
-//     console.error("generateStockItemsExcel error:", err?.stack || err);
-//     return res
-//       .status(500)
-//       .json({ message: "Failed to generate stock items report" });
-//   }
-// };
-
 const generateStockItemsExcel = async (req, res) => {
   try {
     const { stocks } = req.body;
@@ -137,17 +115,39 @@ const generateStockItemsExcel = async (req, res) => {
       stocks: Array.isArray(stocks) ? stocks : [],
     };
 
-    await generateStockItemsStream(viewModel, res);
+    const buffer = await generateStockItemsBuffer(viewModel);
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
+    return res.status(200).send(buffer);
   } catch (err) {
     console.error("generateStockItemsExcel error:", err?.stack || err);
-
-    if (!res.headersSent) {
-      return res.status(500).json({
-        message: "Failed to generate stock items report",
-      });
-    }
+    return res
+      .status(500)
+      .json({ message: "Failed to generate stock items report" });
   }
 };
+
+// const generateStockItemsExcel = async (req, res) => {
+//   try {
+//     const { stocks } = req.body;
+//     const viewModel = {
+//       stocks: Array.isArray(stocks) ? stocks : [],
+//     };
+//     console.log(stocks.length);
+//     await generateStockItemsStream(viewModel, res);
+//   } catch (err) {
+//     console.error("generateStockItemsExcel error:", err?.stack || err);
+
+//     if (!res.headersSent) {
+//       return res.status(500).json({
+//         message: "Failed to generate stock items report",
+//       });
+//     }
+//   }
+// };
 
 module.exports = {
   generateStockMovementExcel,
