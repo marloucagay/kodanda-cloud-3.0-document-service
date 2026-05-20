@@ -224,7 +224,9 @@ async function generateBillingServiceBuffer(viewModel) {
     if (viewModel.logo) {
       let imageBuffer;
       if (/^https?:\/\//.test(viewModel.logo)) {
-        const response = await axios.get(viewModel.logo, { responseType: "arraybuffer" });
+        const response = await axios.get(viewModel.logo, {
+          responseType: "arraybuffer",
+        });
         imageBuffer = Buffer.from(response.data, "binary");
       } else {
         imageBuffer = fs.readFileSync(viewModel.logo);
@@ -240,15 +242,37 @@ async function generateBillingServiceBuffer(viewModel) {
       worksheet.getRow(1).height = 80;
     }
 
-    worksheet.addRow([`${sheetName} Report`]).font = { name: "Arial", size: 14, bold: true };
-    worksheet.addRow([`Client: ${viewModel?.clientName || ""}`]).font = { name: "Arial", size: 8, bold: true };
+    worksheet.addRow([`${sheetName} Report`]).font = {
+      name: "Arial",
+      size: 14,
+      bold: true,
+    };
+    worksheet.addRow([`Client: ${viewModel?.clientName || ""}`]).font = {
+      name: "Arial",
+      size: 8,
+      bold: true,
+    };
     worksheet.addRow([]);
 
     // Table header
     const tableHeader = [
-      'Invoice Date', 'Billing Reference', 'Invoice No', 'Quotation No.', 'Consignee', 'Shipper', 'Delivery Site',
-      'Foreign Currency', 'Credit Term', 'File No', 'Contact Person', 'Contact No.',
-      'Currency', 'Total Amount', 'VAT', 'Net Amount', 'Status'
+      "Invoice Date",
+      "Billing Reference",
+      "Invoice No",
+      "Quotation No.",
+      "Consignee",
+      "Shipper",
+      "Delivery Site",
+      "Foreign Currency",
+      "Credit Term",
+      "File No",
+      "Contact Person",
+      "Contact No.",
+      "Currency",
+      "Total Amount",
+      "VAT",
+      "Net Amount",
+      "Status",
     ];
     const tableHeaderRow = worksheet.addRow(tableHeader);
     tableHeaderRow.font = { name: "Arial", size: 8, bold: true };
@@ -285,12 +309,12 @@ async function generateBillingServiceBuffer(viewModel) {
         vm.totalAmount || 0,
         vm.vat || 0,
         vm.netAmount || 0,
-        vm.status || ""
+        vm.status || "",
       ]);
       row.font = { name: "Arial", size: 8 };
-      row.getCell(13).numFmt = '#,##0.00';
-      row.getCell(14).numFmt = '#,##0.00';
-      row.getCell(15).numFmt = '#,##0.00';
+      row.getCell(13).numFmt = "#,##0.00";
+      row.getCell(14).numFmt = "#,##0.00";
+      row.getCell(15).numFmt = "#,##0.00";
       row.eachCell((cell) => {
         cell.border = {
           top: { style: "thin" },
@@ -302,15 +326,22 @@ async function generateBillingServiceBuffer(viewModel) {
     });
 
     worksheet.addRow([]);
-    worksheet.columns.forEach((col) => { col.width = 12; });
+    worksheet.columns.forEach((col) => {
+      col.width = 12;
+    });
   }
 
   // Separate billings by type
-  const invoiceBillings = (viewModel.billings || []).filter(b => b.billing === "Invoice");
-  const debitNoteBillings = (viewModel.billings || []).filter(b => b.billing === "Debit Note");
+  const invoiceBillings = (viewModel.billings || []).filter(
+    (b) => b.billing === "Invoice",
+  );
+  const debitNoteBillings = (viewModel.billings || []).filter(
+    (b) => b.billing === "Debit Note",
+  );
 
   if (invoiceBillings.length) await addBillingSheet("Invoice", invoiceBillings);
-  if (debitNoteBillings.length) await addBillingSheet("Debit Note", debitNoteBillings);
+  if (debitNoteBillings.length)
+    await addBillingSheet("Debit Note", debitNoteBillings);
 
   return workbook.xlsx.writeBuffer();
 }
@@ -368,7 +399,7 @@ async function generateStorageReportBuffer(viewModel) {
     "Expiration",
     "Qty",
     "UQ",
-    "Location"
+    "Location",
   ];
   const tableHeaderRow = worksheet.addRow(tableHeader);
   tableHeaderRow.font = { name: "Arial", size: 8, bold: true };
@@ -404,7 +435,7 @@ async function generateStorageReportBuffer(viewModel) {
       vm.pickingLists?.[0].expirationDate || "",
       vm.pickingLists?.[0].quantity || 0,
       vm.pickingLists?.[0].uQ || "",
-      vm.pickingLists?.[0].location || ""
+      vm.pickingLists?.[0].location || "",
     ]);
     row.font = { name: "Arial", size: 8 };
     row.eachCell((cell) => {
@@ -449,7 +480,7 @@ async function generateStockItemsBuffer(viewModel) {
     "Allocated Quantity",
     "Total Quantity",
     "Unit Quantity",
-    "Ageing"
+    "Ageing",
   ];
   const tableHeaderRow = worksheet.addRow(tableHeader);
   tableHeaderRow.font = { name: "Arial", size: 8, bold: true };
@@ -488,10 +519,10 @@ async function generateStockItemsBuffer(viewModel) {
     ]);
     row.font = { name: "Arial", size: 8 };
 
-    row.getCell(10).numFmt = '#,##0';
-    row.getCell(11).numFmt = '#,##0';
-    row.getCell(12).numFmt = '#,##0';
-    
+    row.getCell(10).numFmt = "#,##0";
+    row.getCell(11).numFmt = "#,##0";
+    row.getCell(12).numFmt = "#,##0";
+
     row.eachCell((cell) => {
       cell.border = {
         top: { style: "thin" },
@@ -507,11 +538,149 @@ async function generateStockItemsBuffer(viewModel) {
   });
   return workbook.xlsx.writeBuffer();
 }
+async function generateStockItemsStream(viewModel, res) {
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  );
+
+  res.setHeader(
+    "Content-Disposition",
+    'attachment; filename="stock-items-report.xlsx"',
+  );
+
+  // Streaming workbook writer
+  const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({
+    stream: res,
+    useStyles: true,
+    useSharedStrings: true,
+  });
+
+  const worksheet = workbook.addWorksheet("Stock Items Report");
+
+  // Title
+  const titleRow = worksheet.addRow(["Stock Items Report"]);
+
+  titleRow.font = {
+    name: "Arial",
+    size: 14,
+    bold: true,
+  };
+
+  titleRow.commit();
+
+  worksheet.addRow([]).commit();
+
+  // Table Header
+  const tableHeader = [
+    "Customer",
+    "Product Code",
+    "Description",
+    "Date Received",
+    "Manufacturing Date",
+    "Serial No",
+    "Batch No",
+    "Expiration Date",
+    "Location",
+    "Quantity",
+    "Allocated Quantity",
+    "Total Quantity",
+    "Unit Quantity",
+    "Ageing",
+  ];
+
+  const headerRow = worksheet.addRow(tableHeader);
+
+  headerRow.font = {
+    name: "Arial",
+    size: 8,
+    bold: true,
+  };
+
+  headerRow.eachCell((cell) => {
+    cell.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFD3D3D3" },
+    };
+
+    cell.border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+  });
+
+  headerRow.commit();
+
+  // Rows
+  for (const vm of viewModel.stocks) {
+    const row = worksheet.addRow([
+      vm.clientName || "",
+      vm.itemCode || "",
+      vm.itemName || "",
+      vm.dateReceived || "",
+      vm.manufacturedDate || "",
+      vm.serialNo || "",
+      vm.batchNo || "",
+      vm.expiryDate || "",
+      vm.location || "",
+      Number(vm.qty || 0),
+      Number(vm.allocatedQuantity || 0),
+      Number(vm.totalQuantity || 0),
+      Number(vm.uQ || 0),
+      vm.ageing || "",
+    ]);
+
+    row.font = {
+      name: "Arial",
+      size: 8,
+    };
+
+    row.getCell(10).numFmt = "#,##0";
+    row.getCell(11).numFmt = "#,##0";
+    row.getCell(12).numFmt = "#,##0";
+    row.getCell(13).numFmt = "#,##0";
+
+    row.eachCell((cell) => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+
+    // IMPORTANT FOR STREAMING
+    row.commit();
+  }
+
+  worksheet.columns = [
+    { width: 25 },
+    { width: 20 },
+    { width: 35 },
+    { width: 18 },
+    { width: 18 },
+    { width: 20 },
+    { width: 20 },
+    { width: 18 },
+    { width: 20 },
+    { width: 15 },
+    { width: 18 },
+    { width: 18 },
+    { width: 15 },
+    { width: 15 },
+  ];
+
+  await workbook.commit();
+}
 
 module.exports = {
   generateStockMovementBuffer,
   generateBillingSummaryBuffer,
   generateBillingServiceBuffer,
   generateStorageReportBuffer,
-  generateStockItemsBuffer
+  generateStockItemsBuffer,
+  generateStockItemsStream,
 };
