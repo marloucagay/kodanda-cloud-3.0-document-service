@@ -38,45 +38,45 @@ async function generateWaybillPdf(data) {
   return pdf;
 }
 
-async function generateMultiWaybillPdf({
-  pageWidthCm,
-  pageHeightCm,
-  waybills,
-}) {
-  const template = await fs.readFile(MULTI_TEMPLATE_PATH, "utf8");
+// async function generateMultiWaybillPdf({
+//   pageWidthCm,
+//   pageHeightCm,
+//   waybills,
+// }) {
+//   const template = await fs.readFile(MULTI_TEMPLATE_PATH, "utf8");
 
-  const html = mustache.render(template, {
-    pageWidthCm,
-    pageHeightCm,
-    waybills,
-  });
+//   const html = mustache.render(template, {
+//     pageWidthCm,
+//     pageHeightCm,
+//     waybills,
+//   });
 
-  const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--no-zygote",
-    ],
-  });
+//   const browser = await puppeteer.launch({
+//     headless: "new",
+//     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+//     args: [
+//       "--no-sandbox",
+//       "--disable-setuid-sandbox",
+//       "--disable-dev-shm-usage",
+//       "--disable-gpu",
+//       "--no-zygote",
+//     ],
+//   });
 
-  const page = await browser.newPage();
-  await page.setContent(html, { waitUntil: "networkidle0" });
+//   const page = await browser.newPage();
+//   await page.setContent(html, { waitUntil: "networkidle0" });
 
-  const pdf = await page.pdf({
-    printBackground: true,
-    preferCSSPageSize: true,
-    width: `${pageWidthCm}cm`,
-    height: `${pageHeightCm}cm`,
-    scale: 1.5,
-  });
+//   const pdf = await page.pdf({
+//     printBackground: true,
+//     preferCSSPageSize: true,
+//     width: `${pageWidthCm}cm`,
+//     height: `${pageHeightCm}cm`,
+//     scale: 1.5,
+//   });
 
-  await browser.close();
-  return pdf;
-}
+//   await browser.close();
+//   return pdf;
+// }
 
 async function generateMultiWaybillPdf({
   pageWidthCm,

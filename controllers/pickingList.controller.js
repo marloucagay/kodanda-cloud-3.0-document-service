@@ -8,19 +8,19 @@ function buildViewModel(pickingList) {
     // const pickingListsDummy = [
     //   {
     //     itemCode: "STOCK-0001",
-    //     itemName: "SDFKSJDFJFS SDFJSDHJFHH SDJFHJHJJJJJJJJJJ SJDFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ",
+    //     itemName: "SDFKSJDFJFSsdfsdfsdfsdfsdfdsfsdfsdfsdfsdfsdf SDFJSDHJFHHs",
     //     quantity: 100,
     //     uQ: "Case",
     //     batchNo: "BATCH-001",
     //     serialNo: "SERIAL-001",
     //     expirationDate: "01 Jan 2028",
     //     location: "Location A",
-    //     remarks: "Remark 1"
+    //     remarks: "Remark 1sdffffffffff"
     //   },
     //   {
     //     itemCode: "STOCK-0002",
     //     itemName: "Item Name 2",
-    //     itemName: "SDFKSJDFJFS SDFJSDHJFHH SDJFHJHJJJJJJJJJJ SJDFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ SDJFHJHJHJ",
+    //     itemName: "SDFKSJDFJFSsdfsdfsdfsdfsdfssdfsdfsdfsdfsdfsdfsdf SDJFHJHJHJ SDJFHJHJHJ",
 
     //     quantity: 200,
     //     uQ: "Box",
@@ -43,7 +43,7 @@ function buildViewModel(pickingList) {
     //   },
     //   {
     //     itemCode: "STOCK-0004",
-    //     itemName: "Item Name 4",
+    //     itemName: "Item Name 4 SDFKSJDFJFS",
     //     quantity: 400,
     //     uQ: "Pack",
     //     batchNo: "BATCH-004",
@@ -64,7 +64,7 @@ function buildViewModel(pickingList) {
     //     remarks: "Remark 5"
     //   },
     //   {
-    //     itemCode: "STOCK-0006",
+    //     itemCode: "STOCK-0006 SDFKSJDFJFS SDFJSDHJFHH SDJFHJHJJJJJJJJJJ SJDFHJH",
     //     itemName: "Item Name 6",
     //     quantity: 600,
     //     uQ: "Box",
@@ -76,7 +76,7 @@ function buildViewModel(pickingList) {
     //   },
     //   {
     //     itemCode: "STOCK-0007",
-    //     itemName: "Item Name 7",
+    //     itemName: "Item Name 7 SDFKSJDFJFS SDFJSDHJFHH SDJFHJHJJJJJJJJJJ SJDFHJHJHJ SDJF",
     //     quantity: 700,
     //     uQ: "Piece",
     //     batchNo: "BATCH-007",
@@ -84,6 +84,28 @@ function buildViewModel(pickingList) {
     //     expirationDate: "07 Jul 2028",
     //     location: "Location G",
     //     remarks: "Remark 7"
+    //   },
+    //   {
+    //     itemCode: "STOCK-0008",
+    //     itemName: "Item Name 8",
+    //     quantity: 800,
+    //     uQ: "Pack",
+    //     batchNo: "BATCH-008",
+    //     serialNo: "SERIAL-008",
+    //     expirationDate: "08 Aug 2028",
+    //     location: "Location H",
+    //     remarks: "Remark 8"
+    //   },
+    //   {
+    //     itemCode: "STOCK-0008",
+    //     itemName: "Item Name 8",
+    //     quantity: 800,
+    //     uQ: "Pack",
+    //     batchNo: "BATCH-008",
+    //     serialNo: "SERIAL-008",
+    //     expirationDate: "08 Aug 2028",
+    //     location: "Location H",
+    //     remarks: "Remark 8"
     //   },
     //   {
     //     itemCode: "STOCK-0008",

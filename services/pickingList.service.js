@@ -242,7 +242,7 @@ async function renderSinglePdf(viewModel, browser) {
         </div>
       `,
 
-      margin: { top: "46mm", bottom: "18mm", left: "8mm", right: "8mm" },
+      margin: { top: "46mm", bottom: "40mm", left: "8mm", right: "8mm" },
     });
 
     return pdfBuffer;
