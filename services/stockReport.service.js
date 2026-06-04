@@ -291,7 +291,7 @@ async function renderSinglePdf(viewModel, browser) {
   const stockName =
     viewModel.warehouseMode === "Incoming"
       ? "Incoming Stocks"
-      : "Outgoing Stocks";
+      : "Outgoing Form";
 
   const page = await browser.newPage();
 
