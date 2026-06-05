@@ -81,7 +81,7 @@ const SERVICE_SECTION_CONFIG = {
                 { key: "emergency", label: "Emergency" },
                 { key: "boq", label: "BOQ" },
                 { key: "currency", label: "Curr." },
-                { key: "ratesForeignCurr", label: "Rates (Foreign Curr)" }
+                { key: "foreignRates", label: "Rates (Foreign Curr)" }
             ]
         },
         optionalCharges: {
