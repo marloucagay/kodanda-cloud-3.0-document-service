@@ -16,6 +16,7 @@
     }
     body { font-family: Arial, Helvetica, sans-serif; color: #111; }
     .grid1 { display:grid; gap: 6px; margin: 10px 0; }
+    .grid1 p { margin: 1px 0; padding: 1.5px 0; }
     .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; }
     .kv { display: flex; }
     .kv .k { font-size: 10px; color:#111; white-space: nowrap; font-weight: 600; padding-right: 6px; }
@@ -158,34 +159,54 @@
             </table>
         {{/incedentalCharges.length}}
 
-        <h3 class="service-head">Additional Information</h3>
-        <div class="grid1">
-            <div class="kv">
-                <div class="value">1. Valuation charge is 1% of declared value for parcel and cargo.</div>
+        {{^additionalInformation}}
+            <h3 class="service-head">Additional Information</h3>
+            <div class="grid1">
+                <div class="kv">
+                    <div class="value">1. Valuation charge is 1% of declared value for parcel and cargo.</div>
+                </div>
+                <div class="kv">
+                    <div class="value">2. Fuel surcharge will be based on the actual weight of cargo after 3 kgs.</div>
+                </div>
+                <div class="kv">
+                    <div class="value">3. ODA & Emergency charges apply (Annex 2). For new sites not included in the list shall be communicated and subject to approval.</div>
+                </div>
+                <div class="kv">
+                    <div class="value">4. DG Fee is 50% of freight charges.</div>
+                </div>
             </div>
-            <div class="kv">
-                <div class="value">2. Fuel surcharge will be based on the actual weight of cargo after 3 kgs.</div>
+        {{/additionalInformation}}
+        {{#additionalInformation}}
+            <h3 class="service-head">Additional Information</h3>
+            <div class="grid1">
+                <div class="kv">
+                    <div class="value">{{{additionalInformation}}}</div>
+                </div>
             </div>
-            <div class="kv">
-                <div class="value">3. ODA & Emergency charges apply (Annex 2). For new sites not included in the list shall be communicated and subject to approval.</div>
-            </div>
-            <div class="kv">
-                <div class="value">4. DG Fee is 50% of freight charges.</div>
-            </div>
-        </div>
+        {{/additionalInformation}}
 
-        <h3 class="service-head">Terms and Condition</h3>
-        <div class="grid1">
-            <div class="kv">
-                <div class="value">1. Above rates are VAT-Exclusive</div>
+        {{^termsAndCondition}}
+            <h3 class="service-head">Terms and Condition</h3>
+            <div class="grid1">
+                <div class="kv">
+                    <div class="value">1. Above rates are VAT-Exclusive</div>
+                </div>
+                <div class="kv">
+                    <div class="value">2. Limit of liability shall be agreed upon by both parties.</div>
+                </div>
+                <div class="kv">
+                    <div class="value">3. Our proposal is exclusive to insurance. Coverage shall be made only in written instructions and shall be subject to the corresponding premium.</div>
+                </div>
             </div>
-            <div class="kv">
-                <div class="value">2. Limit of liability shall be agreed upon by both parties.</div>
+        {{/termsAndCondition}}
+        {{#termsAndCondition}}
+            <h3 class="service-head">Terms and Condition</h3>
+            <div class="grid1">
+                <div class="kv">
+                    <div class="value">{{{termsAndCondition}}}</div>
+                </div>
             </div>
-            <div class="kv">
-                <div class="value">3. Our proposal is exclusive to insurance. Coverage shall be made only in written instructions and shall be subject to the corresponding premium.</div>
-            </div>
-        </div>
+        {{/termsAndCondition}}
 
         <div class="line"></div>
 
