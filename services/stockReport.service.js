@@ -290,7 +290,7 @@ async function renderSinglePdf(viewModel, browser) {
   const logo = viewModel.logoSrcDataUri || "";
   const stockName =
     viewModel.warehouseMode === "Incoming"
-      ? "Incoming Stocks"
+      ? "Incoming Form"
       : "Outgoing Form";
 
   const page = await browser.newPage();
