@@ -16,6 +16,7 @@ const quotationRoutes = require("./routes/quotation.routes.js");
 const stockReportRoutes = require("./routes/stockReport.routes.js");
 const clientMasterlistRoutes = require("./routes/clientMasterlist.routes.js");
 const tripTicketRoutes = require("./routes/tripTicket.routes.js");
+const stockAdjustmentRoutes = require("./routes/stockAdjustment.routes.js");
 const generateExcelRoutes = require("./routes/generateExcel.routes.js");
 
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/generate-consolidated-billing", generateConsolidatedBillingRoutes)
 app.use("/api/stock-report", stockReportRoutes);
 app.use("/api/client-masterlist", clientMasterlistRoutes);
 app.use("/api/trip-ticket", tripTicketRoutes);
+app.use("/api/stock-adjustment", stockAdjustmentRoutes);
 
 app.use("/api/generate", generateExcelRoutes);
 app.use("/api/generate", generateExcelRoutes);
