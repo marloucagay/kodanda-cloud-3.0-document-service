@@ -342,7 +342,6 @@ async function renderSinglePdf(viewModel, browser) {
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:8px; font-size:9px; color:#1E3A8A;">
             <div>
               Printed by: ${escapeHtml(printedBy)} | Printed on: ${escapeHtml(printedOn)}
-              ${viewModel.lastEdited ? " | Last Modified: " + escapeHtml(viewModel.lastEdited) : ""}
             </div>
             <div>Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
           </div>
