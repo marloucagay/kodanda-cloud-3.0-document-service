@@ -61,6 +61,42 @@ async function generatePickingListPdf(req, res) {
     res.status(200).send(pdfBuffer);
   } catch (err) {
     console.error("generatePickingListPdf error:", err);
+    // #region agent log
+    console.error(
+      "[DEBUG-73b8e7]",
+      JSON.stringify({
+        sessionId: "73b8e7",
+        location: "pickingList.controller.js:generatePickingListPdf:catch",
+        message: "controller caught picking list pdf error",
+        data: {
+          errorMessage: err?.message || String(err),
+          errorName: err?.name,
+        },
+        timestamp: Date.now(),
+        hypothesisId: "A,C,D",
+        runId: process.env.DEBUG_RUN_ID || "pre-fix",
+      }),
+    );
+    fetch("http://127.0.0.1:7618/ingest/71039342-14db-438f-8e6a-22bc8642d8d7", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "73b8e7",
+      },
+      body: JSON.stringify({
+        sessionId: "73b8e7",
+        location: "pickingList.controller.js:generatePickingListPdf:catch",
+        message: "controller caught picking list pdf error",
+        data: {
+          errorMessage: err?.message || String(err),
+          errorName: err?.name,
+        },
+        timestamp: Date.now(),
+        hypothesisId: "A,C,D",
+        runId: process.env.DEBUG_RUN_ID || "pre-fix",
+      }),
+    }).catch(() => {});
+    // #endregion
     res.status(500).json({ message: "Failed to generate picking list PDF" });
   }
 }
