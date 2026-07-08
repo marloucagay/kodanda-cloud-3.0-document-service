@@ -21,13 +21,15 @@ async function generateDrsfPdfBuffer(viewModel) {
   const browser = await puppeteer.launch({
     headless: "new",
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--no-zygote",
-    ],
+   args: [
+  "--no-sandbox",
+  "--disable-setuid-sandbox",
+  "--disable-dev-shm-usage",
+  "--disable-gpu",
+  "--no-zygote",
+  "--single-process",
+  "--disable-features=IsolateOrigins,site-per-process",
+]
   });
 
   try {
