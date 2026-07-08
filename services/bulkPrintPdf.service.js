@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const mustache = require("mustache");
 const { PDFDocument } = require('pdf-lib');
+const { getPuppeteerLaunchOptions } = require("../utils/puppeteerLaunch.js");
 
 const templatePath = path.join(
   process.cwd(),
@@ -25,17 +26,7 @@ function escapeHtml(str) {
 }
 
 async function generateBulkPrintPdfBuffer(viewModels) {
-  const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--no-zygote",
-    ],
-  });
+  const browser = await puppeteer.launch(getPuppeteerLaunchOptions());
 
   try {
     const pdfBuffers = [];

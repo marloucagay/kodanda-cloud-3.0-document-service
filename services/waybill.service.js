@@ -3,6 +3,7 @@ const fs = require("fs/promises");
 const mustache = require("mustache");
 const path = require("path");
 const { PDFDocument } = require("pdf-lib");
+const { getPuppeteerLaunchOptions } = require("../utils/puppeteerLaunch.js");
 
 const TEMPLATE_PATH = path.join(process.cwd(), "templates/waybill.mustache");
 const MULTI_TEMPLATE_PATH = path.join(
@@ -13,17 +14,7 @@ async function generateWaybillPdf(data) {
   const template = await fs.readFile(TEMPLATE_PATH, "utf8");
   const html = mustache.render(template, data);
 
-  const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--no-zygote",
-    ],
-  });
+  const browser = await puppeteer.launch(getPuppeteerLaunchOptions());
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: "networkidle0" });
 
@@ -85,17 +76,7 @@ async function generateMultiWaybillPdf({
 }) {
   const template = await fs.readFile(TEMPLATE_PATH, "utf8");
 
-  const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--no-zygote",
-    ],
-  });
+  const browser = await puppeteer.launch(getPuppeteerLaunchOptions());
 
   const pdfBuffers = [];
 

@@ -148,6 +148,7 @@ const path = require("path");
 const mustache = require("mustache");
 const puppeteer = require("puppeteer");
 const { PDFDocument } = require("pdf-lib");
+const { getPuppeteerLaunchOptions } = require("../utils/puppeteerLaunch.js");
 
 const templatePath = path.join(
   process.cwd(),
@@ -275,17 +276,7 @@ async function generatePickingListPdfBuffer(viewModelOrArray) {
     throw new Error("generatePickingListPdfBuffer: viewModels array is empty.");
   }
 
-  const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--no-zygote",
-    ],
-  });
+  const browser = await puppeteer.launch(getPuppeteerLaunchOptions());
 
   try {
     const pdfBuffers = [];

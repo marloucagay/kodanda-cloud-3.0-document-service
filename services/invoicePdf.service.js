@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const mustache = require("mustache");
 const puppeteer = require("puppeteer");
+const { getPuppeteerLaunchOptions } = require("../utils/puppeteerLaunch.js");
 const templatePath = path.join(process.cwd(), "templates", "invoice.mustache");
 const template = fs.readFileSync(templatePath, "utf8");
 
@@ -18,17 +19,7 @@ function renderInvoiceHtml(viewModel) {
 async function generateInvoicePdfBuffer(viewModel) {
   const html = renderInvoiceHtml(viewModel);
 
-  const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--no-zygote",
-    ],
-  });
+  const browser = await puppeteer.launch(getPuppeteerLaunchOptions());
 
   try {
     const page = await browser.newPage();
