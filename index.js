@@ -17,8 +17,21 @@ const stockReportRoutes = require("./routes/stockReport.routes.js");
 const clientMasterlistRoutes = require("./routes/clientMasterlist.routes.js");
 const tripTicketRoutes = require("./routes/tripTicket.routes.js");
 const generateExcelRoutes = require("./routes/generateExcel.routes.js");
+const fs = require("fs");
+const helmet = require("helmet");
+const useragent = require("express-useragent");
+
 
 const app = express();
+
+app.use(helmet());
+app.use(cors());
+app.use(useragent.express());
+
+// Turn this to false to run locally
+const backupserver = true;
+
+
 app.use(express.json({ limit: "100mb" }));
 app.use(
   bodyParser.urlencoded({
@@ -26,7 +39,22 @@ app.use(
     limit: "100mb",
   }),
 );
-app.use(cors());
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.header("Pragma", "no-cache");
+  res.header("Expires", 0);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept",
+  );
+  next();
+});
 
 app.use("/api/waybills", waybillRoutes);
 app.use("/api/invoices", invoiceRoutes);
@@ -51,7 +79,29 @@ app.use("/api/generate", generateExcelRoutes);
 app.use("/api/generate", generateExcelRoutes);
 app.use("/api/generate", generateExcelRoutes);
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Document Service listening on port ${PORT}`);
-});
+const PORT = process.env.PORT || 8093;
+
+
+
+
+var server;
+if (backupserver) {
+  console.log("Running Server");
+  server = https
+    .createServer(
+      {
+        key: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.key"),
+        cert: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.crt"),
+        ca: fs.readFileSync("/var/www/ssl/api2.kodanda.cloud.2026.ca-bundle"),
+        //passphrase: 'asdf'
+      },
+      app,
+    )
+    .listen(PORT);
+} else {
+  console.log("Running Locally");
+  server = app.listen(PORT, function () {
+    console.log("Express server listening on port " + PORT);
+  });
+}
+server.timeout = 600000000;
