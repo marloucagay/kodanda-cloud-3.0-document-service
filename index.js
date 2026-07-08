@@ -79,7 +79,11 @@ app.use("/api/generate", generateExcelRoutes);
 app.use("/api/generate", generateExcelRoutes);
 app.use("/api/generate", generateExcelRoutes);
 
-const PORT = process.env.PORT || 8093;
+app.use("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+const PORT = process.env.PORT || 8086;
 
 
 
