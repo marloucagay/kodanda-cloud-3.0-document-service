@@ -5,6 +5,7 @@ const https = require("https");
 const bodyParser = require("body-parser");
 const invoiceRoutes = require("./routes/invoice.routes.js");
 const pickingListRoutes = require("./routes/pickingList.routes.js");
+const ecommerceRoutes = require("./routes/ecommerce.routes.js");
 const deliveryReceiptRoutes = require("./routes/deliveryReceipt.routes.js");
 const bulkPrint = require("./routes/bulkPrint.routes.js");
 const waybillRoutes = require("./routes/waybill.routes.js");
@@ -59,6 +60,7 @@ app.use(function (req, res, next) {
 app.use("/api/waybills", waybillRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/picking-list", pickingListRoutes);
+app.use("/api/ecommerce", ecommerceRoutes);
 app.use("/api/delivery-receipts", deliveryReceiptRoutes);
 app.use("/api/bulk-print", bulkPrint);
 app.use("/api/gatepass", gatepassRoutes);
