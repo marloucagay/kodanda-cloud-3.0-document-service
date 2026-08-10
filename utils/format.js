@@ -21,7 +21,7 @@ function dateFormat(date) {
   const hasTime = cleanDate.includes(':');
 
   const formats = hasTime
-    ? ['MM/DD/YYYY HH:mm', 'YYYY-MM-DD HH:mm', 'DD MMM YYYY HH:mm']
+    ? ['MM/DD/YYYY HH:mm', 'YYYY-MM-DD HH:mm', 'DD MMM YYYY HH:mm', 'YYYY-MM-DD HH:mm:ss',]
     : ['MM/DD/YYYY', 'YYYY-MM-DD', 'DD MMM YYYY'];
 
   let m;
