@@ -4,39 +4,32 @@ const {
 const { money, safeText, dateFormat } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
-const BLANK_ROW_THRESHOLD = 5;
-const TARGET_ROWS_WHEN_SPARSE = 15;
-
 function buildViewModel(pickingList) {
-  const pickingListsItems = Array.isArray(pickingList.picklistByOrder)
-    ? pickingList.picklistByOrder.map((item, index) => ({
-        ...item,
-        rowNo: index + 1,
-      }))
+  const items = Array.isArray(pickingList.picklistByOrder)
+    ? pickingList.picklistByOrder
     : [];
+
+  const pickingListsItems = items.map((item, index) => ({
+    ...item,
+    rowNo: index + 1,
+  }));
 
   const totalQuantity = pickingListsItems.reduce(
     (sum, item) => sum + (parseFloat(item.quantity) || 0),
     0,
   );
 
-  // Extra Rows if items are less than 5
-  if (pickingListsItems.length < BLANK_ROW_THRESHOLD) {
-    const blankRowsNeeded = Math.max(
-      0,
-      TARGET_ROWS_WHEN_SPARSE - pickingListsItems.length,
-    );
-    for (let i = 0; i < blankRowsNeeded; i++) {
-      pickingListsItems.push({
-        rowNo: "",
-        itemCode: "",
-        itemName: "",
-        quantity: "",
-        expirationDate: "",
-        condition: "",
-        location: "",
-      });
-    }
+  const blankRowsNeeded = Math.max(0, 20 - pickingListsItems.length);
+  for (let i = 0; i < blankRowsNeeded; i++) {
+    pickingListsItems.push({
+      rowNo: "",
+      itemCode: "",
+      itemName: "",
+      quantity: "",
+      expirationDate: "",
+      condition: "",
+      location: "",
+    });
   }
 
   return {

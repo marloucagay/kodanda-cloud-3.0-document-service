@@ -1,99 +1,236 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <style>
-    html, body {
-      height: 100%;
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between; 
-      font-family: Arial, Helvetica, sans-serif;
-      color: #111;
-    }
-    table { width:100%; border-collapse:collapse; }
-    th, td { border: 1px solid #111; padding: 3px; font-size: 12px; height: 20px; }
-    tr { page-break-inside: avoid; }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-left: 1px solid #111;
+        border-right: 1px solid #111;
+      }
+
+      th,
+      td {
+        border-top: 1px solid #111;
+        border-bottom: 1px solid #111;
+        padding: 3px;
+        font-size: 12px;
+        height: 27px;
+      }
+
+      th:not(:last-child),
+      td:not(:last-child) {
+        border-right: 1px solid #111;
+      }
+
+      tr {
+        page-break-inside: avoid;
+        padding: 0;
+      }
+
+      .inner-table {
+        border: none;
+        margin: 0;
+      }
+
+      .no-border {
+        border: none;
+      }
+
+      .title-cell {
+        font-weight: 700;
+        font-size: 18px;
+        padding: 6px;
+        position: relative;
+        text-align: center;
+        overflow: visible;
+        height: 40px;
+      }
+
+      .logo-img {
+        position: absolute;
+        left: -10px;
+        top: -14px;
+        height: 80px;
+        background: #fff;
+        z-index: -1;
+      }
+
+      .title-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -2;
+      }
+
+      .spacer-row {
+        height: 10px;
+      }
+
+      .label {
+        font-weight: 700;
+        width: 20%;
+        text-align: right;
+      }
+
+      .value {
+        text-align: left;
+      }
+
+      .value-bold {
+        text-align: left;
+        font-weight: 700;
+      }
+
+      .labelWidth {
+        width: 17%;
+      }
+
+      .valueWidth {
+        width: 48%;
+      }
+
+      .header-cell {
+        text-align: center;
+      }
+
+      .nowrap {
+        white-space: nowrap;
+      }
+
+      .center-text {
+        text-align: center;
+      }
+
+      .bold {
+        font-weight: 700;
+      }
+
+      .item-name {
+        text-align: center;
+        width: 45%;
+      }
+
+      .item-cell {
+        padding: 2px;
+        border-top: 1px dotted #111;
+        border-bottom: 1px dotted #111;
+      }
+
+      .item-cell:not(:last-child) {
+        border-right: 1px dotted #111;
+      }
+
+      .total-label {
+        text-align: right;
+        font-weight: 700;
+        padding-right: 8px;
+      }
+
+      .total-value {
+        font-weight: 700;
+        padding-left: 8px;
+        border-top: 1px solid #111;
+      }
+    </style>
+  </head>
+  <body>
     <div>
       <table>
-        <tbody>
-            <tr>
-                <td colspan="4" style="font-weight: 700; font-size: 18px; padding: 6px; position: relative; text-align: center; overflow: visible; height: 40px;">
-                    {{#logoSrcDataUri}}
-                    <img src="{{{logoSrcDataUri}}}" alt="logo"
-                         style="position: absolute; left: -10px; top: -14px; height: 40px; z-index: -1; background: #fff; height: 80px;" />
-                    {{/logoSrcDataUri}}
-                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #D9D9D9; z-index: -2;"></div>
-                    PICKING LIST
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4" style="height: 10px;"></td>
-            </tr>
-            <tr>
-                <td align="right" style="font-weight: 700; width: 20%;">Order Date:</td>
-                <td align="left">{{orderDate}}</td>
-                <td align="right" style="font-weight: 700; width: 20%;">SI #</td>
-                <td align="left" style="font-weight: 700;">{{siNumber}}</td>
-            </tr>
-            <tr>
-                <td align="right" style="font-weight: 700; width: 20%;">Consignee Name:</td>
-                <td align="left">{{consigneeName}}</td>
-                <td align="right" style="font-weight: 700; width: 20%;">ORDER #:</td>
-                <td align="left" style="font-weight: 700;">{{orderNumber}}</td>
-            </tr>
-            <tr>
-                <td align="right" style="font-weight: 700; width: 20%;">Delivery Address:</td>
-                <td align="left">{{deliveryAddress}}</td>
-                <td align="right" style="font-weight: 700; width: 20%;">Date/Time Processed:</td>
-                <td align="left">{{dateTimeProcessed}}</td>
-            </tr>
-            <tr>
-                <td colspan="4" style="border-bottom: none; height: 10px;"></td>
-            </tr>
-        </tbody>
-      </table>
-      <table>
         <thead>
-            <tr style="background: #D9D9D9;">
-                <th align="center">LINE #</th>
-                <th align="center">CODE</th>
-                <th align="center">DESCRIPTION</th>
-                <th align="center">QTY</th>
-                <th align="center">EXPIRY DATE</th>
-                <th align="center">CLASSIFICATION</th>
-                <th align="center">LOCATION</th>
-            </tr>
+          <tr>
+            <td colspan="7" class="no-border" style="padding: 0">
+              <table class="inner-table">
+                <tbody>
+                  <tr>
+                    <td colspan="4" class="title-cell">
+                      {{#logoSrcDataUri}}
+                      <img
+                        src="{{{logoSrcDataUri}}}"
+                        alt="logo"
+                        class="logo-img"
+                      />
+                      {{/logoSrcDataUri}}
+                      <div class="title-bg"></div>
+                      PICKING LIST
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="spacer-row no-border"></td>
+                  </tr>
+                  <tr>
+                    <td class="label labelWidth">Order Date:</td>
+                    <td class="value valueWidth">{{ orderDate }}</td>
+                    <td class="label labelWidth">SI #</td>
+                    <td class="value-bold">{{ siNumber }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label labelWidth">Consignee Name:</td>
+                    <td class="value valueWidth">{{ consigneeName }}</td>
+                    <td class="label labelWidth">ORDER #:</td>
+                    <td class="value-bold">{{ orderNumber }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label labelWidth">Delivery Address:</td>
+                    <td class="value valueWidth">{{ deliveryAddress }}</td>
+                    <td class="label labelWidth">Date/Time Processed:</td>
+                    <td class="value">{{ dateTimeProcessed }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="spacer-row no-border"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr class="header-row">
+            <th class="header-cell">LINE#</th>
+            <th class="header-cell">CODE</th>
+            <th class="header-cell">DESCRIPTION</th>
+            <th class="header-cell">QTY</th>
+            <th class="header-cell nowrap">EXPIRY DATE</th>
+            <th class="header-cell">CLASSIFICATION</th>
+            <th class="header-cell">LOCATION</th>
+          </tr>
         </thead>
         <tbody>
-            {{#pickingListsItems}}
-            <tr>
-                <td align="center" style="border-right: 1px dotted #111; border-top: 1px dotted #111; border-bottom: 1px dotted #111; width: 7%;">{{rowNo}}</td>
-                <td align="center" style="border: 1px dotted #111;">{{itemCode}}</td>
-                <td align="center" style="border: 1px dotted #111;">{{itemName}}</td>
-                <td align="center" style="border: 1px dotted #111;">{{quantity}}</td>
-                <td align="center" style="border: 1px dotted #111;">{{expirationDate}}</td>
-                <td align="center" style="border: 1px dotted #111;">{{condition}}</td>
-                <td align="center" style="border-left: 1px dotted #111; border-top: 1px dotted #111; border-bottom: 1px dotted #111;">{{location}}</td>
-            </tr>
-            {{/pickingListsItems}}
-            <tr>
-                <td colspan="3" align="right" style="font-weight: 700;">TOTAL:</td>
-                <td align="center" style="border-right: none;">{{totalQuantity}}</td>
-                <td style="border-left: none; border-right: none;"></td>
-                <td style="border-left: none; border-right: none;"></td>
-                <td style="border-left: none;"></td>
-            </tr>
-            <tr>
-                <td colspan="3" style="font-weight: 700;">PACKED BY:</td>
-                <td colspan="4" style="font-weight: 700;">TYPE OF BOX:</td>
-            </tr>
+          {{#pickingListsItems}}
+          <tr>
+            <td class="item-cell center-text bold">{{ rowNo }}</td>
+            <td class="item-cell center-text">{{ itemCode }}</td>
+            <td class="item-cell item-name">{{ itemName }}</td>
+            <td class="item-cell center-text">{{ quantity }}</td>
+            <td class="item-cell center-text">{{ expirationDate }}</td>
+            <td class="item-cell center-text">{{ condition }}</td>
+            <td class="item-cell center-text">{{ location }}</td>
+          </tr>
+          {{/pickingListsItems}}
+          <tr>
+            <td colspan="3" class="total-label">TOTAL:</td>
+            <td colspan="4" class="total-value" align="left">{{ totalQuantity }}</td>
+          </tr>
+          <tr>
+            <td colspan="7" class="spacer-row no-border"></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="bold">PACKED BY: {{ packedBy }}</td>
+            <td colspan="4" class="bold">TYPE OF BOX: {{ typeOfBox }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
-    
-</body>
+  </body>
 </html>
