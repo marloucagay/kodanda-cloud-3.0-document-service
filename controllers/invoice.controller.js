@@ -16,7 +16,7 @@ function buildTotalsRows(summary = {}, overallTotal, clientCurrency) {
     ["Total Sales", money(summary.totalSales)],
     ["Less: VAT", money(summary.lessVat)],
     ["Amount Net of VAT", money(summary.netOfVat)],
-    ["Less: Discount (SC/PWD/NAAC/MOV/SP)", money(summary.discount)],
+    // ["Less: Discount (SC/PWD/NAAC/MOV/SP)", money(summary.discount)],
     ["Add: VAT", money(summary.addVat)],
     ["Less: Withholding Tax", money(summary.withholdingTax)],
   ];
@@ -111,7 +111,6 @@ async function generateInvoicePdf(req, res) {
     if (!invoice || typeof invoice !== "object") {
       return res.status(400).json({ message: "Invalid invoice payload" });
     }
-    console.log("Received invoice for PDF generation:", invoice);
 
     const vm = buildViewModel(invoice);
     vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
