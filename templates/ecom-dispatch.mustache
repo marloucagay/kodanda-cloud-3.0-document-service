@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+        margin: 0;
+        padding: 0 2px; /* ← add this: room for the collapsed right border */
+        box-sizing: border-box;
+      }
+
+      /* Info grid */
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 22px;
+        margin-bottom: 10px;
+      }
+      .kv {
+        display: flex;
+      }
+      .kv .k {
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .kv .data {
+        font-size: 12px;
+        flex: 1;
+        padding-left: 6px;
+        overflow-wrap: anywhere;
+      }
+
+      /* Table */
+      table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        margin-right: 1px; /* ← add this */
+      }
+      thead {
+        display: table-header-group;
+      }
+      th,
+      td {
+        border-top: 1px solid #111;
+        border-bottom: 1px solid #111;
+        padding: 3px;
+        font-size: 12px;
+        height: 27px;
+        /* wrap long text so it never pushes over the border (with fallbacks) */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
+      }
+      th:not(:last-child),
+      td:not(:last-child) {
+        border-right: 1px solid #111;
+      }
+      th:first-child,
+      td:first-child {
+        border-left: 1px solid #111;
+      }
+      th:last-child,
+      td:last-child {
+        border-right: 1px solid #111;
+      }
+      tr {
+        page-break-inside: avoid;
+      }
+
+      .header-cell {
+        text-align: center;
+      }
+      .center-text {
+        text-align: center;
+      }
+      .nowrap {
+        white-space: nowrap;
+      }
+      .item-cell {
+        padding: 2px;
+        border-top: 1px dotted #111;
+        border-bottom: 1px dotted #111;
+      }
+      .item-cell:not(:last-child) {
+        border-right: 1px dotted #111;
+      }
+
+      /* Total */
+      .total-label {
+        text-align: right;
+        font-weight: 700;
+        padding-right: 8px;
+      }
+      .total-value {
+        text-align: center;
+        font-weight: 700;
+      }
+      .no-border {
+        border: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid2">
+      <div class="kv">
+        <div class="k">Dispatch No.:</div>
+        <div class="data">{{ dispatchNo }}</div>
+      </div>
+      <div class="kv">
+        <div class="k">Date Dispatch:</div>
+        <div class="data">{{ dateDispatch }}</div>
+      </div>
+      <div class="kv">
+        <div class="k">Plate No.:</div>
+        <div class="data">{{ plateNo }}</div>
+      </div>
+      <div class="kv">
+        <div class="k">Type of Vehicle:</div>
+        <div class="data">{{ typeOfVehicle }}</div>
+      </div>
+      <div class="kv">
+        <div class="k">Driver:</div>
+        <div class="data">{{ driver }}</div>
+      </div>
+      <div class="kv">
+        <div class="k">Helper:</div>
+        <div class="data">{{ helper }}</div>
+      </div>
+    </div>
+
+    <table>
+      <colgroup>
+        <col style="width: 18%" />
+        <col style="width: 10%" />
+        <col style="width: 24%" />
+        <col style="width: 6%" />
+        <col style="width: 12%" />
+        <col style="width: 12%" />
+        <col style="width: 18%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="header-cell">BATCHING</th>
+          <th class="header-cell">Code</th>
+          <th class="header-cell">Item Name</th>
+          <th class="header-cell">QTY</th>
+          <th class="header-cell nowrap">Expiration</th>
+          <th class="header-cell">Staging</th>
+          <th class="header-cell">Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#pickingListsItems}}
+        <tr>
+          <td class="item-cell center-text">{{ batching }}</td>
+          <td class="item-cell center-text">{{ itemCode }}</td>
+          <td class="item-cell center-text">{{ itemName }}</td>
+          <td class="item-cell center-text">{{ quantity }}</td>
+          <td class="item-cell center-text">{{ expirationDate }}</td>
+          <td class="item-cell center-text">{{ condition }}</td>
+          <td class="item-cell center-text">{{ location }}</td>
+        </tr>
+        {{/pickingListsItems}}
+        <tr>
+          <td colspan="3" class="total-label">Total :</td>
+          <td class="total-value">{{ totalQuantity }}</td>
+          <td colspan="3"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
