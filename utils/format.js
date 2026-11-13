@@ -1,6 +1,5 @@
 const moment = require("moment");
 
-
 function safeText(v, fallback = "") {
   const s = String(v ?? "").trim();
   return s.length ? s : fallback;
@@ -15,30 +14,41 @@ function money(n, decimals = 2) {
 }
 
 function dateFormat(date) {
-  if (!date) return '';
+  if (!date) return "";
 
-  const cleanDate = String(date).replace(/\s+/g, ' ').trim();
-  const hasTime = cleanDate.includes(':');
+  const cleanDate = String(date).replace(/\s+/g, " ").trim();
+
+  const isoDate = moment(cleanDate, moment.ISO_8601, true);
+
+  if (isoDate.isValid()) {
+    return isoDate.utcOffset("+08:00").format("DD MMM YYYY");
+  }
+
+  const hasTime = cleanDate.includes(":");
 
   const formats = hasTime
-    ? ['MM/DD/YYYY HH:mm', 'YYYY-MM-DD HH:mm', 'DD MMM YYYY HH:mm', 'YYYY-MM-DD HH:mm:ss',]
-    : ['MM/DD/YYYY', 'YYYY-MM-DD', 'DD MMM YYYY'];
+    ? [
+        "MM/DD/YYYY HH:mm",
+        "YYYY-MM-DD HH:mm",
+        "DD MMM YYYY HH:mm",
+        "YYYY-MM-DD HH:mm:ss",
+      ]
+    : ["MM/DD/YYYY", "YYYY-MM-DD", "DD MMM YYYY"];
 
   let m;
+
   for (const format of formats) {
     m = moment(cleanDate, format, true);
     if (m.isValid()) break;
   }
 
-  if (!m || !m.isValid()) return '';
+  if (!m || !m.isValid()) return "";
 
-  return hasTime
-    ? m.format('DD MMM YYYY HH:mm')
-    : m.format('DD MMM YYYY');
+  return hasTime ? m.format("DD MMM YYYY HH:mm") : m.format("DD MMM YYYY");
 }
 
 module.exports = {
   safeText,
   money,
-  dateFormat
+  dateFormat,
 };
