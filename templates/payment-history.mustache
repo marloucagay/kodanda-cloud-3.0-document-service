@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        height: 97%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #111;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+
+      th {
+        text-align: start;
+        font-size: 12px;
+      }
+
+      td {
+        font-size: 12px;
+        overflow-wrap: anywhere;
+      }
+
+      h5 {
+        font-size: 13px;
+        font-weight: 700;
+        margin: 15px 0 0 0;
+      }
+
+      .invoice-number {
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .text-right {
+        text-align: right;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .summary-row td {
+        font-weight: 700;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <div class="invoice-number">Invoice {{ documentNumber }}</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 13%">Payment</th>
+            <th style="width: 14%">Date</th>
+            <th style="width: 17%">Method</th>
+            <th style="width: 13%">Reference</th>
+            <th style="width: 15%" class="text-right">Amount</th>
+            <th style="width: 12%">Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {{#paymentRecords}}
+          <tr>
+            <td>Payment {{ number }}</td>
+            <td>{{ paymentDate }}</td>
+            <td>{{ paymentMethod }}</td>
+            <td>
+              {{#referenceNumber}}
+              {{ referenceNumber }}
+              {{/referenceNumber}}
+              {{^referenceNumber}}
+              -
+              {{/referenceNumber}}
+            </td>
+            <td class="text-right">{{ currency }} {{ amount }}</td>
+            <td>{{ status }}</td>
+          </tr>
+          {{/paymentRecords}}
+
+          {{^paymentRecords}}
+          <tr>
+            <td colspan="6" class="text-center">
+              No payment records available.
+            </td>
+          </tr>
+          {{/paymentRecords}}
+
+          <tr class="summary-row">
+            <td colspan="4" align="right">Total Amount Paid</td>
+            <td class="text-right">{{ currency }} {{ totalPaid }}</td>
+            <td></td>
+          </tr>
+
+          <tr class="summary-row">
+            <td colspan="4" align="right">Outstanding Balance</td>
+            <td class="text-right">{{ currency }} {{ outstandingBalance }}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

@@ -18,10 +18,12 @@ const stockReportRoutes = require("./routes/stockReport.routes.js");
 const clientMasterlistRoutes = require("./routes/clientMasterlist.routes.js");
 const tripTicketRoutes = require("./routes/tripTicket.routes.js");
 const generateExcelRoutes = require("./routes/generateExcel.routes.js");
+const transmittalRoutes = require("./routes/transmittal.routes.js");
+const collectionEntriesRoutes = require("./routes/collectionEntries.routes.js");
+const paymentHistoryRoutes = require("./routes/paymentHistory.routes.js");
 const fs = require("fs");
 const helmet = require("helmet");
 const useragent = require("express-useragent");
-
 
 const app = express();
 
@@ -31,7 +33,6 @@ app.use(useragent.express());
 
 // Turn this to false to run locally
 const backupserver = true;
-
 
 app.use(express.json({ limit: "100mb" }));
 app.use(
@@ -74,6 +75,9 @@ app.use(
 app.use("/api/stock-report", stockReportRoutes);
 app.use("/api/client-masterlist", clientMasterlistRoutes);
 app.use("/api/trip-ticket", tripTicketRoutes);
+app.use("/api/transmittal", transmittalRoutes);
+app.use("/api/collection-entries", collectionEntriesRoutes);
+app.use("/api/payment-history", paymentHistoryRoutes);
 
 app.use("/api/generate", generateExcelRoutes);
 app.use("/api/generate", generateExcelRoutes);
@@ -86,9 +90,6 @@ app.use("/health", (req, res) => {
 });
 
 const PORT = process.env.PORT || 8086;
-
-
-
 
 var server;
 if (backupserver) {

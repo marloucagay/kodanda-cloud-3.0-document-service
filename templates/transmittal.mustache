@@ -1,0 +1,202 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body {
+      height: 97%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+    }
+
+    .grid1 {
+      display: grid;
+      gap: 6px;
+      margin: 6px 0;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 22px;
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+    }
+
+    .kv .k {
+      font-size: 12px;
+      color: #111;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .data {
+      font-size: 12px;
+      width: 100%;
+      padding-left: 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      margin: 15px 0 6px 0;
+    }
+
+    .message-section {
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    th {
+      text-align: start;
+      font-size: 12px;
+    }
+
+    td {
+      font-size: 12px;
+    }
+
+    h5 {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 15px 0 0 0;
+    }
+
+    .header {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .remarks {
+      margin-top: 12px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div class="grid2" style="margin-top: -5px;">
+      <div class="kv">
+        <div class="k">Transmittal No.:</div>
+        <div class="data">{{transmittalNo}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Date Created:</div>
+        <div class="data">{{dateCreated}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Invoice Statement No.:</div>
+        <div class="data">{{invoiceStatementNo}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Status:</div>
+        <div class="data">{{status}}</div>
+      </div>
+    </div>
+
+    <!-- Customer Information -->
+    <h5>Customer Information</h5>
+
+    <div class="grid2" style="margin-top: 10px;">
+      <div class="kv">
+        <div class="k">Customer Name:</div>
+        <div class="data">{{customerName}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Contact Person:</div>
+        <div class="data">{{contactPerson}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Billing Address:</div>
+        <div class="data">{{billingAddress}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Contact No.:</div>
+        <div class="data">{{contactNo}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">TIN:</div>
+        <div class="data">{{tinNumber}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Exchange Rate:</div>
+        <div class="data">{{exchangeRate}}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Credit Term:</div>
+        <div class="data">{{creditTerm}}</div>
+      </div>
+    </div>
+
+    <!-- Message to Customer -->
+    <h5>Message to Customer</h5>
+
+    <div class="message-section">
+      {{{message}}}
+    </div>
+
+    <!-- Documents -->
+    <h5>Documents</h5>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 8%;">No.</th>
+          <th style="width: 35%;">Document No.</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#documents}}
+        <tr>
+          <td>{{number}}</td>
+          <td>{{documentNo}}</td>
+          <td>{{remarks}}</td>
+        </tr>
+        {{/documents}}
+
+        {{^documents}}
+        <tr>
+          <td colspan="3" style="text-align: center;">
+            No documents available.
+          </td>
+        </tr>
+        {{/documents}}
+      </tbody>
+    </table>
+
+  </div>
+</body>
+</html>
