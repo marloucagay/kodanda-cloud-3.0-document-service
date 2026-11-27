@@ -32,6 +32,15 @@ const DOCUMENT_TYPES = Object.freeze({
     preparedBy: (vm) => vm.ownerName || "-",
     margin: { top: "42mm", bottom: "35mm", left: "8mm", right: "8mm" },
   },
+  countSheet: {
+    templateFile: "ecom-inventory-count-sheet.mustache",
+    landscape: false,
+    title: "Inventory Count Sheet",
+    signOff: {
+      labels: ["Counted By", "Verified By"],
+    },
+    margin: { top: "42mm", bottom: "53mm", left: "8mm", right: "8mm" },
+  },
 });
 
 // HELPERS
@@ -110,6 +119,29 @@ const buildSignatureRow = (labels = []) =>
       </div>
     `;
 
+const buildSignOffBlock = ({ title, labels = [] } = {}) =>
+  labels.length === 0
+    ? ""
+    : `
+      <div style="margin-bottom:22px;">
+        <div style="display:grid; grid-template-columns:repeat(${labels.length}, 1fr); gap:24px;">
+          ${labels
+            .map(
+              (label) => `
+            <div>
+              <div style="font-size:12px; font-weight:700; margin-bottom:28px;">${escapeHtml(label)}</div>
+              <div style="border-top:1px solid #111; padding-top:3px; font-size:12px; text-align:center;">Signature over Printed Name</div>
+              <div style="display:flex; align-items:flex-end; gap:4px; margin-top:18px; font-size:12px;">
+                <span>Date:</span>
+                <div style="flex:1; border-bottom:1px solid #111; height:10px;"></div>
+              </div>
+            </div>`,
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+
 const buildPreparedBy = (name) =>
   name
     ? `
@@ -120,7 +152,10 @@ const buildPreparedBy = (name) =>
     `
     : "";
 
-const buildFooterTemplate = (viewModel, { signatures, preparedBy } = {}) => {
+const buildFooterTemplate = (
+  viewModel,
+  { signatures, preparedBy, signOff } = {},
+) => {
   const printedBy = viewModel.printedBy || DEFAULT_PRINTED_BY;
   const now = new Date();
   const printedOn =
@@ -130,6 +165,7 @@ const buildFooterTemplate = (viewModel, { signatures, preparedBy } = {}) => {
     <div style="width:100%; padding:0 10mm; color:#111; font-family:Arial,sans-serif;">
       ${buildPreparedBy(preparedBy)}
       ${buildSignatureRow(signatures)}
+      ${buildSignOffBlock(signOff)}
       <div style="margin-bottom:4px; font-size:9px; text-align:center; color:#1E3A8A;">
         <div>${escapeHtml(COMPANY_ADDRESS)}</div>
       </div>
@@ -142,7 +178,14 @@ const buildFooterTemplate = (viewModel, { signatures, preparedBy } = {}) => {
 };
 
 const createPdfPageRenderer =
-  ({ landscape, title, signatures, preparedBy, margin = DEFAULT_MARGIN }) =>
+  ({
+    landscape,
+    title,
+    signatures,
+    preparedBy,
+    signOff,
+    margin = DEFAULT_MARGIN,
+  }) =>
   async (browser, html, viewModel) => {
     const page = await browser.newPage();
 
@@ -162,6 +205,7 @@ const createPdfPageRenderer =
         footerTemplate: buildFooterTemplate(viewModel, {
           signatures: resolve(signatures),
           preparedBy: resolve(preparedBy),
+          signOff: resolve(signOff),
         }),
         margin,
       });
@@ -236,8 +280,14 @@ const generateEcomDispatchPdfBuffer = createDocumentGenerator(
   "generateEcomDispatchPdfBuffer",
 );
 
+const generateEcomCountSheetPdfBuffer = createDocumentGenerator(
+  DOCUMENT_TYPES.countSheet,
+  "generateEcomCountSheetPdfBuffer",
+);
+
 module.exports = {
   generateEcomPickingListPdfBuffer,
   generateEcomBatchPdfBuffer,
   generateEcomDispatchPdfBuffer,
+  generateEcomCountSheetPdfBuffer,
 };
