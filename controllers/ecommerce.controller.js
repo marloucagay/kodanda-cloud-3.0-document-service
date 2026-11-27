@@ -2,12 +2,14 @@ const {
   generateEcomPickingListPdfBuffer,
   generateEcomBatchPdfBuffer,
   generateEcomDispatchPdfBuffer,
+  generateEcomCountSheetPdfBuffer,
 } = require("../services/ecommerce.service.js");
 const { money, safeText, dateFormat } = require("../utils/format.js");
 const { ensureDataUriLogo } = require("../utils/logoUri.js");
 
 const PICKLIST_MIN_ROWS = 20;
 const BATCH_PICKLIST_MIN_ROWS = 15;
+const COUNT_SHEET_MIN_ROWS = 0;
 
 const EMPTY_ROW = Object.freeze({
   rowNo: "",
@@ -17,6 +19,14 @@ const EMPTY_ROW = Object.freeze({
   expirationDate: "",
   condition: "",
   location: "",
+});
+
+const EMPTY_COUNT_ROW = Object.freeze({
+  lineNo: "",
+  batchLotNo: "",
+  availableQuantity: "",
+  allocatedQuantity: "",
+  totalQuantity: "",
 });
 
 // Shared: numbers the items and pads with blank rows up to minRows
@@ -37,6 +47,8 @@ const sumQuantity = (items) =>
     (sum, item) => sum + (parseFloat(item.quantity) || 0),
     0,
   );
+
+const toNum = (v) => parseFloat(v) || 0;
 
 // Single picklist/ picklist by order
 function buildPicklistViewModel(pickingList) {
@@ -93,6 +105,36 @@ function buildDispatchViewModel(dispatch) {
     helper: safeText(dispatch.helper) || "-",
     preparedBy: safeText(dispatch.ownerName) || "-",
     totalQuantity: sumQuantity(items),
+  };
+}
+
+// Inventory count sheet
+function buildCountSheetViewModel(inventory) {
+  const stocks = Array.isArray(inventory.stocks) ? inventory.stocks : [];
+
+  const rows = stocks.map((stock, index) => ({
+    lineNo: index + 1,
+    batchLotNo: stock.batchLotNo,
+    availableQuantity: toNum(stock.availableQuantity),
+    allocatedQuantity: toNum(stock.allocatedQuantity),
+    totalQuantity: toNum(stock.totalQuantity),
+  }));
+
+  const blanks = Array.from(
+    { length: Math.max(0, COUNT_SHEET_MIN_ROWS - rows.length) },
+    () => ({ ...EMPTY_COUNT_ROW }),
+  );
+
+  return {
+    ...inventory,
+    mDLIProductCode: safeText(inventory.mDLIProductCode) || "-",
+    clientProductCode: safeText(inventory.clientProductCode) || "-",
+    itemDescription: safeText(inventory.itemDescription) || "-",
+    uOM: safeText(inventory.uOM) || "-",
+    productGroup: safeText(inventory.productGroup) || "-",
+    storageType: safeText(inventory.storageType) || "-",
+    countItems: [...rows, ...blanks],
+    totalSystemQty: stocks.reduce((sum, s) => sum + toNum(s.totalQuantity), 0),
   };
 }
 
@@ -279,8 +321,73 @@ async function generateEcomDispatchPdf(req, res) {
   }
 }
 
+async function generateEcomCountSheet(req, res) {
+  try {
+    const inventoryInfo = req.body;
+    // Minimal validation
+    if (!inventoryInfo || typeof inventoryInfo !== "object") {
+      return res
+        .status(400)
+        .json({ message: "Invalid inventory info payload" });
+    }
+
+    const vm = buildCountSheetViewModel(inventoryInfo);
+    vm.logoSrcDataUri = await ensureDataUriLogo(vm.logoSrc);
+
+    const pdfBuffer = await generateEcomCountSheetPdfBuffer(vm);
+
+    const fileName = `count-sheet-${vm.mDLIProductCode}.pdf`;
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename="${fileName}"`);
+    res.status(200).send(pdfBuffer);
+  } catch (err) {
+    console.error("generateEcomCountSheet error:", err);
+    // #region agent log
+    console.error(
+      "[DEBUG-73b8e7]",
+      JSON.stringify({
+        sessionId: "73b8e7",
+        location: "pickingList.controller.js:generateEcomCountSheet:catch",
+        message: "controller caught count sheet pdf error",
+        data: {
+          errorMessage: err?.message || String(err),
+          errorName: err?.name,
+        },
+        timestamp: Date.now(),
+        hypothesisId: "A,C,D",
+        runId: process.env.DEBUG_RUN_ID || "pre-fix",
+      }),
+    );
+    fetch("http://127.0.0.1:7618/ingest/71039342-14db-438f-8e6a-22bc8642d8d7", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "73b8e7",
+      },
+      body: JSON.stringify({
+        sessionId: "73b8e7",
+        location: "pickingList.controller.js:generateEcomCountSheet:catch",
+        message: "controller caught count sheet pdf error",
+        data: {
+          errorMessage: err?.message || String(err),
+          errorName: err?.name,
+        },
+        timestamp: Date.now(),
+        hypothesisId: "A,C,D",
+        runId: process.env.DEBUG_RUN_ID || "pre-fix",
+      }),
+    }).catch(() => {});
+    // #endregion
+    res.status(500).json({
+      message: "Failed to generate ecommerce inventory count sheet PDF",
+    });
+  }
+}
+
 module.exports = {
   generateEcomPickingListPdf,
   generateEcomBatchPdf,
   generateEcomDispatchPdf,
+  generateEcomCountSheet,
 };

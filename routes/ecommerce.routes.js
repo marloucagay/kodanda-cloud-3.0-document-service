@@ -4,9 +4,11 @@ const {
   generateEcomPickingListPdf,
   generateEcomBatchPdf,
   generateEcomDispatchPdf,
+  generateEcomCountSheet,
 } = require("../controllers/ecommerce.controller.js");
 router.post("/picklist/pdf", generateEcomPickingListPdf);
 router.post("/batch/pdf", generateEcomBatchPdf);
 router.post("/dispatch/pdf", generateEcomDispatchPdf);
+router.post("/inventory/pdf", generateEcomCountSheet);
 
 module.exports = router;
